@@ -24,3 +24,8 @@ ones.
 
 When we execute the above stack will automatically download an appropriate `ghc` version (GHC is the
 Haskell compiler that is most commonly used).
+
+## Next steps
+
+`[Interacting with the terminal](./steps/01-interacting-with-the-terminal.md) has introductory
+material about executing effectful things and an intro to OS interaction in Haskell code.
