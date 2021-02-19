@@ -27,5 +27,5 @@ Haskell compiler that is most commonly used).
 
 ## Next steps
 
-`[Interacting with the terminal](./steps/01-interacting-with-the-terminal.md) has introductory
+[Interacting with the terminal](./steps/01-interacting-with-the-terminal.md) has introductory
 material about executing effectful things and an intro to OS interaction in Haskell code.
