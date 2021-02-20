@@ -27,6 +27,12 @@ signatures. If we, for example, search for the type signature `IO [String]`, tha
 that returns a list of `String`, but does so in an effectful manner, meaning it can differ each time
 we call it. We know that it is doing something **interesting** because it returns an `IO` action.
 
+It should be noted that Hoogle is available as a "bang pattern" in the search engine
+[DuckDuckGo](https://duckduckgo.com/), which means you can type `!h <search-term>` and go to Hoogle
+immediately, allowing you to search for type signatures, function names, module names, etc. very
+conveniently and quickly. This is usable as your browsers default search engine and you can use
+Google via the "!g" bang pattern when you want Google results, giving you more flexibility.
+
 If we go to Hoogle and type `IO [String]` the first example that comes up is
 [`getArgs`](https://hackage.haskell.org/package/base-4.14.1.0/docs/System-Environment.html#v:getArgs).
 
