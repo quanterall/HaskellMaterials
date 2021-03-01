@@ -25,6 +25,13 @@ ones.
 When we execute the above stack will automatically download an appropriate `ghc` version (GHC is the
 Haskell compiler that is most commonly used).
 
+## Example of Haskell syntax and use of common libraries
+
+The syntax of Haskell can't really be summarized neatly in one go because there's been so much new
+syntax added over the years via extensions that it'd be too much to take in. However,
+[here](./misc/syntax.md) is an attempt at introducing most of the basic syntax that a simple project
+could use.
+
 ## Next steps
 
 [Interacting with the terminal](./steps/01-interacting-with-the-terminal.md) has introductory
