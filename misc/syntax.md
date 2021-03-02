@@ -148,6 +148,7 @@ publicFunction2 valueForTheParameter = case valueForTheParameter of
   CaseOne -> True
   CaseFour -> True
   CaseTwo _ -> False
+  CaseThree (Just _) -> True
   CaseThree _ -> False
   CaseFive textIntMap ->
     -- A function can be put in an infix position even though it's not an operator by surrounding it
