@@ -153,7 +153,8 @@ publicFunction2 valueForTheParameter = case valueForTheParameter of
     -- A function can be put in an infix position even though it's not an operator by surrounding it
     -- in double quotes. Here we are applying the `member` function to the map, asking if "someKey"
     -- is a key of the map (`Map Text Int`). This is a very common use case for this language
-    -- feature.
+    -- feature. Note here that we are just using a constant string, but it's automatically used as a
+    -- `Text` type; this is because we are using `OverloadedStrings`.
     "someKey" `Map.member` textIntMap
 
 -- Instance definitions are definitions meant to encode a certain behavior, a "type class", for a
