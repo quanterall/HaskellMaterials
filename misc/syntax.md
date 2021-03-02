@@ -20,6 +20,8 @@
 -- FlexibleContexts
 -- FlexibleInstances
 -- MultiParamTypeClasses
+-- ScopedTypeVariables
+-- TypeApplications
 --
 -- These all enable the source code to be interpreted slightly differently or remove some limitation
 -- that the original Haskell language specification declared. Most of these are very common and safe
@@ -31,6 +33,10 @@ module ModuleName
     publicFunction2,
     value,
     value2,
+    OurCustomType (..),
+    addIntegers,
+    addFloats,
+    addDoubles,
   )
 where
 
@@ -55,6 +61,11 @@ import RIO.Text (Text)
 -- We can link to other pieces of documentation: "Data.String". This will link to the "Data.String"
 -- module that we have in scope, which means we get up-to-date documentation based on our actual
 -- dependencies.
+--
+-- We can also put examples in our documentation:
+--
+-- >>> value
+-- "String value"
 value :: String
 value = "String value"
 
@@ -64,6 +75,30 @@ value2 = 42
 
 -- Functions are (usually) written `functionName :: type` and followed by their definition on the
 -- next line. `::` means the declaration of a type in other contexts as well.
+--
+
+-- | `Int` here is a 32bit integer number. For so called 'big-integers' one can use `Integer`.
+--
+-- >>> addIntegers 42 1337
+-- 1379
+addIntegers :: Int -> Int -> Int
+-- The last thing in the function's type is the return value. What comes before are arguments, in
+-- order.
+addIntegers a b = a + b
+
+-- | `Float` here is (normally) a 32bit floating point number.
+--
+-- >>> addFloats 42 1337
+-- 1379.0
+addFloats :: Float -> Float -> Float
+addFloats a b = a + b
+
+-- | `Double` here is (normally) a 64bit floating point number.
+--
+-- >>> addDoubles 42 1337
+-- 1379.0
+addDoubles :: Double -> Double -> Double
+addDoubles a b = a + b
 
 data OurCustomType
   = CaseOne -- Holds no values, the tag/constructor itself is the only thing we have.
