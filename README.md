@@ -94,6 +94,9 @@ point them out as things to do and experiment with:
   use both `IO.IORef.IORef` and `Control.Concurrent.STM.TVar`, recognize how `STM` is for
   transactional memory modifications and should be used when memory could be modified at the same
   time in different places.
+- Experiment with `(MonadReader env m, HasSpecificThing env) => ... ReaderT env m` to limit what a
+  function can access from your environment, making it impossible that it touches things it
+  shouldn't.
 - Experiment with adding monad constraints like `CanModifyUsers m => User -> m ()` to your functions
   in order to limit them from being able to do anything else effectful; giving you ultimate control
   of exactly what effectful thing a function can do.
