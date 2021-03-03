@@ -85,7 +85,12 @@ how they work, and we most definitely should/will do presentations on them.)
   as well as motivations for choices made in the service of better Haskell applications. It's a very
   insightful article and the ideas in it should serve basically 90% of all production Haskell
   applications, easily.
-- Experiment with programs keeping state in this way and executing in `ReaderT YourEnvironment IO`,
+
+In the article, these points are being stressed in different parts and I want to reiterate them and
+point them out as things to do and experiment with:
+
+
+- Experiment with programs keeping state in `Env` and executing in `ReaderT YourEnvironment IO`,
   use both `IO.IORef.IORef` and `Control.Concurrent.STM.TVar`, recognize how `STM` is for
   transactional memory modifications and should be used when memory could be modified at the same
   time in different places.
