@@ -25,7 +25,7 @@ ones.
 When we execute the above stack will automatically download an appropriate `ghc` version (GHC is the
 Haskell compiler that is most commonly used).
 
-## Example of Haskell syntax and use of common libraries
+## Haskell syntax
 
 The syntax of Haskell can't really be summarized neatly in one go because there's been so much new
 syntax added over the years via extensions that it'd be too much to take in. However,
@@ -37,7 +37,7 @@ could use.
 [Here](./misc/effectful.md) is an explanation of what "effectful" means, practically speaking, as
 well as a short introduction to `IO`.
 
-## "Help! I want to print a value but I can't because Haskell is mean!"
+## "Help! I want to print a value but I can't print without IO!"
 
 [`Debug.Trace`](https://hackage.haskell.org/package/base-4.14.1.0/docs/Debug-Trace.html) is your
 friend. It will even put compiler warnings in there automatically so you don't leave your debug
