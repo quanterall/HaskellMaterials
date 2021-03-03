@@ -61,7 +61,34 @@ main = do
     putStrLn $ "Done: " <> show x
 ```
 
-## Next steps
+## Lessons / Next steps
 
 [Interacting with the terminal](./steps/01-interacting-with-the-terminal.md) has introductory
 material about executing effectful things and an intro to OS interaction in Haskell code.
+
+## I'm comfortable enough with Haskell syntax but I don't know how to structure apps
+
+For readers who might be using these documents as references and feel comfortable enough with their
+basics, the following list of articles and suggestions might be useful:
+
+(Note: Some of this will likely just be put in separate steps/lessons where we actually go through
+how they work, and we most definitely should/will do presentations on them.)
+
+- Learn about the `Reader` monad and that it allows one to read values in any code path extending
+  from one with the type `Reader dataType`.
+- Learn how `ReaderT dataType monad` allows one to layer `Reader` on top of another monad, giving
+  **both** capabilities; `ReaderT dataType IO` will therefore allow us to read the `dataType` value
+  everywhere **and** use `IO`.
+- Read
+  ["The ReaderT design pattern"](https://www.fpcomplete.com/blog/2017/06/readert-design-pattern/) by
+  Michael Snoyman. There is an overview of application "architecture" in there that is very useful,
+  as well as motivations for choices made in the service of better Haskell applications. It's a very
+  insightful article and the ideas in it should serve basically 90% of all production Haskell
+  applications, easily.
+- Experiment with programs keeping state in this way and executing in `ReaderT YourEnvironment IO`,
+  use both `IO.IORef.IORef` and `Control.Concurrent.STM.TVar`, recognize how `STM` is for
+  transactional memory modifications and should be used when memory could be modified at the same
+  time in different places.
+- Experiment with adding monad constraints like `CanModifyUsers m => User -> m ()` to your functions
+  in order to limit them from being able to do anything else effectful; giving you ultimate control
+  of exactly what effectful thing a function can do.
