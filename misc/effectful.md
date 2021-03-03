@@ -51,7 +51,8 @@ System.Environment.setEnv :: String -> String -> IO ()
 
 As we can see, it's not uncommon for these functions to take parameters, but the main thing they
 have in common is that they cause something to happen, which is likely the reason we're running them.
-These can be the building blocks that our program 
+These can be the building blocks that our program uses behind the scenes in order to actually do
+something in the end.
 
 ## IO t
 
