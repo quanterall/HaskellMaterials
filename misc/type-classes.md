@@ -9,13 +9,12 @@ defined for and the instances make this type concrete, then we use it in a type 
 constrain a type variable such that we are saying "This is generic over `a` but we are also saying
 it can have this capability".
 
-
-# Generics / Type variables
+## Generics / Type variables
 
 In order to productively talk about type classes we therefore need to show how employing them in a
 type signature will change the nature of the function.
 
-## identity
+### identity
 
 The "identity function" is a function that simply returns the argument passed to it:
 
@@ -237,3 +236,35 @@ main =
 
 It's quite common to write shorter monadic expressions in this form, though I would likely recommend
 using `do`-notation as a default.
+
+#### The utility of this
+
+What this means in practice is that we get the same notation for everything that is a monad. This
+means that we can use `>>=`/`bind`, `pure`, `fmap`/`<$>` and friends for a whole slew of things that
+implement this constraint; `STM` (software-transactional memory, pointers that have transactional
+behavior much like databases), `IO`, `Async` (asynchronous IO); the list is long. We get all this
+for free, as long as we understand what `Monad` expects and provides.
+
+#### Monads and their "laws"
+
+If something says it's a monad, it likely is, but it's useful to know that people do associate
+a certain behavior with the word "monad".
+
+There are 3 "laws" that a monad should obey; I will describe them in terms of code:
+
+Law 1: "left identity"; `pure x` into `bind` into `f x` can be replaced with `f x`
+
+`pure x >>= f x`  === `f x`
+
+Law 2: "right identity"; `pure` after `bind` can be replaced with the thing before `bind`
+
+`f x >>= pure` === `f x`
+
+Law 3: "associativity"; it doesn't matter in which order you parenthesize `bind`
+
+`(a >>= f) >>= g` === `a >>= (\x -> f x >>= g)`
+
+Knowing these and thinking about them isn't something that I think most will do or care about; the
+truth is that you'll internalize the behavior of monads when using them over time and this is for
+the most part something that will seem obvious to you when you yourself think about this in the
+future.
