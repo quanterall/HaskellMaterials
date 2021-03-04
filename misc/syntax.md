@@ -44,9 +44,6 @@ where
 -- their contents. This makes for very clear origins to functions in our code and should be used
 -- when it doesn't make your code awkward. Operators are usually not super nice with qualifiers, and
 -- it's very common to use types unqualified.
-
--- This imports all identifiers from `RIO` and puts them in the local scope, not really recommended
--- when you can avoid it, except for core modules in your own project (perhaps).
 import qualified RIO.Directory as Directory
 -- We can also import *both* a qualified and unqualified version of a module
 import RIO.Map (Map)
