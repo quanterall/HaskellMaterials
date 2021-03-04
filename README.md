@@ -54,11 +54,11 @@ pureFunction parameter =
 
 main :: IO ()
 main = do
-    -- When this is run we will print `84`, but still get the passed in value bound to `x`.
-    let x = pureFunction 42
-    
-    -- Here we will be printing 'Done: 42'
-    putStrLn $ "Done: " <> show x
+  -- When this is run we will print `84`, but still get the passed in value bound to `x`.
+  let x = pureFunction 42
+  
+  -- Here we will be printing 'Done: 42'
+  putStrLn $ "Done: " <> show x
 ```
 
 ## Type classes
