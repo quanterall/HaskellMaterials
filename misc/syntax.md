@@ -97,6 +97,14 @@ addFloats a b = a + b
 addDoubles :: Double -> Double -> Double
 addDoubles a b = a + b
 
+-- Lists of things is written as square brackets surrounding the type, which is a special case
+-- for containers in terms of types.
+addOneToList :: [Int] -> [Int]
+-- Lambdas/anonymous functions are written with an initial backslash, followed by the parameters
+-- of the function, an arrow and the body expression of the function.
+-- If we had several parameters it would be `\x1 x2 x3 -> ...`
+addOneToList ints = map (\x -> x + 1) ints
+
 data OurCustomType
   = CaseOne -- Holds no values, the tag/constructor itself is the only thing we have.
   | CaseTwo Int -- Holds an int value, we can use this when we have a `CaseTwo`.
