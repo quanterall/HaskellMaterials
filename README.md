@@ -61,6 +61,13 @@ main = do
     putStrLn $ "Done: " <> show x
 ```
 
+## Type classes
+
+I've written a small document
+[on type classes and an intuition for how to view their utility](./misc/type-classes.md) that could
+be useful for people who struggle with how to relate to them in practice. It also contains a short
+presentation of a few very commonly used ones that could be good to know about.
+
 ## Lessons / Next steps
 
 [Interacting with the terminal](./steps/01-interacting-with-the-terminal.md) has introductory
