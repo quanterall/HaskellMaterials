@@ -96,7 +96,6 @@ how they work, and we most definitely should/will do presentations on them.)
 In the article, these points are being stressed in different parts and I want to reiterate them and
 point them out as things to do and experiment with:
 
-
 - Experiment with programs keeping state in `Env` and executing in `ReaderT YourEnvironment IO`,
   use both `IO.IORef.IORef` and `Control.Concurrent.STM.TVar`, recognize how `STM` is for
   transactional memory modifications and should be used when memory could be modified at the same
