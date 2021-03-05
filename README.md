@@ -25,12 +25,12 @@ ones.
 When we execute the above stack will automatically download an appropriate `ghc` version (GHC is the
 Haskell compiler that is most commonly used).
 
-## Haskell syntax
+## Basics and syntax
 
-The syntax of Haskell can't really be summarized neatly in one go because there's been so much new
-syntax added over the years via extensions that it'd be too much to take in. However,
-[here](./misc/syntax.md) is an attempt at introducing most of the basic syntax that a simple project
-could use.
+- [x] [Modules](./basics/00-modules.md)
+- [ ] [Values and functions, basic types](./basics/01-values-and-functions.md)
+- [ ] [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
+- [ ] [Miscellaneous syntax, to be split out](./misc/syntax.md)
 
 ## "Effectful"
 
