@@ -56,9 +56,9 @@ choice in industry, though other tools are catching up.
 `stack` has an analog for `mix new`:
 
 ```bash
-> stack new MyExampleProject simple
-> cd MyExampleProject
-> stack build
+stack new MyExampleProject simple
+cd MyExampleProject
+stack build
 ```
 
 The `simple` part is which template we want to use. The `simple` one is enough for what we need,
