@@ -79,7 +79,7 @@ ones.
 When we execute the above stack will automatically download an appropriate `ghc` version (GHC is the
 Haskell compiler that is most commonly used).
 
-## Basics and syntax
+## Basics
 
 - [x] [Modules](./basics/00-modules.md)
 - [x] [Values and functions, basic types](./basics/01-values-and-functions.md)
