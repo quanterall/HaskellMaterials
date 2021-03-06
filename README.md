@@ -87,11 +87,6 @@ Haskell compiler that is most commonly used).
 - [x] ["Effectful" and `IO`](./basics/03-effectful.md)
 - [ ] [Miscellaneous syntax, to be split out](./misc/syntax.md)
 
-## "Effectful"
-
-[Here](./misc/effectful.md) is an explanation of what "effectful" means, practically speaking, as
-well as a short introduction to `IO`.
-
 ## "Help! I want to print a value but I can't print without IO!"
 
 [`Debug.Trace`](https://hackage.haskell.org/package/base-4.14.1.0/docs/Debug-Trace.html) is your
