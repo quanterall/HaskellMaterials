@@ -15,7 +15,7 @@ the language extensions they put as defaults in the 2010 edition of Haskell turn
 `OverloadedStrings` is probably the most common language extension in Haskell, it allows strings
 to be used as constant values for anything that can be turned into a string. This helps make
 constant values easier to deal with for the 3 different string types that Haskell has, among other
-things. 
+things.
 
 The nature of language extension is that they generally either allow new syntax to be used for
 making things more convenient or they remove a restriction from the type system that has been
