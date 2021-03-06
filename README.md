@@ -79,13 +79,17 @@ ones.
 When we execute the above stack will automatically download an appropriate `ghc` version (GHC is the
 Haskell compiler that is most commonly used).
 
-## Basics
+## Basic reading materials
 
-- [x] [Modules](./basics/00-modules.md)
-- [x] [Values and functions, basic types](./basics/01-values-and-functions.md)
-- [x] [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
-- [x] ["Effectful" and `IO`](./basics/03-effectful.md)
-- [ ] [Miscellaneous syntax, to be split out](./misc/syntax.md)
+The below documents will likely take shape as practical lessons at a later date but are provided
+here as a collection of data and thoughts about these topics in order to introduce them.
+
+- [Modules](./basics/00-modules.md)
+- [Values and functions, basic types](./basics/01-values-and-functions.md)
+- [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
+- ["Effectful" and `IO`](./basics/03-effectful.md)
+- [Type classes](./basics/04-type-classes.md)
+- [Miscellaneous syntax, to be categorized](./misc/syntax.md)
 
 ## "Help! I want to print a value but I can't print without IO!"
 
@@ -111,14 +115,7 @@ main = do
   putStrLn $ "Done: " <> show x
 ```
 
-## Type classes
-
-I've written a small document
-[on type classes and an intuition for how to view their utility](./misc/type-classes.md) that could
-be useful for people who struggle with how to relate to them in practice. It also contains a short
-presentation of a few very commonly used ones that could be good to know about.
-
-## Lessons / Next steps
+## Practical Lessons
 
 [Interacting with the terminal](./steps/01-interacting-with-the-terminal.md) has introductory
 material about executing effectful things and an intro to OS interaction in Haskell code.
