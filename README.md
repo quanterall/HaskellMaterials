@@ -29,7 +29,7 @@ Haskell compiler that is most commonly used).
 
 - [x] [Modules](./basics/00-modules.md)
 - [x] [Values and functions, basic types](./basics/01-values-and-functions.md)
-- [ ] [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
+- [x] [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
 - [ ] [Miscellaneous syntax, to be split out](./misc/syntax.md)
 
 ## "Effectful"
