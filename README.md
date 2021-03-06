@@ -43,6 +43,17 @@ While stimulating to learn it's not useful knowledge for getting things done in 
 experience that people who don't use Haskell will often misrepresent the usefulness of theory. This
 applies to more things than category theory.
 
+### Asking questions is good
+
+We learn when we bump up against things. We might not understand the behavior of some code or we
+might not be able to express ourselves clearly yet. We might just wonder if maybe there's a better
+way to do the thing we're doing because it feels awkward. Talking to other people about our code and
+solutions is a very effective way to stimulate thinking deeply about these things.
+
+If you have any questions/suggestions on the material or things not covered by the material (yet?)
+you can pick any way to contact me (RocketChat, Discord, rickard.andersson@quanterall.com) and I'll
+do my very best to answer, correct or otherwise handle it.
+
 ## Installing `stack`
 
 [How to install Stack](https://docs.haskellstack.org/en/stable/README/#how-to-install) is a
