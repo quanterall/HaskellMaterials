@@ -1,5 +1,48 @@
 # HaskellMaterials
 
+## Learning Haskell
+
+Learning Haskell is a challenge, much like learning any programming challenge. I've also found that
+many people seem to make it an unnecessarily hard one because they imagine there is more theoretical
+background that you have to learn in order to use Haskell. This is for the most part a fiction that
+people convince themselves of. Haskell is first and foremost a practical language meant to solve
+problems and there is very little that you can get out of theoretical (math or programming
+language theory) knowledge when it comes to getting things done in it.
+
+There are some things I would like to stress to everyone who wants to learn Haskell:
+
+### Resist the urge to try to learn exactly how everything works immediately
+
+I've seen a lot of people try to learn too much of how Haskell works immediately and I can pretty
+much guarantee that they never treated learning any other language like this. With the exception of
+the surface syntax of a language like C, it's near impossible. Getting comfortable with a language
+takes time and effort and Haskell is no exception.
+
+Sometimes you have to use features that you aren't intimately familiar with in order to do things.
+Once you practice using them enough your intuition will catch up.
+
+**Don't read `Monad` tutorials, use things that implement the `Monad` type class and understand how
+it's used in practice, that'll be more useful than wasting your time reading theoretical (and
+usually misleading/wrong) explanations of what monads are.**
+
+### Keep in mind that learning Haskell is about getting things done
+
+Learning Haskell is not a badge of honor. Learning more advanced things is only useful if it helps
+you get things done or helps you understand more. There is lots of machinery that's created in the
+Haskell world that is basically not applicable to almost any application. Learning is fun, but you
+know what Haskell has too little of? People showing cool projects they created that actually do
+things.
+
+It would be a failure for this material to have you walking way saying things like:
+
+> Haskell made me think differently. I don't use it often but it shaped the way I think.
+
+### Category theory is a branch of mathematics
+
+While stimulating to learn it's not useful knowledge for getting things done in Haskell. It is my
+experience that people who don't use Haskell will often misrepresent the usefulness of theory. This
+applies to more things than category theory.
+
 ## Installing `stack`
 
 [How to install Stack](https://docs.haskellstack.org/en/stable/README/#how-to-install) is a
