@@ -256,9 +256,39 @@ Law 1: "left identity"; `pure x` into `bind` into `f` can be replaced with `f x`
 
 `pure x >>= f`  === `f x`
 
+Written another way:
+
+```haskell
+main = do
+  value <- pure x
+  f value
+```
+
+===
+
+```haskell
+main = do
+  f x
+```
+
 Law 2: "right identity"; `pure` after `bind` can be replaced with the thing before `bind`
 
 `f x >>= pure` === `f x`
+
+Written another way:
+
+```haskell
+main = do
+  value <- f x
+  pure value
+```
+
+===
+
+```haskell
+main = do
+  f x
+```
 
 Law 3: "associativity"; it doesn't matter in which order you parenthesize `bind`
 
