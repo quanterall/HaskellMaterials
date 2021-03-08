@@ -290,9 +290,39 @@ main = do
   f x
 ```
 
-Law 3: "associativity"; it doesn't matter in which order you parenthesize `bind`
+Law 3: "associativity"; it doesn't matter how you parenthesize `bind`
 
 `(a >>= f) >>= g` === `a >>= (\x -> f x >>= g)`
+
+Written another way:
+
+```haskell
+m :: Monad m => m Bool
+m = do
+  value <- a >>= f
+  g value
+```
+
+===
+
+```haskell
+m :: Monad m => m Bool
+m = do
+  value <- a
+  f value >>= g
+```
+
+===
+
+```haskell
+m :: Monad m => m Bool
+m =
+  a >>= f >>= g
+```
+
+Meaning, several monadic expressions in the same order should produce the same result regardless of
+how they were composed together. This means that we can bundle these up however we like and still
+get the same results as if we specified all of them inline.
 
 Knowing these and thinking about them isn't something that I think most will do or care about; the
 truth is that you'll internalize the behavior of monads when using them over time and this is for
