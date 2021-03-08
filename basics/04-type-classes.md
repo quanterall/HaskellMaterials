@@ -297,7 +297,6 @@ Law 3: "associativity"; it doesn't matter how you parenthesize `bind`
 Written another way:
 
 ```haskell
-m :: Monad m => m Bool
 m = do
   value <- a >>= f
   g value
@@ -306,7 +305,6 @@ m = do
 ===
 
 ```haskell
-m :: Monad m => m Bool
 m = do
   value <- a
   f value >>= g
@@ -315,9 +313,7 @@ m = do
 ===
 
 ```haskell
-m :: Monad m => m Bool
-m =
-  a >>= f >>= g
+m = a >>= f >>= g
 ```
 
 Meaning, several monadic expressions in the same order should produce the same result regardless of
