@@ -252,9 +252,9 @@ a certain behavior with the word "monad".
 
 There are 3 "laws" that a monad should obey; I will describe them in terms of code:
 
-Law 1: "left identity"; `pure x` into `bind` into `f x` can be replaced with `f x`
+Law 1: "left identity"; `pure x` into `bind` into `f` can be replaced with `f x`
 
-`pure x >>= f x`  === `f x`
+`pure x >>= f`  === `f x`
 
 Law 2: "right identity"; `pure` after `bind` can be replaced with the thing before `bind`
 
