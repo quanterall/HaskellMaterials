@@ -99,3 +99,14 @@ It's perhaps more interesting that in Haskell we are able to say that certain fu
 these interesting things; they're only for computing values. This means that we can now definitively,
 in our APIs, say that a callback is not able to talk to the network, for example, or do its own
 logging.
+
+## Should you avoid effectful things?
+
+It's a bit of a meme that Haskell programmers avoid or dislike effectful things. This is overblown
+and in reality nothing useful ever gets done without at some point executing in some context that
+either wraps or plain runs `IO` expressions.
+
+Should a function meant to validate a data type execute in `IO`? Probably not. Common sense prevails
+here and software is iterative; you will be able to see what can be made pure and thus less
+mysterious in time. Making functions pure is not a chore to be done to appease the Haskell gods, but
+is mostly a question of removing future questions in future debugging sessions.
