@@ -90,6 +90,7 @@ here as a collection of data and thoughts about these topics in order to introdu
 - ["Effectful" and `IO`](./basics/03-effectful.md)
 - [Type classes](./basics/04-type-classes.md)
 - [JSON in Haskell](./basics/05-json-data.md)
+- [Mutable variables in Haskell](./basics/06-mutable-variables.md)
 - [Miscellaneous syntax, to be categorized](./misc/syntax.md)
 
 ## "Help! I want to print a value but I can't print without IO!"
