@@ -1,8 +1,12 @@
 # Mutable variables
 
-While there is a lot of focus on purity in parts of the Haskell community, it's also important to
-note that one of the few established design patterns that Haskell has and that is well known to work
-well for most applications relies on mutable variables to work.
+While there is a lot of focus on purity in parts of the Haskell community, Haskell has runtime
+support for mutable variables that stretches beyond most programming environments' support. The
+difference is that by default things are immutable and we have to opt in to using mutable variables.
+
+It's also important to note that even though purity is desired, one of the few established design
+patterns that Haskell has and that is well known to work well for most applications relies on
+mutable variables to work.
 
 This is not done because people just love mutable variables, but rather because the alternatives are
 sometimes exception-unsafe, harder to use or otherwise have some undesirable quality.
@@ -84,6 +88,10 @@ modifyTVar :: TVar a -> (a -> a) -> STM ()
 
 -- Instead sets the value of the variable to the value given.
 writeTVar :: TVar a -> a -> STM ()
+
+-- We can create new `TVar`s with `newTVar` or `newTVarIO`
+newTVar :: a -> STM (TVar a)
+newTVarIO :: a -> IO (TVar a)
 ```
 
 We can create transactional variables in `STM` with the `newTVar` function. However, creating a
