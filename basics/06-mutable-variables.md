@@ -58,8 +58,9 @@ be scaled up to arbitrary numbers of green threads.
 
 Transactional functions are executed inside of the `STM` monad. This means that we are working in a
 reduced context that doesn't allow `IO`. This guarantee enables our transactional blocks to be
-**retried** if we find out that checks that we want to guarantee on their values don't pass. In
-order to execute one of these transactional blocks from `IO` we use the function `atomically`:
+**retried** if we find out that checks that we want to guarantee on their values don't pass, or the
+values themselves were changed during the execution of our transaction. In order to execute one of
+these transactional blocks from `IO` we use the function `atomically`:
 
 ```haskell
 main = do
