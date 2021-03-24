@@ -158,32 +158,14 @@ import Test.Hspec
 
 main :: IO ()
 main = hspec $ it "works" $ do
-  var <- newTVarIO (0 :: Int)
+  variable <- newTVarIO (0 :: Int)
   let inputs = [1..1000]
-      f input = atomically $ modifyTVar' var (+ input)
-  pooledMapConcurrently_ 8 f inputs
+      processingFunction input = atomically $ modifyTVar' variable (+ input)
+  pooledMapConcurrently_ 8 processingFunction inputs
   atomically (readTVar var) `shouldReturn` sum inputs
 
--- | Keeps performing work items from the queue
-worker :: (a -> IO ()) -> TBMQueue a -> IO ()
-worker f queue = loop
-  where
-    loop = do
-      -- This function seems to be in a loop if we still have values in the queue (i.e. it's still
-      -- open), however this `readTBMQueue` call blocks until there are values, which means that any
-      -- threads executing this won't just spin and consume resources.
-      ma <- atomically $ readTBMQueue queue
-      case ma of
-        Nothing -> pure ()
-        Just a -> do
-          f a
-          loop
-
-workers :: Int -> (a -> IO ()) -> TBMQueue a -> IO ()
-workers count f queue = replicateConcurrently_ count (worker f queue)
-
 pooledMapConcurrently_ :: Int -> (a -> IO ()) -> [a] -> IO ()
-pooledMapConcurrently_ count f inputs = do
+pooledMapConcurrently_ count processingFunction inputs = do
   queue <- atomically $ newTBMQueue $ count * 2
   -- `filler` continually puts value into the queue, but will block whenever it tries to put a value
   -- onto the queue when it has reached its bound (16 in this example). This means we won't have any
@@ -193,5 +175,23 @@ pooledMapConcurrently_ count f inputs = do
   -- This comes from the `async` package and will run two treads at the same time.
   concurrently_
     (filler `finally` atomically (closeTBMQueue queue))
-    (workers count f queue)
+    (workers count processingFunction queue)
+
+workers :: Int -> (a -> IO ()) -> TBMQueue a -> IO ()
+workers count processingFunction queue =
+  replicateConcurrently_ count (worker processingFunction queue)
+
+worker :: (a -> IO ()) -> TBMQueue a -> IO ()
+worker processingFunction queue =
+  let loop = do
+      -- This function seems to be in a loop if we still have values in the queue (i.e. it's still
+      -- open), however this `readTBMQueue` call blocks until there are values, which means that any
+      -- threads executing this won't just spin and consume resources.
+      ma <- atomically $ readTBMQueue queue
+      case ma of
+        Nothing -> pure ()
+        Just a -> do
+          processingFunction a
+          loop
+  in loop
 ```
