@@ -142,3 +142,56 @@ already exists and block immediately from a reading thread when a value does not
 like this will be fairly slow if we know we're going to have several items that's because it will
 be. The upside of this is that you **can** get this very tight blocking behavior and ensure that
 threads move in some kind of lockstep.
+
+### TBMQueue example
+
+What follows is an example of a workerpool handling a queue with several interesting attributes
+under the hood, all from the Haskell runtime and `STM`:
+
+```haskell
+import Control.Concurrent.Async
+import Control.Concurrent.STM
+import Control.Concurrent.STM.TBMQueue
+import Control.Exception (finally)
+import Data.Foldable (for_)
+import Test.Hspec
+
+main :: IO ()
+main = hspec $ it "works" $ do
+  var <- newTVarIO (0 :: Int)
+  let inputs = [1..1000]
+      f input = atomically $ modifyTVar' var (+ input)
+  pooledMapConcurrently_ 8 f inputs
+  atomically (readTVar var) `shouldReturn` sum inputs
+
+-- | Keeps performing work items from the queue
+worker :: (a -> IO ()) -> TBMQueue a -> IO ()
+worker f queue = loop
+  where
+    loop = do
+      -- This function seems to be in a loop if we still have values in the queue (i.e. it's still
+      -- open), however this `readTBMQueue` call blocks until there are values, which means that any
+      -- threads executing this won't just spin and consume resources.
+      ma <- atomically $ readTBMQueue queue
+      case ma of
+        Nothing -> pure ()
+        Just a -> do
+          f a
+          loop
+
+workers :: Int -> (a -> IO ()) -> TBMQueue a -> IO ()
+workers count f queue = replicateConcurrently_ count (worker f queue)
+
+pooledMapConcurrently_ :: Int -> (a -> IO ()) -> [a] -> IO ()
+pooledMapConcurrently_ count f inputs = do
+  queue <- atomically $ newTBMQueue $ count * 2
+  -- `filler` continually puts value into the queue, but will block whenever it tries to put a value
+  -- onto the queue when it has reached its bound (16 in this example). This means we won't have any
+  -- issues with this thread just over-filling the queue and also not consuming resources while
+  -- waiting for the queue to have room. 
+  let filler = for_ inputs $ \input -> atomically $ writeTBMQueue queue input
+  -- This comes from the `async` package and will run two treads at the same time.
+  concurrently_
+    (filler `finally` atomically (closeTBMQueue queue))
+    (workers count f queue)
+```
