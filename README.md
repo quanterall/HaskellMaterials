@@ -10,8 +10,8 @@ to simply look at many resources and absorb as much as possible.
 
 *Real World Haskell* is not super up-to-date but it teaches the basics of Haskell reasonably and
 also has in mind that Haskell is a language for writing actual solutions in, not code for its own
-sake. Additionally, it does not teach relatively modern application architecture, but the resources
-for this have been included in these documents and will be taught separately.
+sake. Additionally, it does not teach relatively modern Haskellapplication architecture, but the
+resources for this have been included in these documents and will be taught separately.
 
 ## Learning Haskell
 
