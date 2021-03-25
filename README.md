@@ -145,10 +145,10 @@ how they work, and we most definitely should/will do presentations on them.)
 In the article, these points are being stressed in different parts and I want to reiterate them and
 point them out as things to do and experiment with:
 
-- Experiment with programs keeping state in `Env` and executing in `ReaderT YourEnvironment IO`,
-  use both `IO.IORef.IORef` and `Control.Concurrent.STM.TVar`, recognize how `STM` is for
-  transactional memory modifications and should be used when memory could be modified at the same
-  time in different places.
+- Experiment with programs keeping state in `Env` and executing in `ReaderT Env IO`, use both
+  `IO.IORef.IORef` and `Control.Concurrent.STM.TVar`, recognize how `STM` is for transactional
+  memory modifications and should be used when memory could be modified at the same time in
+  different places.
 - Experiment with `(MonadReader env m, HasSpecificThing env) => ... ReaderT env m` to limit what a
   function can access from your environment, making it impossible that it touches things it
   shouldn't.
