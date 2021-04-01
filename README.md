@@ -15,12 +15,12 @@ resources for this have been included in these documents and will be taught sepa
 
 ## Learning Haskell
 
-Learning Haskell is a challenge, much like learning any programming language. I've found that many
-people seem to make it an unnecessarily hard one because they imagine there is more theoretical
-background that you have to learn in order to use Haskell. This is for the most part a fiction that
-people convince themselves of. Haskell is first and foremost a practical language meant to solve
-problems and there is very little that you can get out of theoretical (math or programming
-language theory) knowledge when it comes to getting things done in it.
+Learning Haskell is hard, much like learning any programming language. I've found that many people
+seem to make it an unnecessarily hard one because they imagine there is more theoretical background
+that you have to learn in order to use Haskell. This is for the most part a fiction that people
+convince themselves of. Haskell is first and foremost a practical language meant to solve problems
+and there is very little that you can get out of theoretical (math or programming language theory)
+knowledge when it comes to getting things done in it.
 
 There are some things I would like to stress to everyone who wants to learn Haskell:
 
