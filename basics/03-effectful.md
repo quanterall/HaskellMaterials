@@ -101,11 +101,23 @@ these interesting things; they're only for computing values. This means that we 
 in our APIs, say that a callback is not able to talk to the network, for example, or do its own
 logging.
 
+The following is an illustrative example:
+
+```haskell
+maybeReadEvent :: (ByteString -> Maybe Message) -> Socket -> IO (Maybe Message)
+maybeReadEvent messageDecoder socket = do
+  ...
+```
+
+Since we do not execute in `IO` the function that we pass as the first argument the only thing it can
+do is either produce nothing from a given byte string, or produce a value of type `Message`. This is
+a sensible design choice for a decoding function, and one we can make explicit in our API.
+
 ## Should you avoid effectful things?
 
 It's a bit of a meme that Haskell programmers avoid or dislike effectful things. This is overblown
-and in reality nothing useful ever gets done without at some point executing in some context that
-either wraps or plain runs `IO` expressions.
+and in reality nothing useful ever gets done without at some point executing in `IO` or some context
+that wraps it.
 
 Should a function meant to validate a data type execute in `IO`? Probably not. Common sense prevails
 here and software is iterative; you will be able to see what can be made pure and thus less
