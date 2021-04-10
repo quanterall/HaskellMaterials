@@ -28,10 +28,10 @@ Likewise we can also have `IO String` which is `IO` applied to `String`, which p
 as in "IO has the kind `* -> *`" where the asterisks are types, so it takes one type and returns a
 total one.
 
-So what is it about `IO ()` that makes it so common in libraries and APIs? `IO` means we can do
-"basically anything", and `()` is the type representing "No interesting return value", which means
-that the closest analog we can find in other languages is `void`. Functions that return `IO ()` are
-used because they cause something to happen and that's their main purpose.
+So what is it about `IO ()` that makes it so common in libraries and APIs? `IO` means we have an
+essentially arbitrary action, and `()` is the type representing "No interesting return value", which
+means that the closest analog we can find in other languages is `void`. Functions that return `IO ()`
+are used because they cause something to happen and that's their main purpose.
 
 Examples:
 
@@ -65,24 +65,22 @@ stands in for any type you might be interested in. An example:
 System.Environment.getEnv :: String -> IO String
 ```
 
-We can see here that we are passing the function a `String` and getting a `String` back. We are
+We can see here that we are passing the function a `String` and getting an `IO String` back. We are
 executing "in the IO monad", so this is something effectful that can do basically anything.
 
-When we want to use this function, we can do so as follows:
+Technically speaking, when we have a **value** of type `IO t` we in actuality have an action that
+when executed will produce a value of type `t`. When we use `<-` in our code we are running that
+action and binding the **result**, the `t` in this case, to the name on the left.
 
 ```haskell
 import qualified System.Environment as Environment
 
 main :: IO ()
 main = do
-  databaseName <- Environment.getEnv "DB_NAME"
-
-  putStrLn $ "The database name is: " <> databaseName
+  dockerFileName <- Environment.getEnv "DOCKERFILE" -- has the type `IO String`
+  dockerFileContents <- readFile dockerFileName -- `IO String` again
+  putStrLn dockerFileContents -- `IO ()`
 ```
-
-When we use `databaseName` later, it's not of the type `IO String`, just `String`. This is because
-we are, in a sense, "unpacking" the IO value when we use `<-`. The operation that this relies on in
-the background is called `bind`.
 
 It's perhaps helpful to draw the analogy to `await` in JavaScript, where we sometimes write our code
 "in the `Promise` monad" and so we can do asynchronous things. We unpack these asynchronous values
