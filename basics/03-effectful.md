@@ -90,8 +90,11 @@ the asynchronous nature does not matter in terms of the values they represent.
 ## What makes `IO` special?
 
 In reality, nothing. `IO` isn't really the bit that's special. Every program you've ever written in
-a language that didn't have this concept was always basically running in the `IO` monad. You're able
-to do whatever you want whenever you want.
+a language that didn't have this concept was always basically running in the `IO` monad, except we
+usually do not have access to the actions we execute **as values**. When you write `putStrLn "hello"`
+in Haskell, you are in fact creating a value. Passing that value around is trivial, so it can be used
+in other functions. Fundamentally speaking, however, `IO` as "a context in which we can do whatever
+we want" is not the part that should jump out at you as new territory.
 
 It's perhaps more interesting that in Haskell we are able to say that certain functions **can't** do
 these interesting things; they're only for computing values. This means that we can now definitively,
