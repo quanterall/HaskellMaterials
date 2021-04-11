@@ -167,8 +167,8 @@ functions associated with `Eq` as well.
 
 ### Functor
 
-"Functor" is a big word for what is essentially "We can have a thing inside of this and modify it".
-This is at least what it means in Haskell, which is what matters when we write Haskell:
+"Functor" is a big word for what can in many cases be described as "We can have a thing inside of
+this and modify it":
 
 ```haskell
 class Functor (f :: * -> *) where
@@ -184,6 +184,53 @@ The poster-child for this kind of operation is usually a list that is being "map
 a new list, but it's important to take the type signature for what it is; it's not strictly about
 containers and values inside of those containers. We can, for example, map over an `IO` action to
 modify the thing that is being returned from it: `(a -> b) -> IO a -> IO b`.
+
+You can view `fmap` (or commonly just called `map`) as a way to take a function working with `a` and
+`b` and lifting it into the world of `f a` and `f b`, a different context. We can look further into
+the type signature of `fmap` and see this more clearly:
+
+```haskell
+fmap :: (a -> b) -> f a -> f b
+--       function    lifted function
+fmap' :: (a -> b) -> (f a -> f b)
+```
+
+If we were to call just `fmap f`, we can see that the output will indeed be a function that works
+for any `f` that implements `Functor`:
+
+```haskell
+{-# LANGUAGE OverloadedStrings #-}
+
+import qualified System.Environment as Environment
+-- `Data.Text` has a function `toUpper`: `Text -> Text`
+import Data.Text (Text, toUpper, pack)
+
+toUpperInF :: (Functor f) => f Text -> f Text
+toUpperInF = fmap toUpper
+
+-- | Retrieves an environment variable as text
+getEnvAsText :: String -> IO Text
+-- note how mapping `pack` over the result will take the returned string and convert it to `Text`
+getEnvAsText variable = fmap pack $ Environment.getEnv variable
+
+main :: IO ()
+main = do
+  let justResult = toUpperInF (Just "Hello") -- Just "HELLO"
+      nothingResult = toUpperInF Nothing -- Nothing
+      rightResult = toUpperInF (Right "Quanterall") -- Right "QUANTERALL"
+      leftResult = toUpperInF (Left "Quanterall") -- Left "Quanterall"
+  ioResult <- toUpperInF $ getEnvAsText "HOME" -- "/HOME/GONZ"
+  print ioResult
+```
+
+This only works because we have generalized over the concept of these different contexts and they
+all support `Functor`. It gives us the capability to use our "lifted" functions with anything that
+conforms to this interface.
+
+**Note**: You will hopefully note that both `Maybe` (`Just` & `Nothing`) and `Either` (`Left` and
+`Right`) have a case where `fmap` does not change the value. This is not an oversight. It is quite
+instructive to try to implement a `Functor` instance for `Either` that tries to map over both cases,
+in order to see why it cannot work.
 
 ### Applicative
 
