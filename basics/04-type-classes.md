@@ -55,12 +55,24 @@ notIdentityAnymore :: Num a => a -> a
 notIdentityAnymore x = x + 42
 ```
 
-Note how **adding constraints to a type variable increases what we can do with it**. A type variable
-without constraints starts out being essentially just a holder for a value of some type that is
-figured out at compile-time and as we add constraints we can use it in more ways.
+It's notable that constraining the input type with type class constraints makes the implementation
+space larger as you add more, as we can see by adding this `Eq` constraint to our previous function:
 
-This dynamic allows us to add precisely the capabilities we need and want to our generic functions
-and it works for container types and types that otherwise take other types.
+```haskell
+notIdentityAnymore :: (Eq a, Num a) => a -> a
+notIdentityAnymore x =
+  if x == 0
+    then 42
+    else x + 1337
+```
+
+We're suddenly able to compare the input for equality with certain numbers and thus the implementation
+space has grown considerably in possible complexity.
+
+The point here is not to dissuade anyone from adding type class constraints, of course, because that
+would be counter-productive. The point is rather to highlight how generic arguments/type variables
+with constraints create the sense of adding power to a function and/or container, and that following
+the principle of least power is both useful and idiomatic.
 
 ## Container types & type variables
 
