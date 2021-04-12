@@ -104,7 +104,25 @@ containerLength container =
 ```
 
 This function (and the standard library `length` that exists already) would now work for any type
-that is foldable, which is a lot of types.
+that is foldable, which is a lot of types, a couple of them illustrated here:
+
+```haskell
+import qualified Data.Set as Set
+import qualified Data.Map as Map
+
+containerLength :: Foldable f => f a -> Int
+containerLength container =
+  foldr (\_item lengthSoFar -> 1 + lengthSoFar) 0 container
+
+main :: IO ()
+main = do
+  print $ containerLength [1, 2, 3, 4] -- 4
+  print $ containerLength (Just 1) -- 1
+  print $ containerLength $ Set.fromList [1, 1, 2, 3, 4] -- 4, note the duplicate
+  let exampleMap =
+        Map.fromList [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
+  print $ containerLength exampleMap -- 4
+```
 
 ## Important and common type classes
 
