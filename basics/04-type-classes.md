@@ -296,7 +296,8 @@ conforms to this interface.
 **Note**: You will hopefully note that both `Maybe` (`Just` & `Nothing`) and `Either` (`Left` and
 `Right`) have a case where `fmap` does not change the value. This is not an oversight. It is quite
 instructive to try to implement a `Functor` instance for `Either` that tries to map over both cases,
-in order to see why it cannot work.
+in order to see why it cannot work. It also happens to be a central part of the behavior of
+`Functor` (and `Monad` by extension) and works out quite well.
 
 ### Applicative
 
