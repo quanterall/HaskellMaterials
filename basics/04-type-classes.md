@@ -196,6 +196,27 @@ order to define `Ord` for something it also has to have a `Eq` implementation. T
 when one is specified. If we specified `Ord a` in a function we would therefore be able to use all
 functions associated with `Eq` as well.
 
+### Semigroup
+
+A semigroup is a type that has a function `<>` with which you can combine two values of that type
+into a new one. A very common example of this is lists; `<>` for lists allows us to append one list
+to another, giving us a new list.
+
+```haskell
+class Semigroup a where
+  (<>) :: a -> a -> a
+  {-# MINIMAL (<>) #-}
+```
+
+Any implementation of `Semigroup` should also satisfy the following rules:
+
+```haskell
+(a <> b) <> c == a <> (b <> c)
+```
+
+That is to say, the parenthesis here should have no effect; we should be able to append these in any
+execution order and still get the same results.
+
 ### Functor
 
 "Functor" is a big word for what can in many cases be described as "We can have a thing inside of
