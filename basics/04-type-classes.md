@@ -128,12 +128,12 @@ containerLength container =
 
 main :: IO ()
 main = do
-  print $ containerLength [1, 2, 3, 4] -- 4
-  print $ containerLength (Just 1) -- 1
-  print $ containerLength $ Set.fromList [1, 1, 2, 3, 4] -- 4, note the duplicate
+  print $ containerLength [1, 2, 3, 4] -- `[Int]`, length 4
+  print $ containerLength (Just "one") -- `Maybe String`, length 1
+  print $ containerLength $ Set.fromList [1, 1, 2, 3, 4] -- `Set Int`, length 4, note the duplicate
   let exampleMap =
         Map.fromList [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
-  print $ containerLength exampleMap -- 4
+  print $ containerLength exampleMap -- `Map String Int`, length 4
 ```
 
 ## Important and common type classes
