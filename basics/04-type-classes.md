@@ -208,7 +208,13 @@ functions associated with `Eq` as well.
 
 A semigroup is a type that has a function `<>` with which you can combine two values of that type
 into a new one. A very common example of this is lists; `<>` for lists allows us to append one list
-to another, giving us a new list.
+to another, giving us a new list. String types also have this property, as well as numeric types for
+both addition as well as multiplication:
+
+```haskell
+Sum 41 <> Sum 1 == Sum 42
+Product 13.37 <> Product 2 == Product 26.74
+```
 
 ```haskell
 class Semigroup a where
