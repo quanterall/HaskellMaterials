@@ -231,6 +231,46 @@ Any implementation of `Semigroup` should also satisfy the following rules:
 That is to say, the parenthesis here should have no effect; we should be able to append these in any
 execution order and still get the same results.
 
+### Monoid
+
+A `Monoid` is a semigroup that also has an **empty value** that when combined with a non-empty value
+will have no effect; it will return the same value. Some examples for the semigroup examples we gave
+before:
+
+```haskell
+aString = "Quanterall" <> "" == "Quanterall"
+aSum = Sum 41 <> Sum 0 == Sum 41
+aProduct = Product 10 <> Product 1 == Product 10
+aList = [1, 2, 3, 4] <> [] == [1, 2, 3, 4]
+```
+
+The class itself is defined as follows:
+
+```haskell
+class Semigroup a => Monoid a where
+  mempty :: a
+  mappend :: a -> a -> a
+  mconcat :: [a] -> a
+  {-# MINIMAL mempty #-}
+```
+
+We can see that we again have the superclass requirement (`Semigroup a => ...`) which ensures that
+everything we are trying to define a `Monoid` instance of will also require a `Semigroup` instance.
+
+For free when we define `mempty` we also get the functions `mconcat` and `mappend`. `mappend` is
+really just a historical artifact and is exactly the same as `<>`, but `mconcat` allows us to take
+a list of `a` and concatenate all the elements together to form an `a`:
+
+```haskell
+import Data.Monoid (Sum, Product)
+import Data.Function ((&))
+
+concattedString = mconcat ["Hello", "There", "", "General", "Kenobi"] -- "HelloThereGeneralKenobi"
+concattedSum = [1, 2, 3, 0, 4] & map Sum & mconcat -- Sum 10
+concattedProduct = [1, 2, 3, 4] & map Product & mconcat -- Product 24
+concattedList = mconcat [[1], [], [2, 3], [], [], [4]] -- [1, 2, 3, 4]
+```
+
 ### Functor
 
 "Functor" is a big word for what can in many cases be described as "We can have a thing inside of
