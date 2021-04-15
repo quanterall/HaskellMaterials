@@ -31,8 +31,8 @@ data ApplicationState = ApplicationState
     logHandle :: LogHandle
   }
 
-data DeletionResult =
-  NotFound
+data DeletionResult
+  = NotFound
   | AssociationError
   | Deleted
 
