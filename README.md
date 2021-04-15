@@ -105,6 +105,7 @@ here as a collection of data and thoughts about these topics in order to introdu
 - [JSON in Haskell](./basics/05-json-data.md)
 - [Mutable variables in Haskell](./basics/06-mutable-variables.md)
 - [The Reader Monad](./basics/07-reader.md)
+- [The ReaderT Monad Transformer](./basics/08-readert.md)
 - [Miscellaneous syntax, to be categorized](./misc/syntax.md)
 
 ## "Help! I want to print a value but I can't print without IO!"
