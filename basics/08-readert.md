@@ -31,6 +31,11 @@ data ApplicationState = ApplicationState
     logHandle :: LogHandle
   }
 
+data DeletionResult =
+  NotFound
+  | AssociationError
+  | Deleted
+
 logInfo :: Text -> ReaderT ApplicationState IO ()
 logInfo message = logMessage "INFO" message
 
@@ -52,16 +57,26 @@ runDatabase action = do
   -- This hypothetical function requires `IO`, so we lift the context into the wrapped `IO` we have
   liftIO $ runQuery connection action
 
+deleteUserWithId :: UserId -> DatabaseAction DeletionResult
+deleteUserWithId userId = deleteEntity userId
+
 handleDeleteUserRequest :: UserId -> ReaderT ApplicationState IO ()
 handleDeleteUserRequest userId = do
-  maybeUser <- runDatabase $ getUserFromDB userId
-  case maybeUser of
-    Just _user -> do
-      runDatabase $ deleteUserWithId userId
+  deletionResult <- runDatabase $ deleteUserWithId userId
+  case deletionResult of
+    Deleted -> do
       logInfo $ "Found and deleted user with ID: " <> show userId
       
-    Nothing ->
-      logWarn $ "Unable to find user with ID: " <> show userID <> " for deletion."
+    NotFound ->
+      logWarn $ "Unable to find user with ID: " <> show userId <> " for deletion."
+
+    AssociationError ->
+      logError $
+        mconcat
+          [ "Unable to delete user with ID '",
+            show userId,
+            "' because stuff relies on it existing."
+          ]
 ```
 
 ## Bigger example
