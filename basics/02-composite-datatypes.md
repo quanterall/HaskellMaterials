@@ -180,6 +180,22 @@ information connected to the constructor in question and we might call another f
 that data.
 
 ```haskell
+printPerson :: Person -> String
+printPerson
+  Person
+    { personName = name,
+      personAge = Living age,
+      personProfession = profession
+    } =
+    name <> " is a " <> show age <> " years old " <> printProfession profession
+printPerson
+  Person
+    { personName = name,
+      personAge = Dead,
+      personProfession = profession
+    } =
+    name <> " was a " <> printProfession profession
+
 printProfession :: Profession -> String
 printProfession Unemployed = "unemployed person"
 printProfession (Professor subject) = "professor of " <> printSubject subject
