@@ -73,6 +73,34 @@ would be counter-productive. The point is rather to highlight how generic argume
 with constraints create the sense of adding power to a function and/or container, and that following
 the principle of least power is both useful and idiomatic.
 
+### Constraints are **transitive**
+
+If we were to use `notIdentityAnymore` on a value with a generic type in another function, that type
+signature would take on the same constraints as `notIdentityAnymore` as well as the ones it already
+had:
+
+```haskell
+import Data.Monoid
+
+notIdentityAnymore :: (Eq a, Num a) => a -> a
+notIdentityAnymore x =
+  if x == 0
+    then 42
+    else x + 1337
+
+upperLevelFunction :: (Monoid a) => a -> a -> a
+upperLevelFunction x y = x <> y
+
+-- This would not compile without `Eq a` & `Num a` being specified
+upperLevelFunction' :: (Monoid a, Eq a, Num a) => a -> a -> a
+upperLevelFunction' x y = notIdentityAnymore x <> y
+
+main :: IO ()
+main = do
+  print $ upperLevelFunction (Sum 41) $ Sum 1 -- Sum 42
+  print $ upperLevelFunction' (Sum 41) $ Sum 1 -- Sum 1379
+```
+
 ## Container types & type variables
 
 Let's look at some container type signatures to get a sense of how Haskell handles container types
