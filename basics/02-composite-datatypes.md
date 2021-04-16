@@ -53,7 +53,7 @@ A record type is a collection of fields and values that all exist together at th
 ```haskell
 data Person = Person
   { personName :: String,
-    personAge :: Int,
+    personAge :: Age,
     personProfession :: Profession
   }
 ```
@@ -64,11 +64,11 @@ takes the constructed type and returns the field's type.
 
 ```haskell
 -- The constructor is actually a function that takes the arguments in order
-Person :: String -> Int -> Profession -> Person
+Person :: String -> Age -> Profession -> Person
 
 -- Each field has an associated function that extracts that thing from a `Person`
 personName :: Person -> String
-personAge :: Person -> Int
+personAge :: Person -> Age
 personProfession :: Person -> Profession
 ```
 
@@ -79,17 +79,9 @@ aPerson :: Person
 aPerson =
   Person
     { personName = "Victor Vega",
-      personAge = 42,
-      personProfession = Antagonist "Reservoir Dogs"
-    }
-aPerson :: Person
-aPerson =
-  Person
-    { personName = "Victor Vega",
-      personAge = 42,
+      personAge = Living 42,
       personProfession = FictionalCharacter (Antagonist (FictionalWorkName "Reservoir Dogs"))
     }
-
 ```
 
 It's likely best to prefer using the field names like this in order to be clearer about which fields
@@ -99,7 +91,10 @@ confusing when you have big records:
 ```haskell
 aPerson :: Person
 aPerson =
-  Person "Victor Vega" 42 (FictionalCharacter (Antagonist (FictionalWorkName "Reservoir Dogs")))
+  Person
+    "Victor Vega"
+    (Living 42)
+    (FictionalCharacter (Antagonist (FictionalWorkName "Reservoir Dogs")))
 
 ```
 
@@ -120,6 +115,10 @@ professions exist and what you can be a student/professor of._
 -- between the types for compile-time.
 newtype CompanyName = CompanyName String
 newtype FictionalWorkName = FictionalWorkName String
+
+data Age
+  = Dead
+  | Living Int
 
 -- Our union cases can care about wildly different things.
 data Profession
