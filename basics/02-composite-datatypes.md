@@ -282,6 +282,9 @@ Here are some examples of running `printPerson` with our values:
 "John Atanasoff was a professor of theoretical physics"
 ```
 
+For a complete, put-together, version of these code snippets see
+[this file](./02b-person-printing.md).
+
 ## Generic datatypes
 
 The most basic generic datatype is a type that can hold anything:
