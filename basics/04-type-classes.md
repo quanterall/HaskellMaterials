@@ -50,7 +50,7 @@ Doing anything else will require either adding more to the returned type (`IO`, 
 --   `ConstraintOne a => ConstraintTwo a => ...`
 -- or:
 --   `(ConstraintOne a, ConstraintTwo a) => ...`.
-notIdentityAnymore :: Num a => a -> a
+notIdentityAnymore :: (Num a) => a -> a
 notIdentityAnymore x = x + 42
 ```
 
@@ -137,7 +137,7 @@ To fix this, we will have to use a constraint on `f`:
 
 ```haskell
 -- Note how we don't have to constrain `a` because we're not actually doing anything with it.
-containerLength :: Foldable f => f a -> Int
+containerLength :: (Foldable f) => f a -> Int
 containerLength container =
   foldr (\_item lengthSoFar -> 1 + lengthSoFar) 0 container
 ```
@@ -149,7 +149,7 @@ that is foldable, which is a lot of types, a couple of them illustrated here:
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 
-containerLength :: Foldable f => f a -> Int
+containerLength :: (Foldable f) => f a -> Int
 containerLength container =
   foldr (\_item lengthSoFar -> 1 + lengthSoFar) 0 container
 
