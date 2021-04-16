@@ -31,8 +31,7 @@ What are the possible implementations of `identity`? Well, we don't have access 
 discount everything that has to do with effectful things. We have the value of type `a`, meaning it
 can stand in for any type we throw at it. What we return has to be the same type.
 
-Can we turn it into a string? No, that would require `identity :: a -> String`. Printing it on the
-screen would require `IO`.
+Can we turn it into a string? No, that would require `identity :: a -> String`.
 
 Long story short: The only possible (reasonable) implementation of `identity` is:
 
