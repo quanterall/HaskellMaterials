@@ -397,3 +397,26 @@ important to note that while Haskell lists are technically pointers to pointers 
 a lot of this inefficiency is mitigated by the fact that Haskell doesn't ask for the next value in a
 list unless it needs it. This has to do with lazyness/non-strictness and is a language feature too
 big to detail here.
+
+### Tuples
+
+A tuple is an ad-hoc collection of values that can be of different types. Tuples are a staple of
+many so called functional languages and Haskell is no exception:
+
+```haskell
+tuple :: (Int, String)
+tuple = (42, "Forty-Two")
+
+tuple' :: (Int, String, Bool)
+tuple' = (42, "Forty-Two", False)
+
+tuple'' :: (Int, String, Bool, Float)
+tuple'' = (42, "Forty-Two", False, 1337.0)
+```
+
+In many ways a tuple is the same as a record, except we are not naming the different components or
+the constructor. Consequently it's useful when names for the components or the constructor aren't
+needed because the scope of the created value is small or the names themselves would not be deemed
+useful. The utility of tuples should be examined on a case-by-case basis to ensure that they don't
+make code harder to understand because of their lack of information/context. A name for both a
+constructor and the individual fields/components can in many cases be very illuminating.
