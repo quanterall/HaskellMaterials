@@ -67,7 +67,7 @@ If you have any questions/suggestions on the material or things not covered by t
 you can pick any way to contact me (RocketChat, Discord, rickard.andersson@quanterall.com) and I'll
 do my very best to answer, correct or otherwise handle it.
 
-## Installing `stack`
+## Installing the build- and project management-tool `stack`
 
 [How to install Stack](https://docs.haskellstack.org/en/stable/README/#how-to-install) is a
 reasonable place to start.
