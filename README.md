@@ -108,7 +108,10 @@ $ stack new project-name quanterall/basic
 
 When you enter the directory created by this template, you'll notice that VSCode suggests re-opening
 the directory in a container. When you do so, it will download the basic Haskell quanterall
-development image (if you don't already have it) and create a container using it.
+development image (if you don't already have it) and create a container using it. This image has the
+tools necessary for you to be able to have proper assistance in VSCode (auto-complete, linting, type
+hints for the thing your cursor is on, error reporting and more) and the development container
+specifies a set of extensions that work well with those tools.
 
 Once this is done and you open the terminal execute the following to run the app (as per usual):
 
