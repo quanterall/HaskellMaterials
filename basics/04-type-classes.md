@@ -347,7 +347,9 @@ toUpperInF = fmap toUpper
 -- | Retrieves an environment variable as text
 getEnvAsText :: String -> IO Text
 -- note how mapping `pack` over the result will take the returned string and convert it to `Text`
-getEnvAsText variable = fmap pack $ Environment.getEnv variable
+-- We could also write this as: `fmap pack $ Environment.getEnv variable`, `<$>` is just an
+-- operator alias for `fmap`
+getEnvAsText variable = pack <$> Environment.getEnv variable
 
 main :: IO ()
 main = do
