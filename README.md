@@ -137,7 +137,7 @@ main = do
 [Interacting with the terminal](./steps/01-interacting-with-the-terminal.md) has introductory
 material about executing effectful things and an intro to OS interaction in Haskell code.
 
-## I'm comfortable enough with Haskell basics but I don't know how to structure apps
+## "I'm comfortable enough with Haskell basics but I don't know how to structure apps."
 
 For readers who might be using these documents as references and feel comfortable enough with their
 basics, the following list of articles and suggestions might be useful:
