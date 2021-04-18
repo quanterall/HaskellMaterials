@@ -292,6 +292,7 @@ a list of `a` and concatenate all the elements together to form an `a`:
 
 ```haskell
 import Data.Monoid (Sum, Product)
+-- `&` is function composition forwards through a pipeline, much like bash/Elm/Elixir
 import Data.Function ((&))
 
 concattedString = mconcat ["Hello", "There", "", "General", "Kenobi"] -- "HelloThereGeneralKenobi"
