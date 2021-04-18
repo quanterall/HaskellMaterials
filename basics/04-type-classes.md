@@ -23,9 +23,9 @@ The "identity function" is a function that simply returns the argument passed to
 identity :: a -> a
 ```
 
-It is obviously generic over `a` because anything can be passed to it and it'll be returned. The
-merits of this function become clear when working with code so I won't stress how useful it is, but
-I'll try to explain why this function is the backbone of type variables coupled with constraints.
+It is generic over `a` because anything can be passed to it and it'll be returned. The merits of
+this function become clear when working with code so I won't stress how useful it is, but I'll try
+to explain why this function is the backbone of type variables coupled with constraints.
 
 What are the possible implementations of `identity`? Well, we don't have access to `IO` so we can
 discount everything that has to do with effectful things. We have the value of type `a`, meaning it
@@ -239,8 +239,10 @@ to another, giving us a new list. String types also have this property, as well 
 both addition as well as multiplication:
 
 ```haskell
+"Hello " <> "Quanterall" == "Hello Quanterall"
 Sum 41 <> Sum 1 == Sum 42
 Product 13.37 <> Product 2 == Product 26.74
+[1, 2] <> [3, 4] == [1, 2, 3, 4]
 ```
 
 ```haskell
