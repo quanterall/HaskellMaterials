@@ -262,15 +262,15 @@ execution order and still get the same results.
 
 ### Monoid
 
-A `Monoid` is a semigroup that also has an **empty value** that when combined with a non-empty value
-will have no effect; it will return the same value. Some examples for the semigroup examples we gave
-before:
+A `Monoid` is a semigroup that also has a defined **empty value** (that we can refer to with
+`mempty`) that when combined with a non-empty value will have no effect; it will return the same
+value. Some examples for the semigroup examples we gave before:
 
 ```haskell
-aString = "Quanterall" <> "" == "Quanterall"
-aSum = Sum 41 <> Sum 0 == Sum 41
-aProduct = Product 10 <> Product 1 == Product 10
-aList = [1, 2, 3, 4] <> [] == [1, 2, 3, 4]
+"Quanterall" <> mempty == "Quanterall"
+Sum 41       <> mempty == Sum 41
+Product 10   <> mempty == Product 10
+[1, 2, 3, 4] <> mempty == [1, 2, 3, 4]
 ```
 
 The class itself is defined as follows:
