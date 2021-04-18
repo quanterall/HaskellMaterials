@@ -137,6 +137,10 @@ Registering library for project-name-0.0.0..
 Hello, World!
 ```
 
+I have created a video demostrating how to use the templates:
+
+[![Watch](https://img.youtube.com/vi/fkR0DsKwIO4/0.jpg)](https://youtu.be/fkR0DsKwIO4)
+
 ## Basic reading materials
 
 The below documents will likely take shape as practical lessons at a later date but are provided
