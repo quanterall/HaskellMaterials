@@ -92,6 +92,48 @@ ones.
 When we execute the above stack will automatically download an appropriate `ghc` version (GHC is the
 Haskell compiler that is most commonly used).
 
+### Using development containers in VSCode
+
+I have created a template in the Quanterall organization called "basic" that will automatically
+create an empty project that also includes a
+[development container specification](https://code.visualstudio.com/docs/remote/create-dev-container)
+that one can use to create simple Haskell applications.
+
+To use it, issue the following command after having installed both `docker` and `stack`:
+
+```bash
+$ stack new project-name quanterall/basic
+<... project creation text ...>
+```
+
+When you enter the directory created by this template, you'll notice that VSCode suggests re-opening
+the directory in a container. When you do so, it will download the basic Haskell quanterall
+development image (if you don't already have it) and create a container using it.
+
+Once this is done and you open the terminal execute the following to run the app (as per usual):
+
+```bash
+$ stack run
+Building all executables for `project-name' once. After a successful build of all of them, only specified executables will be rebuilt.
+project-name> configure (lib + exe)
+Configuring project-name-0.0.0...
+project-name> build (lib + exe)
+Preprocessing library for project-name-0.0.0..
+Building library for project-name-0.0.0..
+[1 of 2] Compiling Library
+[2 of 2] Compiling Paths_project_name
+Preprocessing executable 'project-name' for project-name-0.0.0..
+Building executable 'project-name' for project-name-0.0.0..
+[1 of 2] Compiling Main
+[2 of 2] Compiling Paths_project_name
+Linking .stack-work/dist/x86_64-linux/Cabal-3.0.1.0/build/project-name/project-name ...
+project-name> copy/register
+Installing library in /workspace/.stack-work/install/x86_64-linux/46a764856ca98002996402d60ec101b4647e28979008b455b0f3583cc001920a/8.8.4/lib/x86_64-linux-ghc-8.8.4/project-name-0.0.0-F19iobAcRl6CrxmGiEteIF
+Installing executable project-name in /workspace/.stack-work/install/x86_64-linux/46a764856ca98002996402d60ec101b4647e28979008b455b0f3583cc001920a/8.8.4/bin
+Registering library for project-name-0.0.0..
+Hello, World!
+```
+
 ## Basic reading materials
 
 The below documents will likely take shape as practical lessons at a later date but are provided
