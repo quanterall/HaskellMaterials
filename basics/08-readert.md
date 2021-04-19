@@ -1,7 +1,11 @@
 # The ReaderT Monad Transformer
 
+## Monad transformers
+
 A monad transformer is a data type that allows us to wrap one monad in another. As an example, we
 have the `ReaderT` monad transformer:
+
+## ReaderT
 
 ```haskell
 newtype ReaderT r m a = ReaderT {runReaderT :: r -> m a}
