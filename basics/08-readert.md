@@ -2,8 +2,12 @@
 
 ## Monad transformers
 
-A monad transformer is a data type that allows us to wrap one monad in another. As an example, we
-have the `ReaderT` monad transformer:
+A monad transformer is a data type that allows us to wrap one monad in another. What this means is
+that it enables a context wherein we get the capabilities of both the transformer and the monad it
+is wrapping. Monad transformers are themselves monads, which means we can create multiple layers to
+get an arbitrary amount of capabilities. It's relatively rare in normal applications that you'd
+create big stacks of monad transformers, however, as most things can be done with `ReaderT` wrapping
+the `IO` monad.
 
 ## ReaderT
 
