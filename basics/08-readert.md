@@ -11,6 +11,11 @@ the `IO` monad.
 
 ## ReaderT
 
+`ReaderT` is the transformer version of the `Reader` monad and gives us the capability to read an
+environment that is passed around implicitly in an entire call graph. Together with `IO` this means
+that we get access to a whole host of effectful things that we couldn't get with just `Reader`;
+transactional variables, `IORef`s, database connection handles, and so on.
+
 ```haskell
 newtype ReaderT r m a = ReaderT {runReaderT :: r -> m a}
 ```
