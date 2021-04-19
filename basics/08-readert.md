@@ -44,6 +44,47 @@ data DeletionResult
   | AssociationError
   | Deleted
 
+-- Execution starts here
+main :: IO ()
+main = do
+  -- We set up the initial application state so that `runApplication` and everything it runs has
+  -- access to it.
+  databaseInfo <- Environment.get "DB_CONNECTION_INFO"
+  dbConnection <- connectToDatabase databaseInfo
+  logHandle' <- setupLog
+  let applicationState =
+        ApplicationState
+          { databaseConnection = dbConnection,
+            logHandle = logHandle'
+          }
+
+  runReaderT runApplication applicationState
+
+runApplication :: ReaderT ApplicationState IO ()
+runApplication = do
+  -- Implementation of request handlers here, perhaps for a web server.
+  -- One of them will use `handleDeleteUserRequest`, which has access to the already set up
+  -- environment.
+  undefined
+
+handleDeleteUserRequest :: UserId -> ReaderT ApplicationState IO ()
+handleDeleteUserRequest userId = do
+  deletionResult <- runDatabase $ deleteUserWithId userId
+  case deletionResult of
+    Deleted -> do
+      logInfo $ "Found and deleted user with ID: " <> show userId
+      
+    NotFound ->
+      logWarn $ "Unable to find user with ID: " <> show userId <> " for deletion."
+
+    AssociationError ->
+      logError $
+        mconcat
+          [ "Unable to delete user with ID '",
+            show userId,
+            "' because stuff relies on it existing."
+          ]
+
 logInfo :: Text -> ReaderT ApplicationState IO ()
 logInfo message = logMessage "INFO" message
 
@@ -67,24 +108,6 @@ runDatabase action = do
 
 deleteUserWithId :: UserId -> DatabaseAction DeletionResult
 deleteUserWithId userId = deleteEntity userId
-
-handleDeleteUserRequest :: UserId -> ReaderT ApplicationState IO ()
-handleDeleteUserRequest userId = do
-  deletionResult <- runDatabase $ deleteUserWithId userId
-  case deletionResult of
-    Deleted -> do
-      logInfo $ "Found and deleted user with ID: " <> show userId
-      
-    NotFound ->
-      logWarn $ "Unable to find user with ID: " <> show userId <> " for deletion."
-
-    AssociationError ->
-      logError $
-        mconcat
-          [ "Unable to delete user with ID '",
-            show userId,
-            "' because stuff relies on it existing."
-          ]
 ```
 
 ## Bigger example
