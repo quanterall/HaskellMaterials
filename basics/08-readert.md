@@ -36,7 +36,7 @@ allows for implicit environment reading as well as `IO` actions, which means we 
 tightly controlled usage of mutable variables with a clear initialization stage, as the application
 state has to be initialized with `runReaderT` at the start of the application.
 
-## Small (hypothetical) example
+## Hypothetical example
 
 The following is a hypothetical structure of an application that is using `ReaderT` to provide an
 environment to the different functions in it.
@@ -117,7 +117,3 @@ runDatabase action = do
 deleteUserWithId :: UserId -> DatabaseAction DeletionResult
 deleteUserWithId userId = deleteEntity userId
 ```
-
-## Bigger example
-
-TODO: add proper motivating example (ironically easier than for just `Reader`)
