@@ -1,5 +1,11 @@
 # HaskellMaterials
 
+## Work In Progress
+
+This repository is (and likely will be for quite some time) a work in progress. Suggestions for
+articles on concepts and themes are welcome, as well as corrections/clarifications on already
+available material.
+
 ## Real World Haskell
 
 The purpose of these documents is to at some point be able to teach Haskell, but as a supplement to
