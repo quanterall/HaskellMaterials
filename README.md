@@ -83,20 +83,25 @@ choice in industry, though other tools are catching up.
 
 ## Making your first example project
 
-`stack` has an analog for `mix new`:
+I've set up templates for project generation via the `stack` tool. These come pre-configured with
+appropriate settings (including which language features to use by default) and are very useful for
+setting up projects, both experimental one-offs, serious libraries and applications.
+
+The most basic of these is called `basic`:
 
 ```bash
-stack new MyExampleProject simple
-cd MyExampleProject
-stack build
+stack new my-project-name quanterall/basic
+cd my-project-name
+stack run
 ```
 
-The `simple` part is which template we want to use. The `simple` one is enough for what we need,
-but entire web development templates are available and as you would expect you can make your own
-ones.
+The above command will result in a running example that prints to the screen and in the `Library.hs`
+file you can edit the behavior of the program (in the `main` function).
 
-When we execute the above stack will automatically download an appropriate `ghc` version (GHC is the
-Haskell compiler that is most commonly used).
+[This repository](https://github.com/quanterall/stack-templates) has more templates and a description
+of their use cases.
+
+**Note: See below for a better, more streamlined workflow via VSCode and development containers.**
 
 ### Using development containers in VSCode
 
