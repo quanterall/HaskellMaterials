@@ -114,12 +114,14 @@ queue and otherwise idle, providing the perfect basis for a worker queue.
 `TChan` is a transactional channel, much like `TQueue` but has all readers of the channel see each
 value being written to it, meaning they will all be able to react to every update.
 
-Both of these are unbounded in size, meaning that unless we read values faster or as fast as we are
-writing them we will have issues with memory usage. That is why there are versions of these called
-`TBQueue` and `TBChan`, where the "B" stands for bounded. This allows us to specify a maximum size
-for them, which provides more of a guarantee that we aren't consuming more and more memory. It also
-provides backpressure for the writing side as it will block on a full queue/channel, retrying when/if
-the queue/channel changes.
+### `stm-chans`
+
+`TQueue` and `TChan` are unbounded in size, meaning that unless we read values faster or as fast as
+we are writing them we will have issues with memory usage. That is why the package `stm-chans`
+provides versions of these called `TBQueue` and `TBChan`, where the "B" stands for bounded. This
+allows us to specify a maximum size for them, which provides more of a guarantee that we aren't
+consuming more and more memory. It also provides backpressure for the writing side as it will block
+on a full queue/channel, retrying when/if the queue/channel changes.
 
 If you require the ability to close your queue or channel, there are also "M" variants that allow
 you to close them. When a reader tries to read a value they will get a `Nothing` value back from it
