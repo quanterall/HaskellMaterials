@@ -101,7 +101,8 @@ file you can edit the behavior of the program (in the `main` function).
 [This repository](https://github.com/quanterall/stack-templates) has more templates and a description
 of their use cases.
 
-**Note: See below for a better, more streamlined workflow via VSCode and development containers.**
+**Note: See below for a better, more streamlined workflow enabled by `docker`, `docker-compose` and
+VSCode.**
 
 ### Using development containers in VSCode
 
