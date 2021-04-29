@@ -151,20 +151,36 @@ What follows is an example of a workerpool handling a queue with several interes
 under the hood, all from the Haskell runtime and `STM`:
 
 ```haskell
-import Control.Concurrent.Async
-import Control.Concurrent.STM
+{-# LANGUAGE NoImplicitPrelude #-}
+
+module Library where
+
+-- This requires the package `async`
+import Control.Concurrent.Async (concurrently_, replicateConcurrently_)
+-- This requires the package `stm`
+import Control.Concurrent.STM (atomically, modifyTVar', newTVarIO, readTVarIO)
+-- This requires the package `stm-chans`
 import Control.Concurrent.STM.TBMQueue
+  ( TBMQueue,
+    closeTBMQueue,
+    newTBMQueue,
+    readTBMQueue,
+    writeTBMQueue,
+  )
 import Control.Exception (finally)
 import Data.Foldable (for_)
-import Test.Hspec
+-- This requires the package `hspec`
+import Test.Hspec (hspec, it, shouldReturn)
+import Prelude
 
 main :: IO ()
-main = hspec $ it "works" $ do
-  variable <- newTVarIO (0 :: Int)
-  let inputs = [1..1000]
-      processingFunction input = atomically $ modifyTVar' variable (+ input)
-  pooledMapConcurrently_ 8 processingFunction inputs
-  atomically (readTVar var) `shouldReturn` sum inputs
+main = hspec $
+  it "works" $ do
+    variable <- newTVarIO (0 :: Int)
+    let inputs = [1 .. 1000000]
+        processingFunction input = atomically $ modifyTVar' variable (+ input)
+    pooledMapConcurrently_ 8 processingFunction inputs
+    readTVarIO variable `shouldReturn` sum inputs
 
 pooledMapConcurrently_ :: Int -> (a -> IO ()) -> [a] -> IO ()
 pooledMapConcurrently_ count processingFunction inputs = do
@@ -172,7 +188,7 @@ pooledMapConcurrently_ count processingFunction inputs = do
   -- `filler` continually puts value into the queue, but will block whenever it tries to put a value
   -- onto the queue when it has reached its bound (16 in this example). This means we won't have any
   -- issues with this thread just over-filling the queue and also not consuming resources while
-  -- waiting for the queue to have room. 
+  -- waiting for the queue to have room.
   let filler = for_ inputs $ \input -> atomically $ writeTBMQueue queue input
   -- This comes from the `async` package and will run two treads at the same time.
   concurrently_
@@ -186,14 +202,14 @@ workers count processingFunction queue =
 worker :: (a -> IO ()) -> TBMQueue a -> IO ()
 worker processingFunction queue =
   let loop = do
-      -- This function seems to be in a loop if we still have values in the queue (i.e. it's still
-      -- open), however this `readTBMQueue` call blocks until there are values, which means that any
-      -- threads executing this won't just spin and consume resources.
-      ma <- atomically $ readTBMQueue queue
-      case ma of
-        Nothing -> pure ()
-        Just a -> do
-          processingFunction a
-          loop
-  in loop
+        -- This function seems to be in a loop if we still have values in the queue (i.e. it's still
+        -- open), however this `readTBMQueue` call blocks until there are values, which means that any
+        -- threads executing this won't just spin and consume resources.
+        ma <- atomically $ readTBMQueue queue
+        case ma of
+          Nothing -> pure ()
+          Just a -> do
+            processingFunction a
+            loop
+   in loop
 ```
