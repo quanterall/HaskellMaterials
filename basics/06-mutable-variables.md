@@ -67,7 +67,11 @@ values themselves were changed during the execution of our transaction. In order
 these transactional blocks from `IO` we use the function `atomically`:
 
 ```haskell
-main = do
+import Control.Concurrent.STM (atomically, check, modifyTVar, readTVar, writeTVar)
+import Prelude
+
+functionUsingTransaction :: IO ()
+functionUsingTransaction = do
   -- Either everything in this block succeeds or nothing does; this is the
   -- guarantee we get from `STM`.
   atomically $ do
