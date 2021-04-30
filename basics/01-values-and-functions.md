@@ -21,10 +21,9 @@ name on the left is equal to the expression on the right. In the case of values 
 consider parameters:
 
 ```haskell
+-- We can create a value of type `Bool` using either `True` or `False`
 myCoolValue = True
 ```
-
-`True` here is one of the constructors of the `Bool` type (the other being `False`).
 
 The basic primitive types in Haskell are:
 
