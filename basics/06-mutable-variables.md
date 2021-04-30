@@ -19,6 +19,10 @@ With that in mind we'll look at some types of mutable variables in isolation.
 pointer to a value.
 
 ```haskell
+import Data.IORef (modifyIORef, newIORef, readIORef, writeIORef)
+import Prelude
+
+main :: IO ()
 main = do
   -- This produces a `IORef Int`, `newIORef` has type `a -> IO (IORef a)
   reference <- newIORef 42
