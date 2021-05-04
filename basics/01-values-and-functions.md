@@ -119,3 +119,70 @@ This is a general facility that you can apply to any function, even functions wi
 arguments. It's important to recognize that it's not always a great idea to use this feature and
 each case should be examined on an individual basis in terms of whether or not it makes the code
 more or less easy to understand.
+
+## Partial application
+
+When you apply a function, you can choose to **not** pass all the arguments it's expecting. This
+will result in the return value being a function that expects the remaining arguments and that will
+have the same return value:
+
+```haskell
+addInts :: Int -> Int -> Int
+addInts a b = a + b
+
+add42 :: Int -> Int
+add42 = addInts 42
+```
+
+Passing only one arguments to `addInts` in the example above results in a function that expects one
+more argument instead of the original two.
+
+It's quite common to use this fact by putting important arguments in the last parameter position of
+a function in order to let people use this pattern:
+
+```haskell
+import qualified Data.List as List
+import Prelude
+
+-- | Adds 42 to every item in a list
+add42 :: [Int] -> [Int]
+add42 = List.map (+ 42)
+```
+
+In the above example, `List.map` takes the list it is working with as the last argument, meaning we
+can just partially apply it and still get the function we expect. Since we are not passing the list
+argument to `List.map` here we get a function that expects a list of integers and will return one.
+
+We are also partially applying our `+`. The function that we are expected to pass to `List.map` is
+expected to be of type `Int -> Int`, which is what we get when we write `(+ 42)`.
+
+## Pipelines using partial application
+
+The above pattern also works well when composing different functions to achieve an end result:
+
+```haskell
+import Control.Category ((>>>))
+import Data.Function ((&))
+
+dataPartLength :: String -> String
+dataPartLength = length . takeWhile (/= '1') . reverse
+
+dataPartLength' :: String -> String
+dataPartLength' = reverse >>> takeWhile (/= '1') >>> length
+
+dataPartLength'' :: String -> String
+dataPartLength'' string = reverse string & takeWhile (/= '1') & length
+```
+
+In the above examples we are pipelining functions that operate on the result of a previous function
+call. The first example does this using the `.` operator, which represents classic function
+composition. One thing to note about this is that the application order is read from right to left,
+so we are applying `reverse` first, then `takeWhile` (to get characters that aren't '1'), then get
+the length of the resulting string.
+
+The example using `>>>` does the same thing, but can be read from left to right. The last example is
+the same as commonly used pipeline operators like `|>` from F#, Elm & Elixir, and might be more
+readable to some. The difference is that it requires a value on the left side, which means we have
+to name our `string` value here at first. The difference is minor and I would argue that while it's
+quite common to see the first example, one should strongly consider whether or not those versions
+are written more because of tradition than anything else.
