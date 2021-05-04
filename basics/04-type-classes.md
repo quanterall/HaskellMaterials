@@ -5,15 +5,18 @@ a version of them can be found in Rust's "traits". C++20 also has the "concepts"
 ultimately is an extended (and seemingly much more powerful) version of type classes / traits.
 
 A type class can be described as a constraint on a type variable, which is how you'll see them in
-source code for the most part. The definition of a type class sets up what shape the type it can be
-defined for and the instances make this type concrete, then we use it in a type signature to
-constrain a type variable such that we are saying "This is generic over `a` but we are also saying
-it can have this capability".
+source code for the most part. The definition of a type class is a definition of what capability
+the type should have in order to be an instance of that type class. What that means in a practical
+sense is that it should have definitions for a set of functions determined in the definition. These
+have to have the same types as the declarations in the type class.
+
+When we use a type class in a type signature to constrain a type variable `a` we are saying "This is
+generic over any type `a` that has an instance of this type class".
 
 ## Generics / Type variables
 
-In order to productively talk about type classes we therefore need to show how employing them in a
-type signature will change the nature of the function.
+In order to productively talk about type classes we ought to show how employing them in a type
+signature will change the nature of the function.
 
 ### identity
 
