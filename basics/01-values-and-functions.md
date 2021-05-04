@@ -202,9 +202,15 @@ Let's first look at the example:
 ```haskell
 import Data.Function ((&))
 
+isDivisibleBy :: Int -> Int -> Bool
+isDivisibleBy x divisor =
+  -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
+  let remainderOfDivision = x `rem` divisor
+  in remainderOfDivision == 0
+
 solution :: Int
 solution =
-  [1,2,3,4,5,6,7,8,9] & filter (\x -> x `rem` 3 == 0 || x `rem` 5 == 0) & sum -- 23
+  [1,2,3,4,5,6,7,8,9] & filter (\x -> x `isDivisibleBy` 3 || x `isDivisibleBy` 5) & sum -- 23
 ```
 
 We can use a shorthand plus `takeWhile` to make this a bit neater:
@@ -212,11 +218,17 @@ We can use a shorthand plus `takeWhile` to make this a bit neater:
 ```haskell
 import Data.Function ((&))
 
+isDivisibleBy :: Int -> Int -> Bool
+isDivisibleBy x divisor =
+  -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
+  let remainderOfDivision = x `rem` divisor
+  in remainderOfDivision == 0
+
 solution :: Int
 solution =
   -- `[1..]` means "create an infinite list of increasing numbers starting from 1"
   -- We never have an infinite list in memory, but rather take elements one by one until we reach 10
-  [1..] & takeWhile (< 10) & filter (\x -> x `rem` 3 == 0 || x `rem` 5 == 0) & sum -- 23
+  [1..] & takeWhile (< 10) & filter (\x -> x `isDivisibleBy` 3 || x `isDivisibleBy` 5) & sum -- 23
 ```
 
 If we now set an upper bound as a parameter we can get the solution to the actual problem:
@@ -224,12 +236,17 @@ If we now set an upper bound as a parameter we can get the solution to the actua
 ```haskell
 import Data.Function ((&))
 
+isDivisibleBy :: Int -> Int -> Bool
+isDivisibleBy x divisor =
+  -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
+  let remainderOfDivision = x `rem` divisor
+  in remainderOfDivision == 0
+
 solution :: Int -> Int
 solution upperBound =
   -- You could also write `[1..(upperBound - 1)]` and skip `takeWhile`, but for reasons explained
   -- later on this doesn't make a difference in the execution of this function.
-  [1..] & takeWhile (< upperBound) & filter (\x -> x `rem` 3 == 0 || x `rem` 5 == 0) & sum
-
+  [1..] & takeWhile (< upperBound) & filter (\x -> x `isDivisibleBy` 3 || x `isDivisibleBy` 5) & sum
 
 -- `solution 1000` will give us the value 233168
 ```
