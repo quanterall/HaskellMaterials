@@ -48,7 +48,7 @@ Doing anything else will require either adding more to the returned type (`IO`, 
 
 ```haskell
 -- The part on the left of the fat arrow is a collection of constraints.
--- Here we are adding the `Num` constraints which allows some basic arithmetic operators.
+-- Here we are adding the `Num` constraint which allows some basic arithmetic operators.
 -- We can specify several constraints either with:
 --   `ConstraintOne a => ConstraintTwo a => ...`
 -- or:
