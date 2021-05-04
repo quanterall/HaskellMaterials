@@ -18,10 +18,9 @@ affect or gather data from reality and so it's where most interesting things hap
 ## IO ()
 
 `IO ()` is a fairly common type signature for effectful functions. What does it mean to have
-something follow `IO` like this? To really get into this we would have to explain the concept of
-"kinds", but in order to shed some light on it without going there, it can be said that types can
-have arguments. In this particular case we can say that `IO` has the "type" `IO :: Type -> Type`.
-The type `IO ()` is therefore `IO` applied to `()` which produces the type `IO ()`.
+something follow `IO` like this? It can be said that types can have arguments. In this particular
+case we can say that `IO` has the "type" `IO :: Type -> Type`. The type `IO ()` is therefore `IO`
+applied to `()` which produces the type `IO ()`.
 
 Likewise we can also have `IO String` which is `IO` applied to `String`, which produces the type
 `IO String`, **or any other type** you can imagine. The actual names for these things are "kinds",
