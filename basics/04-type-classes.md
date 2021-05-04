@@ -5,7 +5,7 @@ a version of them can be found in Rust's "traits". C++20 also has the "concepts"
 ultimately is an extended (and seemingly much more powerful) version of type classes / traits.
 
 A type class can be described as a constraint on a type variable, which is how you'll see them in
-source code for the most part. The definition of a type class is a definition of what capability
+source code for the most part. The definition of a type class is a definition of what capabilities
 the type should have in order to be an instance of that type class. What that means in a practical
 sense is that it should have definitions for a set of functions determined in the definition. These
 have to have the same types as the declarations in the type class.
