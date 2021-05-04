@@ -186,3 +186,48 @@ readable to some. The difference is that it requires a value on the left side, w
 to name our `string` value here at first. The difference is minor and I would argue that while it's
 quite common to see the first example, one should strongly consider whether or not those versions
 are written more because of tradition than anything else.
+
+## A "Project Euler" example
+
+Let's look at the very first [Project Euler](https://projecteuler.net/problem=1) as an example of
+using function composition and partial application to get the answer to a mildly complex question:
+
+> If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9.
+> The sum of these multiples is 23.
+>
+> Find the sum of all the multiples of 3 or 5 below 1000.
+
+Let's first look at the example:
+
+```haskell
+import Data.Function ((&))
+
+solution :: Int
+solution =
+  [1,2,3,4,5,6,7,8,9] & filter (\x -> x `rem` 3 == 0 || x `rem` 5 == 0) & sum -- 23
+```
+
+We can use a shorthand plus `takeWhile` to make this a bit neater:
+
+```haskell
+import Data.Function ((&))
+
+solution :: Int
+solution =
+  -- `[1..]` means "create an infinite list of increasing numbers starting from 1
+  -- We never have an infinite list in memory, but rather take elements one by one until we reach 10
+  [1..] & takeWhile (< 10) & filter (\x -> x `rem` 3 == 0 || x `rem` 5 == 0) & sum -- 23
+```
+
+If we now set an upper bound as a parameter we can get the solution to the actual problem:
+
+```haskell
+import Data.Function ((&))
+
+solution :: Int -> Int
+solution upperBound =
+  [1..] & takeWhile (< upperBound) & filter (\x -> x `rem` 3 == 0 || x `rem` 5 == 0) & sum
+
+
+-- `solution 1000` will give us the value 233168
+```
