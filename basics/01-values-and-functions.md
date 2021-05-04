@@ -226,6 +226,8 @@ import Data.Function ((&))
 
 solution :: Int -> Int
 solution upperBound =
+  -- You could also write `[1..(upperBound - 1)]` and skip `takeWhile`, but for reasons explained
+  -- later on this doesn't make a difference in the execution of this function.
   [1..] & takeWhile (< upperBound) & filter (\x -> x `rem` 3 == 0 || x `rem` 5 == 0) & sum
 
 
