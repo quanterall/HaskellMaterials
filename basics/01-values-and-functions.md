@@ -262,24 +262,6 @@ isDivisibleBy x divisor =
   let remainderOfDivision = x `rem` divisor
   in remainderOfDivision == 0
 
-solution :: Int
-solution =
-  -- `[1..]` means "create an infinite list of increasing numbers starting from 1"
-  -- We never have an infinite list in memory, but rather take elements one by one until we reach 10
-  [1..] & takeWhile (< 10) & filter (\x -> x `isDivisibleBy` 3 || x `isDivisibleBy` 5) & sum -- 23
-```
-
-If we now set an upper bound as a parameter we can get the solution to the actual problem:
-
-```haskell
-import Data.Function ((&))
-
-isDivisibleBy :: Int -> Int -> Bool
-isDivisibleBy x divisor =
-  -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
-  let remainderOfDivision = x `rem` divisor
-  in remainderOfDivision == 0
-
 solution :: Int -> [Int] -> Int
 solution upperBound divisors =
   -- `any` takes a predicate/question and a list of inputs and answers the question:
