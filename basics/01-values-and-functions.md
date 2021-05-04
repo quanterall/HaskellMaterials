@@ -164,13 +164,13 @@ The above pattern also works well when composing different functions to achieve 
 import Control.Category ((>>>))
 import Data.Function ((&))
 
-dataPartLength :: String -> String
+dataPartLength :: String -> Int
 dataPartLength = length . takeWhile (/= '1') . reverse
 
-dataPartLength' :: String -> String
+dataPartLength' :: String -> Int
 dataPartLength' = reverse >>> takeWhile (/= '1') >>> length
 
-dataPartLength'' :: String -> String
+dataPartLength'' :: String -> Int
 dataPartLength'' string = reverse string & takeWhile (/= '1') & length
 ```
 
