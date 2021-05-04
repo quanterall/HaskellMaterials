@@ -61,8 +61,9 @@ myString = "This is not the best string in the world, it's just a tribute"
 
 ## Functions
 
-Functions are written much like values, but have arrows in their type. The type that comes after the
-last arrow is the return type and each arrow before that signifies a new parameter to the function:
+Functions are written much like values, but have arrows in their type. The types, starting at the
+leftmost, represent the arguments/parameters passed to the function, with the last (rightmost) one
+representing the return value.
 
 ```haskell
 addInts :: Int -> Int -> Int
