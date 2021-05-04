@@ -250,3 +250,44 @@ solution upperBound =
 
 -- `solution 1000` will give us the value 233168
 ```
+
+If we wanted to support using different divisors we could also do the following:
+
+```haskell
+import Data.Function ((&))
+
+isDivisibleBy :: Int -> Int -> Bool
+isDivisibleBy x divisor =
+  -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
+  let remainderOfDivision = x `rem` divisor
+  in remainderOfDivision == 0
+
+solution :: Int
+solution =
+  -- `[1..]` means "create an infinite list of increasing numbers starting from 1"
+  -- We never have an infinite list in memory, but rather take elements one by one until we reach 10
+  [1..] & takeWhile (< 10) & filter (\x -> x `isDivisibleBy` 3 || x `isDivisibleBy` 5) & sum -- 23
+```
+
+If we now set an upper bound as a parameter we can get the solution to the actual problem:
+
+```haskell
+import Data.Function ((&))
+
+isDivisibleBy :: Int -> Int -> Bool
+isDivisibleBy x divisor =
+  -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
+  let remainderOfDivision = x `rem` divisor
+  in remainderOfDivision == 0
+
+solution :: Int -> [Int] -> Int
+solution upperBound divisors =
+  -- `any` takes a predicate/question and a list of inputs and answers the question:
+  -- "Are any of these true?"/"Do any of these return `True`?"
+  -- Here we are asking "Is X divisble by any of the passed in divisors?"
+  -- We could also write `isDivisibleBy x` only, but it can be useful to use backticks to emphasize
+  -- that `x` is the first argument, and to make it read as a question about `x`.
+  [1..] & takeWhile (< upperBound) & filter (\x -> any (x `isDivisibleBy`) divisors) & sum
+
+-- `solution 1000 [3, 5]` will give us the value 233168
+```
