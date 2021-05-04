@@ -214,7 +214,7 @@ import Data.Function ((&))
 
 solution :: Int
 solution =
-  -- `[1..]` means "create an infinite list of increasing numbers starting from 1
+  -- `[1..]` means "create an infinite list of increasing numbers starting from 1"
   -- We never have an infinite list in memory, but rather take elements one by one until we reach 10
   [1..] & takeWhile (< 10) & filter (\x -> x `rem` 3 == 0 || x `rem` 5 == 0) & sum -- 23
 ```
