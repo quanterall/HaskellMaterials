@@ -229,10 +229,18 @@ class Eq a => Ord a where
 ```
 
 Note how there is a qualification here to the left of the `Ord a` bit: We are saying here that in
-order to define `Ord` for something it also has to have a `Eq` implementation. This is called a
-"superclass" and is very common in order to automatically inherit capabilities of other constraints
-when one is specified. If we specified `Ord a` in a function we would therefore be able to use all
-functions associated with `Eq` as well.
+order to define `Ord` for something it also has to have an `Eq` implementation. This is called a
+"superclass" and is not uncommon.
+
+What specifying a superclass requirement for a class does is make it so that in order to define an
+instance of the class the compiler will also ensure that an instance can be found for the superclass.
+This makes sure that if there are any conceptual assumptions that make sense they're enforced by the
+compiler to exist. For something to be ordered there has to be some notion of equality comparison,
+hence the superclass requirement.
+
+When we use an `Ord` constraint in a function type, we get access in that function to both the `Ord`
+functions as well as the `Eq` functions, because the existence of an `Ord` instance also implies the
+existence of `Eq`.
 
 ### Semigroup
 
