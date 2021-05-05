@@ -438,8 +438,6 @@ main =
 It's quite common to write shorter monadic expressions in this form, though I would likely recommend
 using `do`-notation as a default.
 
-#### The utility of this
-
 What this means in practice is that we get the same notation for everything that is a monad. This
 means that we can use `>>=`/`bind`/`<-`, `pure`, `fmap`/`<$>` and friends for a whole slew of things
 that implement this constraint; `STM` (software-transactional memory, pointers that have
