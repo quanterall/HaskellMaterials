@@ -47,6 +47,8 @@ Doing anything else will require either adding more to the returned type (`IO`, 
 **constrain** the type variable `a`. We can do so as follows:
 
 ```haskell
+import Prelude
+
 -- The part on the left of the fat arrow is a collection of constraints.
 -- Here we are adding the `Num` constraint which allows some basic arithmetic operators.
 -- We can specify several constraints either with:
@@ -84,6 +86,7 @@ had:
 
 ```haskell
 import Data.Monoid
+import Prelude
 
 notIdentityAnymore :: (Eq a, Num a) => a -> a
 notIdentityAnymore x =
@@ -151,6 +154,7 @@ that is foldable, which is a lot of types, a couple of them illustrated here:
 ```haskell
 import qualified Data.Set as Set
 import qualified Data.Map as Map
+import Prelude
 
 containerLength :: (Foldable f) => f a -> Int
 containerLength container =
@@ -305,6 +309,7 @@ a list of `a` and concatenate all the elements together to form an `a`:
 import Data.Monoid (Sum, Product)
 -- `&` is function composition forwards through a pipeline, much like bash/Elm/Elixir
 import Data.Function ((&))
+import Prelude
 
 concattedString = mconcat ["Hello", "There", "", "General", "Kenobi"] -- "HelloThereGeneralKenobi"
 concattedSum = [1, 2, 3, 0, 4] & map Sum & mconcat -- Sum 10
@@ -346,11 +351,10 @@ If we were to call just `fmap f`, we can see that the output will indeed be a fu
 for any `f` that implements `Functor`:
 
 ```haskell
-{-# LANGUAGE OverloadedStrings #-}
-
 import qualified System.Environment as Environment
 -- `Data.Text` has a function `toUpper`: `Text -> Text`
 import Data.Text (Text, toUpper, pack)
+import Prelude
 
 toUpperInF :: (Functor f) => f Text -> f Text
 toUpperInF = fmap toUpper
