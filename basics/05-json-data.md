@@ -171,7 +171,11 @@ main = do
           }
       encodedBytes = JSON.encode exampleReading
       exampleBytes =
-        "{\"lastReportTime\":\"2021-05-05T07:26:45.2681256Z\",\"temperature\":42,\"sensorId\":42,\"timestamp\":\"2021-05-05T07:26:45.2681256Z\",\"notifications\":[\"Notification example\"]}"
+        "{\"lastReportTime\":\"2021-05-05T07:26:45.2681256Z\",\
+        \\"temperature\":42,\
+        \\"sensorId\":42,\
+        \\"timestamp\":\"2021-05-05T07:26:45.2681256Z\",\
+        \\"notifications\":[\"Notification example\"]}"
   print encodedBytes
   case JSON.eitherDecode exampleBytes of
     Right reading@TemperatureReading {} ->
@@ -261,7 +265,11 @@ main = do
           }
       encodedBytes = JSON.encode exampleReading
       exampleBytes =
-        "{\"lastReportTime\":\"2021-05-05T07:26:45.2681256Z\",\"temperature\":42,\"sensorId\":42,\"timestamp\":\"2021-05-05T07:26:45.2681256Z\",\"notifications\":[\"Notification example\"]}"
+        "{\"lastReportTime\":\"2021-05-05T07:26:45.2681256Z\",\
+        \\"temperature\":42,\
+        \\"sensorId\":42,\
+        \\"timestamp\":\"2021-05-05T07:26:45.2681256Z\",\
+        \\"notifications\":[\"Notification example\"]}"
   print encodedBytes
   case JSON.eitherDecode exampleBytes of
     Right reading@TemperatureReading {} ->
