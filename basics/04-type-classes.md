@@ -128,8 +128,8 @@ If you were to generalize this you would then get:
 containerLength :: f a -> Int
 ```
 
-We can read this as "any type that takes another type `f` and for any `a` in that type". `f` here is
-"higher-kinded", because its kind is `* -> *`, meaning it takes a type in order to return a type.
+We can read this as "any type `f` that takes another type `a`". `f` here is "higher-kinded", because
+its kind is `* -> *`, meaning it takes a type in order to return a type.
 
 There is an issue with our `containerLength` type signature, however; we are assuming all containers
 have lengths. Haskell wouldn't allow any implementation of this function that didn't ignore the
