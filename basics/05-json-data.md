@@ -114,7 +114,7 @@ JSON decoders and encoders:
 ```haskell
 module Library where
 
--- requires the package `aeson`
+-- requires the package `aeson`, add in `package.yaml`
 import Data.Aeson
   ( FromJSON (..),
     Options (..),
@@ -122,10 +122,13 @@ import Data.Aeson
   )
 import qualified Data.Aeson as JSON
 import GHC.Generics (Generic)
--- requires the package `rio`
+-- requires the package `rio`, add in `package.yaml`
 import RIO
+import qualified RIO.Text.Lazy as LazyText
 import RIO.Time (UTCTime, getCurrentTime)
 import System.IO (print, putStrLn)
+-- requires the package `pretty-simple`, add in `package.yaml`
+import qualified Text.Pretty.Simple as Pretty
 
 newtype Notification = Notification Text
   deriving (Eq, Show, Generic, FromJSON, ToJSON)
@@ -179,7 +182,7 @@ main = do
   print encodedBytes
   case JSON.eitherDecode exampleBytes of
     Right reading@TemperatureReading {} ->
-      putStrLn $ "Able to decode: " <> show reading
+      putStrLn $ "Able to decode:\n" <> LazyText.unpack (Pretty.pShow reading)
     Left errorString ->
       putStrLn $ "Unable to decode: " <> show errorString
 ```
@@ -188,11 +191,15 @@ Running the above program will result in the following:
 
 ```bash
 > stack run
-"{\"lastReportTime\":\"2021-05-05T07:26:45.2681256Z\",\"temperature\":42,\"sensorId\":42,
-\"timestamp\":\"2021-05-05T07:26:45.2681256Z\",\"notifications\":[\"Notification example\"]}"
-Able to decode: TemperatureReading {_sensorId = SensorId 42, _temperature = 42.0,
-_timestamp = 2021-05-05 07:26:45.2681256 UTC, _lastReportTime = Just 2021-05-05 07:26:45.2681256 UTC,
-_notifications = [Notification "Notification example"]}
+"{\"lastReportTime\":\"2021-05-05T08:11:15.1040662Z\",\"temperature\":42,\"sensorId\":42,\"timestamp\":\"2021-05-05T08:11:15.1040662Z\",\"notifications\":[\"Notification example\"]}"
+Able to decode:
+TemperatureReading
+    { _sensorId = SensorId 42
+    , _temperature = 42.0
+    , _timestamp = 2021-05-05 07:26:45.2681256 UTC
+    , _lastReportTime = Just 2021-05-05 07:26:45.2681256 UTC
+    , _notifications = [ Notification "Notification example" ]
+    }
 ```
 
 Note how we (predictably) have removed the underscore from each field in our encoding and we are
@@ -207,7 +214,7 @@ where we've prefixed the fields with their structure name:
 ```haskell
 module Library where
 
--- requires the package `aeson`
+-- requires the package `aeson`, add in `package.yaml`
 import Data.Aeson
   ( FromJSON (..),
     Options (..),
@@ -216,10 +223,13 @@ import Data.Aeson
 import qualified Data.Aeson as JSON
 import qualified Data.Char as Char
 import GHC.Generics (Generic)
--- requires the package `rio`
+-- requires the package `rio`, add in `package.yaml`
 import RIO
+import qualified RIO.Text.Lazy as LazyText
 import RIO.Time (UTCTime, getCurrentTime)
 import System.IO (print, putStrLn)
+-- requires the package `pretty-simple`, add in `package.yaml`
+import qualified Text.Pretty.Simple as Pretty
 
 newtype Notification = Notification Text
   deriving (Eq, Show, Generic, FromJSON, ToJSON)
@@ -273,7 +283,7 @@ main = do
   print encodedBytes
   case JSON.eitherDecode exampleBytes of
     Right reading@TemperatureReading {} ->
-      putStrLn $ "Able to decode: " <> show reading
+      putStrLn $ "Able to decode:\n" <> LazyText.unpack (Pretty.pShow reading)
     Left errorString ->
       putStrLn $ "Unable to decode: " <> show errorString
 ```
@@ -282,12 +292,16 @@ If we run this program we get this output:
 
 ```bash
 > stack run
-"{\"lastReportTime\":\"2021-05-05T07:46:09.5410336Z\",\"temperature\":42,\"sensorId\":42,
-\"timestamp\":\"2021-05-05T07:46:09.5410336Z\",\"notifications\":[\"Notification example\"]}"
-Able to decode: TemperatureReading {temperatureReadingSensorId = SensorId 42,
-temperatureReadingTemperature = 42.0, temperatureReadingTimestamp = 2021-05-05 07:26:45.2681256 UTC,
-temperatureReadingLastReportTime = Just 2021-05-05 07:26:45.2681256 UTC,
-temperatureReadingNotifications = [Notification "Notification example"]}
+"{\"lastReportTime\":\"2021-05-05T08:12:38.8603571Z\",\"temperature\":42,\"sensorId\":42,
+\"timestamp\":\"2021-05-05T08:12:38.8603571Z\",\"notifications\":[\"Notification example\"]}"
+Able to decode:
+TemperatureReading
+    { temperatureReadingSensorId = SensorId 42
+    , temperatureReadingTemperature = 42.0
+    , temperatureReadingTimestamp = 2021-05-05 07:26:45.2681256 UTC
+    , temperatureReadingLastReportTime = Just 2021-05-05 07:26:45.2681256 UTC
+    , temperatureReadingNotifications = [ Notification "Notification example" ]
+    }
 ```
 
 Since our `fieldLabelModifier` function can be any function with the type `String -> String` it's
