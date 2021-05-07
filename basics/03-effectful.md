@@ -36,19 +36,19 @@ return other functions. `IO` (and other types that themselves take type argument
 In reality, all types have kinds in Haskell, as we can observe in `ghci`:
 
 ```haskell
-> :kind Int
+Q> :kind Int
 Int :: *
-> :kind []
+Q> :kind []
 [] :: * -> *
-> :kind IO
+Q> :kind IO
 IO :: * -> *
-> :kind Map      
+Q> :kind Map      
 Map :: * -> * -> *
-> :kind Set      
+Q> :kind Set      
 Set :: * -> *
-> :kind Maybe
+Q> :kind Maybe
 Maybe :: * -> *
-> :kind Either
+Q> :kind Either
 Either :: * -> * -> *
 ```
 
@@ -61,11 +61,11 @@ In contrast, `[]`, `Set` and `Maybe` take one type argument, so if we say only `
 following, however:
 
 ```haskell
-> :kind [Int]
+Q> :kind [Int]
 [Int] :: *
-> :kind Maybe String
+Q> :kind Maybe String
 Maybe String :: *
-> :kind Set Float
+Q> :kind Set Float
 Set Float :: *
 ```
 
@@ -76,17 +76,17 @@ considered function applications in the type-level.
 To provide a complete picture, let's see the same with `Map` and `Either`:
 
 ```haskell
-> :kind Map
+Q> :kind Map
 Map :: * -> * -> *
-> :kind Map String
+Q> :kind Map String
 Map String :: * -> *
-> :kind Map String Int
+Q> :kind Map String Int
 Map String Int :: *
-> :kind Either
+Q> :kind Either
 Either :: * -> * -> *
-> :kind Either String
+Q> :kind Either String
 Either String :: * -> *
-> :kind Either String (IO Int)
+Q> :kind Either String (IO Int)
 Either String (IO Int) :: *
 ```
 

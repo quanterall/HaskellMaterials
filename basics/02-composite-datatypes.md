@@ -270,15 +270,15 @@ aProfessor =
 Here are some examples of running `printPerson` with our values:
 
 ```haskell
-> printPerson aPerson
+Q> printPerson aPerson
 "Victor Vega was a antagonist of Reservoir Dogs"
-> printPerson aBackendProgrammer
+Q> printPerson aBackendProgrammer
 "Kristina is a 24 years old backend programmer at Quanterall"
-> printPerson aFrontendProgrammer
+Q> printPerson aFrontendProgrammer
 "Pesho is a 42 years old frontend programmer at Quanterall"
-> printPerson aFullstackProgrammer
+Q> printPerson aFullstackProgrammer
 "Sasho is a 18 years old fullstack programmer at Quanterall"
-> printPerson aProfessor
+Q> printPerson aProfessor
 "John Atanasoff was a professor of theoretical physics"
 ```
 
