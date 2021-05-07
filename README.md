@@ -71,7 +71,8 @@ solutions is a very effective way to stimulate thinking deeply about these thing
 
 If you have any questions/suggestions on the material or things not covered by the material (yet?)
 you can pick any way to contact me (RocketChat, Discord, rickard.andersson@quanterall.com) and I'll
-do my very best to answer, correct or otherwise handle it.
+do my very best to answer, correct or otherwise handle it. Another avenue would be to create an issue
+or submit a pull request with the changes and/or questions.
 
 ## Installing the build- and project management-tool `stack`
 
