@@ -166,6 +166,15 @@ I have created a video demostrating how to use the templates:
 
 [![Watch](https://img.youtube.com/vi/fkR0DsKwIO4/0.jpg)](https://youtu.be/fkR0DsKwIO4)
 
+## Using the REPL/GHCi
+
+It is quite common to use the REPL/interactive environment to write snippets of code and also to
+query your code base for information. I've made a video on some of the basic things you can do in
+the REPL, some of the things you might want to keep in mind as well as some of the things I added to
+make the experience a bit better in the development container REPLs:
+
+[![Watch](https://img.youtube.com/vi/JuaqOirNF8g/0.jpg)](https://youtu.be/JuaqOirNF8g)
+
 ## Basic reading materials
 
 The below documents will likely take shape as practical lessons at a later date but are provided
