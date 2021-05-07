@@ -66,6 +66,7 @@ leftmost, represent the arguments/parameters passed to the function, with the la
 representing the return value.
 
 ```haskell
+--          a      b     result
 addInts :: Int -> Int -> Int
 addInts a b = a + b
 ```
@@ -74,6 +75,7 @@ Calling functions, as we can see above, can be done via infix notation when they
 could also call the operator in a prefix position:
 
 ```haskell
+--          a      b     result
 addInts :: Int -> Int -> Int
 addInts a b = (+) a b
 ```
@@ -82,6 +84,7 @@ The application of a function is done by just writing the function name followed
 a space for each parameter, making it as lightweight an operation as possible.
 
 ```haskell
+--                x    divisor result
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
   -- When we want to divide our problem into smaller parts we can use `let`.
@@ -97,6 +100,7 @@ remainder of dividing it by the second argument. Here we check whether or not th
 We could also write the division as follows:
 
 ```haskell
+--                x    divisor result
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
   -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
