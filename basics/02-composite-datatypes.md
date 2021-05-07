@@ -15,6 +15,8 @@ It can be either `True` or `False` and working with it is fairly instructive in 
 work with these kinds of data declarations:
 
 ```haskell
+import Prelude
+
 add42or1337 :: Bool -> Int -> Int
 -- Note that `if` is an expression and both branches need to return the same type. We also always
 -- need the `else` branch for this reason.
@@ -24,6 +26,8 @@ add42or1337 shouldAdd42 x = x + if shouldAdd42 then 42 else 1337
 We could also use pattern-matching via the `case` keyword here to inspect the value of the bool:
 
 ```haskell
+import Prelude
+
 add42or1337 :: Bool -> Int -> Int
 add42or1337 shouldAdd42 x = case shouldAdd42 of
   True -> x + 42
@@ -36,6 +40,8 @@ even if they had associated data. We'll see this later.
 We could also pattern-match "in the top-level", meaning on the left of the `=`:
 
 ```haskell
+import Prelude
+
 add42or1337 :: Bool -> Int -> Int
 add42or1337 True x = x + 42
 add42or1337 False x = x + 1337
@@ -51,6 +57,8 @@ only the amount added depends on this boolean.
 A record type is a collection of fields and values that all exist together at the same time:
 
 ```haskell
+import Prelude
+
 data Person = Person
   { personName :: String,
     personAge :: Age,

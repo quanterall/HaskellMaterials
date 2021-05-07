@@ -1,22 +1,16 @@
 # Example of handling union types & record types together
 
 What follows is the full example of the union & record example in the document on
-[Composite Datatypes](./02-composite-datatypes.md). Try saving it as `Example.hs` and running it:
-
-```bash
-$ stack script --resolver lts-16.31 Example.hs
-Using resolver: lts-16.31 specified on command line
-Kristina is a 24 years old backend programmer at Quanterall
-Pesho is a 42 years old frontend programmer at Quanterall
-Sasho is a 18 years old fullstack programmer at Quanterall
-John Atanasoff was a professor of theoretical physics
-```
+[Composite Datatypes](./02-composite-datatypes.md). Try creating a project with
+`stack new people quanterall/basic` and putting the code in the `Library.hs` file:
 
 It can also be very instructive to modify and add more information to see how it affects compilation
 and the running of the program. As an example, you could try adding more professions as well as imbue
 the `Dead` case of `Age` with either a year of death or the age someone died at.
 
 ```haskell
+import Prelude
+
 data Person = Person
   { personName :: String,
     personAge :: Age,
