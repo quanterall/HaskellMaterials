@@ -163,11 +163,11 @@ under the hood, all from the Haskell runtime and `STM`:
 
 module Library where
 
--- This requires the package `async`
+-- This requires the package `async`, add in `package.yaml`
 import Control.Concurrent.Async (concurrently_, replicateConcurrently_)
--- This requires the package `stm`
+-- This requires the package `stm`, add in `package.yaml`
 import Control.Concurrent.STM (atomically, modifyTVar', newTVarIO, readTVarIO)
--- This requires the package `stm-chans`
+-- This requires the package `stm-chans`, add in `package.yaml`
 import Control.Concurrent.STM.TBMQueue
   ( TBMQueue,
     closeTBMQueue,
@@ -177,7 +177,7 @@ import Control.Concurrent.STM.TBMQueue
   )
 import Control.Exception (finally)
 import Data.Foldable (for_)
--- This requires the package `hspec`
+-- This requires the package `hspec`, add in `package.yaml`
 import Test.Hspec (hspec, it, shouldReturn)
 import Prelude
 
