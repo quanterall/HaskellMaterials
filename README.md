@@ -179,7 +179,7 @@ the "Modules" document is somewhat of a standalone affair and might be removed e
 
 [`Debug.Trace`](https://hackage.haskell.org/package/base-4.14.1.0/docs/Debug-Trace.html) is your
 friend. It will even put compiler warnings in there automatically so you don't leave your debug
-logging statements in there.
+logging statements in there to run in production.
 
 ```haskell
 import qualified Debug.Trace as Trace
