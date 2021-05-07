@@ -88,7 +88,7 @@ in this document. You can choose to run this in a development container or not, 
 is that this template sets up a default set of extensions. This means that it effectively
 assumes/establishes a standard language subset to learn and use.
 
-If you're having issues running the examples, it might be wise to create a project usingn
+If you're having issues running the examples, it might be wise to create a project using
 `stack new my-project-name quanterall/basic` and try it with that setup in the generated
 `Library.hs` file.
 
