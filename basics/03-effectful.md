@@ -23,9 +23,74 @@ case we can say that `IO` has the "type" `IO :: Type -> Type`. The type `IO ()` 
 applied to `()` which produces the type `IO ()`.
 
 Likewise we can also have `IO String` which is `IO` applied to `String`, which produces the type
-`IO String`, **or any other type** you can imagine. The actual names for these things are "kinds",
-as in "IO has the kind `* -> *`" where the asterisks are types, so it takes one type and returns a
-total one.
+`IO String`. IO has the "kind" `* -> *` where the asterisks are types. `IO` itself can be seen
+as a type constructor in the type system, that requires a type to be passed to it in order to
+construct a concrete one.
+
+### Interlude: IO is "higher-kinded"
+
+It can be helpful to draw a parallell to "higher-order functions", i.e. functions that take and/or
+return other functions. `IO` (and other types that themselves take type arguments) can be seen as
+"higher-order types" that take type arguments in order to return concrete types.
+
+In reality, all types have kinds in Haskell, as we can observe in `ghci`:
+
+```haskell
+> :kind Int
+Int :: *
+> :kind []
+[] :: * -> *
+> :kind IO
+IO :: * -> *
+> :kind Map      
+Map :: * -> * -> *
+> :kind Set      
+Set :: * -> *
+> :kind Maybe
+Maybe :: * -> *
+> :kind Either
+Either :: * -> * -> *
+```
+
+The common thread here is that for each type, the amount of asterisks we see are directly related to
+how many type arguments the types take. `Int` has zero type arguments and just referring to `Int` is
+itself enough to have a concrete type.
+
+In contrast, `[]`, `Set` and `Maybe` take one type argument, so if we say only `[]`, `Set` and
+`Maybe` we can see that they still take more arguments to create concrete types. We can still do the
+following, however:
+
+```haskell
+> :kind [Int]
+[Int] :: *
+> :kind Maybe String
+Maybe String :: *
+> :kind Set Float
+Set Float :: *
+```
+
+Since we've now passed type arguments to these type constructors we're now back to one asterisk,
+meaning we have concrete types. With this in mind it's not hard to see why type constructors can be
+considered function applications in the type-level.
+
+To provide a complete picture, let's see the same with `Map` and `Either`:
+
+```haskell
+> :kind Map
+Map :: * -> * -> *
+> :kind Map String
+Map String :: * -> *
+> :kind Map String Int
+Map String Int :: *
+> :kind Either
+Either :: * -> * -> *
+> :kind Either String
+Either String :: * -> *
+> :kind Either String (IO Int)
+Either String (IO Int) :: *
+```
+
+### Back to `IO ()`
 
 So what is it about `IO ()` that makes it so common in libraries and APIs? `IO` means we have an
 essentially arbitrary action, and `()` is the type representing "No interesting return value", which
