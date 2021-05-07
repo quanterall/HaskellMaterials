@@ -111,13 +111,16 @@ maybeReadEvent messageDecoder socket = do
 
 Since we do not execute in `IO` the function that we pass as the first argument the only thing it can
 do is either produce nothing from a given byte string, or produce a value of type `Message`. This is
-a sensible design choice for a decoding function, and one we can make explicit in our API.
+a sensible design choice for a decoding function, and one we can make explicit in our API. Attempting
+to do effectful things in this function will lead to using functions like `unsafePerformIO` and
+friends, making it clear that one is outside of the realm of reasonable usage.
 
 ## Should you avoid effectful things?
 
 It's a bit of a meme that Haskell programmers avoid or dislike effectful things. This is overblown
 and in reality nothing useful ever gets done without at some point executing in `IO` or some context
-that wraps it.
+that wraps it. With that in mind, it's still the case that pure functions can be used everywhere,
+whereas the possible usage of impure functions will always depend on the context we're in.
 
 Should a function meant to validate a data type execute in `IO`? Probably not. Common sense prevails
 here and software is iterative; you will be able to see what can be made pure and thus less
