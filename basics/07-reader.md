@@ -6,6 +6,7 @@ we won't have to pass explicitly to any of the `Reader` functions in that part o
 
 ```haskell
 import Control.Monad.Reader (Reader, ask, runReader)
+import Prelude
 
 notPassingArguments :: Reader String Int
 notPassingArguments = do
