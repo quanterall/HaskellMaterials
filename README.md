@@ -81,6 +81,17 @@ reasonable place to start.
 Why `stack`? It's likely the easiest way for new people to start and (probably) the most common
 choice in industry, though other tools are catching up.
 
+## Running the examples in this repository
+
+Most of the examples are created to work well with the `quanterall/basic` template referenced below
+in this document. You can choose to run this in a development container or not, but the bigger point
+is that this template sets up a default set of extensions. This means that it effectively
+assumes/establishes a standard language subset to learn and use.
+
+If you're having issues running the examples, it might be wise to create a project usingn
+`stack new my-project-name quanterall/basic` and try it with that setup in the generated
+`Library.hs` file.
+
 ## Making your first example project
 
 I've set up templates for project generation via the `stack` tool. These come pre-configured with
