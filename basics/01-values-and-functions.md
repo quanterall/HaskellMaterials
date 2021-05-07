@@ -35,6 +35,8 @@ The basic primitive types in Haskell are:
 - `Char`
 
 ```haskell
+import Prelude
+
 myAnswerToEverything :: Int
 myAnswerToEverything = 42
 
@@ -55,6 +57,8 @@ String are actually made up out of lists of characters by default, but because `
 we'll cover them here:
 
 ```haskell
+import Prelude
+
 myString :: String -- <- this is just an alias for `[Char]`
 myString = "This is not the best string in the world, it's just a tribute"
 ```
@@ -66,6 +70,8 @@ leftmost, represent the arguments/parameters passed to the function, with the la
 representing the return value.
 
 ```haskell
+import Prelude
+
 --          a      b     result
 addInts :: Int -> Int -> Int
 addInts a b = a + b
@@ -75,6 +81,8 @@ Calling functions, as we can see above, can be done via infix notation when they
 could also call the operator in a prefix position:
 
 ```haskell
+import Prelude
+
 --          a      b     result
 addInts :: Int -> Int -> Int
 addInts a b = (+) a b
@@ -84,6 +92,8 @@ The application of a function is done by just writing the function name followed
 a space for each parameter, making it as lightweight an operation as possible.
 
 ```haskell
+import Prelude
+
 --                x    divisor result
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
@@ -100,6 +110,8 @@ remainder of dividing it by the second argument. Here we check whether or not th
 We could also write the division as follows:
 
 ```haskell
+import Prelude
+
 --                x    divisor result
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
@@ -131,6 +143,8 @@ will result in the return value being a function that expects the remaining argu
 have the same return value:
 
 ```haskell
+import Prelude
+
 addInts :: Int -> Int -> Int
 addInts a b = a + b
 
@@ -167,6 +181,7 @@ The above pattern also works well when composing different functions to achieve 
 ```haskell
 import Control.Category ((>>>))
 import Data.Function ((&))
+import Prelude
 
 dataPartLength :: String -> Int
 dataPartLength = length . takeWhile (/= '1') . reverse
@@ -205,6 +220,7 @@ Let's first look at the example:
 
 ```haskell
 import Data.Function ((&))
+import Prelude
 
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
@@ -221,6 +237,7 @@ We can use a shorthand plus `takeWhile` to make this a bit neater:
 
 ```haskell
 import Data.Function ((&))
+import Prelude
 
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
@@ -239,6 +256,7 @@ If we now set an upper bound as a parameter we can get the solution to the actua
 
 ```haskell
 import Data.Function ((&))
+import Prelude
 
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
@@ -259,6 +277,7 @@ If we wanted to support using different divisors we could also do the following:
 
 ```haskell
 import Data.Function ((&))
+import Prelude
 
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
