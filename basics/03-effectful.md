@@ -174,9 +174,9 @@ maybeReadEvent messageDecoder socket = do
   ...
 ```
 
-Since we do not execute in `IO` the function that we pass as the first argument the only thing it can
-do is either produce nothing from a given byte string, or produce a value of type `Message`. This is
-a sensible design choice for a decoding function, and one we can make explicit in our API. Attempting
+Since our first argument doesn't have the return type `IO (Maybe Message)` the only thing it can do
+is either produce nothing from a given byte string, or produce a value of type `Message`. This is a
+sensible design choice for a decoding function, and one we can make explicit in our API. Attempting
 to do effectful things in this function will lead to using functions like `unsafePerformIO` and
 friends, making it clear that one is outside of the realm of reasonable usage.
 
