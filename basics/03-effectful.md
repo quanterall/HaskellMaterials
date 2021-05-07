@@ -137,6 +137,7 @@ when executed will produce a value of type `a`. When we use `<-` in our code we 
 action and binding the **result**, the `a` in this case, to the name on the left.
 
 ```haskell
+import Prelude
 import qualified System.Environment as Environment
 
 main :: IO ()
