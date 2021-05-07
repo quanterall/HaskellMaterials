@@ -89,8 +89,9 @@ is that this template sets up a default set of extensions. This means that it ef
 assumes/establishes a standard language subset to learn and use.
 
 If you're having issues running the examples, it might be wise to create a project using
-`stack new my-project-name quanterall/basic` and try it with that setup in the generated
-`Library.hs` file.
+`stack new my-project-name quanterall/basic` and paste the example code in the generated
+`Library.hs` file. This has been tested with many of the examples and that is in general how it's
+supposed to work. If you find examples that do not, please make an issue or pull request about it.
 
 ## Making your first example project
 
