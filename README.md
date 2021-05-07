@@ -142,23 +142,7 @@ Once this is done and you open the terminal execute the following to run the app
 
 ```bash
 $ stack run
-Building all executables for `project-name' once. After a successful build of all of them, only specified executables will be rebuilt.
-project-name> configure (lib + exe)
-Configuring project-name-0.0.0...
-project-name> build (lib + exe)
-Preprocessing library for project-name-0.0.0..
-Building library for project-name-0.0.0..
-[1 of 2] Compiling Library
-[2 of 2] Compiling Paths_project_name
-Preprocessing executable 'project-name' for project-name-0.0.0..
-Building executable 'project-name' for project-name-0.0.0..
-[1 of 2] Compiling Main
-[2 of 2] Compiling Paths_project_name
-Linking .stack-work/dist/x86_64-linux/Cabal-3.0.1.0/build/project-name/project-name ...
-project-name> copy/register
-Installing library in /workspace/.stack-work/install/x86_64-linux/46a764856ca98002996402d60ec101b4647e28979008b455b0f3583cc001920a/8.8.4/lib/x86_64-linux-ghc-8.8.4/project-name-0.0.0-F19iobAcRl6CrxmGiEteIF
-Installing executable project-name in /workspace/.stack-work/install/x86_64-linux/46a764856ca98002996402d60ec101b4647e28979008b455b0f3583cc001920a/8.8.4/bin
-Registering library for project-name-0.0.0..
+<... build output ...>
 Hello, World!
 ```
 
