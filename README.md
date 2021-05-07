@@ -161,8 +161,9 @@ make the experience a bit better in the development container REPLs:
 
 ## Basic reading materials
 
-The below documents will likely take shape as practical lessons at a later date but are provided
-here as a collection of data and thoughts about these topics in order to introduce them.
+The below documents contain information and examples about different topics. Generally speaking they
+are readable from top to bottom in terms of the assumptions they make about knowledge level, though
+the "Modules" document is somewhat of a standalone affair and might be removed entirely.
 
 - [Modules](./basics/00-modules.md)
 - [Values and functions, basic types](./basics/01-values-and-functions.md)
@@ -173,7 +174,6 @@ here as a collection of data and thoughts about these topics in order to introdu
 - [Mutable variables in Haskell](./basics/06-mutable-variables.md)
 - [The Reader Monad](./basics/07-reader.md)
 - [The ReaderT Monad Transformer](./basics/08-readert.md)
-- [Miscellaneous syntax, to be categorized](./misc/syntax.md)
 
 ## "Help! I want to print a value but I can't print without IO!"
 
