@@ -63,6 +63,8 @@ It's notable that constraining the input type with type class constraints makes 
 space larger as you add more, as we can see by adding this `Eq` constraint to our previous function:
 
 ```haskell
+import Prelude
+
 notIdentityAnymore :: (Eq a, Num a) => a -> a
 notIdentityAnymore x =
   if x == 0
