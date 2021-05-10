@@ -618,6 +618,15 @@ clamp lowerBound upperBound value
 ```
 
 Running this we can see that we've effectively removed the issue of unsafe division by clamping the
-divisor. Using `safeDivide` even in the presence of clamping here isn't necessarily the point, but
-rather that we get more natural function composition if we design our argument order to deliberately
-allow for this type of partial application.
+divisor:
+
+```bash
+$ stack run -- 5 0
+Your result was: 5.0
+$ stack run -- 5 2
+Your result was: 2.5
+```
+
+Using `safeDivide` even in the presence of clamping here isn't necessarily the point, but rather
+that we get more natural function composition if we design our argument order to deliberately allow
+for this type of partial application.
