@@ -100,7 +100,7 @@ isDivisibleBy x divisor =
   -- When we want to divide our problem into smaller parts we can use `let`.
   let remainderOfDivision = rem x divisor
   -- `let` has to be followed by `in` and then the final expression that is to be executed.
-  in remainderOfDivision == 0
+   in remainderOfDivision == 0
 ```
 
 `rem` in the above code snippet is a function that takes an integer-like number and returns the
@@ -117,7 +117,7 @@ isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
   -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
   let remainderOfDivision = x `rem` divisor
-  in remainderOfDivision == 0
+   in remainderOfDivision == 0
 ```
 
 This can be used to make code more intuitive and is very common in the case of checking if something
@@ -226,7 +226,7 @@ isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
   -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
   let remainderOfDivision = x `rem` divisor
-  in remainderOfDivision == 0
+   in remainderOfDivision == 0
 
 solution :: Int
 solution =
@@ -243,7 +243,7 @@ isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
   -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
   let remainderOfDivision = x `rem` divisor
-  in remainderOfDivision == 0
+   in remainderOfDivision == 0
 
 solution :: Int
 solution =
@@ -262,7 +262,7 @@ isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
   -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
   let remainderOfDivision = x `rem` divisor
-  in remainderOfDivision == 0
+   in remainderOfDivision == 0
 
 solution :: Int -> Int
 solution upperBound =
@@ -283,7 +283,7 @@ isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
   -- Note how we surround the function in backticks (`) to be able to put it in the infix position.
   let remainderOfDivision = x `rem` divisor
-  in remainderOfDivision == 0
+   in remainderOfDivision == 0
 
 solution :: Int -> [Int] -> Int
 solution upperBound divisors =
