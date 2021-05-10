@@ -487,3 +487,18 @@ You tried to divide by zero
 root@d4adb818701f:/workspace# stack run -- 5 2
 Your result was: 2.5
 ```
+
+You may have noticed that I have referred to `case` as an expression; this is not a mistake. If we
+change the above code example to use the following we can see that indeed, `case` is an expression
+like everything else:
+
+```haskell
+putStrLn $ case safeDivide x divisor of
+  DivideSuccess result ->
+    "Your result was: " <> show result
+  DivisionByZero ->
+    "You tried to divide by zero"
+```
+
+Here we are saying that `putStrLn` will take whatever our `case` expression returns, meaning it in
+this case always will have to return a `String`.
