@@ -124,11 +124,11 @@ This can be used to make code more intuitive and is very common in the case of c
 is a member of a map, list or the like:
 
 ```haskell
-element `Map.member` ourMap
+key `Map.member` ourMap -- Is the key defined in the map?
 ```
 
 ```haskell
-element `List.elem` ourList
+element `List.elem` ourList -- Is the element present in the list?
 ```
 
 This is a general facility that you can apply to any function, even functions with more than two
