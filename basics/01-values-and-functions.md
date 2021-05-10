@@ -508,3 +508,116 @@ return values of the same type in all branches and indeed there is no "empty cas
 As we saw in the previous example we can indeed execute actions in our case branches. That example,
 where we printed a string in each branch of the `case`, worked because we were constructing an
 action of type `IO ()` in each branch when we executed `putStrLn ...`.
+
+## A note on functions, their parameter order and partial application
+
+It could feel natural to make `clamp` from our previous example take the parameters in a slightly
+different order. The original:
+
+```haskell
+-- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value
+  | value < lowerBound = lowerBound
+  | value > upperBound = upperBound
+  | otherwise = value
+```
+
+If one were to take the parameters as follows it might match the expression in the documentation
+more clearly:
+
+```haskell
+-- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound value upperBound 
+  | value < lowerBound = lowerBound
+  | value > upperBound = upperBound
+  | otherwise = value
+```
+
+There is a downside to doing this, however: We will not be able to partially apply the function to
+very great effect:
+
+```haskell
+-- Takes an upper bound but what does it actually accomplish?
+takesUpperBound :: Int -> Int
+takesUpperBound = clamp 0 255
+
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound value upperBound 
+  | value < lowerBound = lowerBound
+  | value > upperBound = upperBound
+  | otherwise = value
+```
+
+As we can see, the partially applied (`clamp lowerBound value`) function will now take an upper
+bound and return a result. Depending on your use case this can be unintuitive design. If we instead
+take the value to clamp as the last argument we get a useful way to construct new functions:
+
+```haskell
+clampsToByteValues :: Int -> Int
+clampsToByteValues = clamp 0 255
+
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value
+  | value < lowerBound = lowerBound
+  | value > upperBound = upperBound
+  | otherwise = value
+```
+
+In the above example we've partially applied `clamp` to `0` and `255` and what we get out of it is
+a function that takes a value and correctly returns the value if it is in that range or either of
+the boundaries if it is outside.
+
+If we are using this function in a pipeline of functions, it is a lot more intuitive:
+
+```haskell
+import Data.Function ((&))
+import qualified System.Environment as Environment
+import Prelude
+
+runMain :: IO ()
+runMain = do
+  arguments <- Environment.getArgs
+  case arguments of
+    [xString, divisorString] -> do
+      let x = read xString
+          divisor = read divisorString
+          -- This pipeline is basically saying to take the divisor we have, clamp it to within the
+          -- range `1 <= value <= 255` then safely divide `x` by the result.
+          divisionResult =
+            divisor
+              & clamp 1 255
+              & safeDivide x
+       in -- Note how we use `case` here to deconstruct the result
+          putStrLn $ case divisionResult of
+            DivideSuccess result ->
+              "Your result was: " <> show result
+            DivisionByZero ->
+              "You tried to divide by zero"
+    _otherwise ->
+      putStrLn "Need a number and a divisor to divide it by"
+
+data DivisionResult
+  = DivideSuccess Float
+  | DivisionByZero
+  deriving (Show)
+
+safeDivide :: Int -> Int -> DivisionResult
+safeDivide _x 0 = DivisionByZero
+safeDivide x divisor =
+  let xAsFloat = fromIntegral x
+      divisorAsFloat = fromIntegral divisor
+   in DivideSuccess (xAsFloat / divisorAsFloat)
+
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value
+  | value < lowerBound = lowerBound
+  | value > upperBound = upperBound
+  | otherwise = value
+```
+
+Running this we can see that we've effectively removed the issue of unsafe division by clamping the
+divisor. Using `safeDivide` even in the presence of clamping here isn't necessarily the point, but
+rather that we get more natural function composition if we design our argument order to deliberately
+allow for this type of partial application.
