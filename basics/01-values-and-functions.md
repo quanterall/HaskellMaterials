@@ -25,7 +25,7 @@ consider parameters:
 myCoolValue = True
 ```
 
-The basic primitive types in Haskell are:
+The basic types in Haskell are:
 
 - `Int` (limited in size)
 - `Integer` (can widen as needed, useful if you know you'll move into BigInt territory)
