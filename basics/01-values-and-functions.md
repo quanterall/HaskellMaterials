@@ -589,8 +589,7 @@ runMain = do
             divisor
               & clamp 1 255
               & safeDivide x
-       in -- Note how we use `case` here to deconstruct the result
-          putStrLn $ case divisionResult of
+       in putStrLn $ case divisionResult of
             DivideSuccess result ->
               "Your result was: " <> show result
             DivisionByZero ->
