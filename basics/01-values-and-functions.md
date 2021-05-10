@@ -296,3 +296,194 @@ solution upperBound divisors =
 
 -- `solution 1000 [3, 5]` will give us the value 233168
 ```
+
+## Asking questions about values
+
+Quite regularly we will have to pose some kind of question about the structure of a value, or
+whether or not it matches some kind of predicate. Let's look at a few ways to do this in the case of
+"clamping" a number:
+
+```haskell
+import qualified System.Environment as Environment
+import Prelude
+
+runMain :: IO ()
+runMain = do
+  arguments <- Environment.getArgs
+  case arguments of
+    [numberString] -> do
+      let number = read numberString
+       in print $ clamp 0 255 number
+    _otherwise ->
+      putStrLn "Need a number to be passed as an argument"
+
+-- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value
+  | value < lowerBound = lowerBound
+  | value > upperBound = upperBound
+  | otherwise = value
+```
+
+The above is likely the most natural way of doing this in this very example, because we have several
+questions to ask about the value and we can do so immediately in what are known as "guards".
+
+Note that we do not have an immediate `=` after our parameters but instead each `|` introduces a new
+question that we pose, a new **guard**. If the boolean expression that follows the pipe (`|`)
+evaluates to `True` the expression to the right of `=` is what will be evaluated.
+
+The word `otherwise` is an always matching case and we can use this case as an "for all other cases"
+clause.
+
+Another example:
+
+```haskell
+import qualified System.Environment as Environment
+import Prelude
+
+runMain :: IO ()
+runMain = do
+  arguments <- Environment.getArgs
+  case arguments of
+    [numberString] -> do
+      let number = read numberString
+       in print $ clamp 0 255 number
+    _otherwise ->
+      putStrLn "Need a number to be passed as an argument"
+
+-- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value =
+  if
+      | value < lowerBound -> lowerBound
+      | value > upperBound -> upperBound
+      | otherwise -> value
+```
+
+The above example shares a lot of structure with our other example. Again, the first example is
+likely the most natural choice for our given problem, but that way only works when we immediately
+ask questions about our input arguments and want to branch differently for the cases entirely.
+
+What we have above is a generalized `if` that supports many branches with arbitrary guards. It's
+called a "multi-way `if`" and is enabled by the `MultiWayIf` extension, which we've enabled by
+default in our templates.
+
+While we need to be aware that this does require an extension, it's still useful to learn and use
+this as a standard part of the language. Why? Because it's very flexible and solves the issue of
+having to introduce another, more roundabout way of being able to use guards:
+
+```haskell
+import qualified System.Environment as Environment
+import Prelude
+
+runMain :: IO ()
+runMain = do
+  arguments <- Environment.getArgs
+  case arguments of
+    [numberString] -> do
+      let number = read numberString
+       in print $ clamp 0 255 number
+    _otherwise ->
+      putStrLn "Need a number to be passed as an argument"
+
+-- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value =
+  case () of
+    () | value < lowerBound -> lowerBound
+    () | value > upperBound -> upperBound
+    () | otherwise -> value
+```
+
+Because `case` expressions allow us to use guards we can introduce this `case` expression context
+where we don't actually pattern match on anything but still use the guards. This is obviously not
+ideal and when we see this it's much better to just use multi-way `if`.
+
+`case` expressions and their cousin, top-level pattern matching, are ideal for when we want to match
+on the structure of a given value, either with literal values exactly or want to pull apart some
+structure via their constructors and field names:
+
+```haskell
+import qualified System.Environment as Environment
+import Prelude
+
+runMain :: IO ()
+runMain = do
+  arguments <- Environment.getArgs
+  case arguments of
+    [xString, divisorString] -> do
+      let x = read xString
+          divisor = read divisorString
+       in print $ safeDivide x divisor
+    _otherwise ->
+      putStrLn "Need a number to be passed as an argument"
+
+data DivisionResult
+  = DivideSuccess Float
+  | DivisionByZero
+  deriving (Show)
+
+safeDivide :: Int -> Int -> DivisionResult
+safeDivide _x 0 = DivisionByZero
+safeDivide x divisor =
+  let xAsFloat = fromIntegral x
+      divisorAsFloat = fromIntegral divisor
+   in DivideSuccess (xAsFloat / divisorAsFloat)
+```
+
+We will go deeper into how to use `data` in the [next document](./02-composite-datatypes.md) but for
+now all we need to know is that `safeDivide` can either return a `DivisionByZero` result or a
+`DivideSuccess` result that also carries a float with it.
+
+If we run this program we can see the following:
+
+```bash
+$ stack run -- 5 0
+DivisionByZero
+$ stack run -- 5 2
+DivideSuccess 2.5
+```
+
+We can use `case` to immediately ask questions about this structure:
+
+```haskell
+import qualified System.Environment as Environment
+import Prelude
+
+runMain :: IO ()
+runMain = do
+  arguments <- Environment.getArgs
+  case arguments of
+    [xString, divisorString] -> do
+      let x = read xString
+          divisor = read divisorString
+       in -- Note how we use `case` here to deconstruct the result
+          case safeDivide x divisor of
+            DivideSuccess result ->
+              putStrLn $ "Your result was: " <> show result
+            DivisionByZero ->
+              putStrLn "You tried to divide by zero"
+    _otherwise ->
+      putStrLn "Need a number and a divisor to divide it by"
+
+data DivisionResult
+  = DivideSuccess Float
+  | DivisionByZero
+  deriving (Show)
+
+safeDivide :: Int -> Int -> DivisionResult
+safeDivide _x 0 = DivisionByZero
+safeDivide x divisor =
+  let xAsFloat = fromIntegral x
+      divisorAsFloat = fromIntegral divisor
+   in DivideSuccess (xAsFloat / divisorAsFloat)
+```
+
+And when we run it:
+
+```haskell
+root@d4adb818701f:/workspace# stack run -- 5 0
+You tried to divide by zero
+root@d4adb818701f:/workspace# stack run -- 5 2
+Your result was: 2.5
+```
