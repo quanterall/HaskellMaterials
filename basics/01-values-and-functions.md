@@ -507,4 +507,4 @@ return values of the same type in all branches and indeed there is no "empty cas
 
 As we saw in the previous example we can indeed execute actions in our case branches. That example,
 where we printed a string in each branch of the `case`, worked because we were constructing an
-action of type `IO ()` in each branch.
+action of type `IO ()` in each branch when we executed `putStrLn ...`.
