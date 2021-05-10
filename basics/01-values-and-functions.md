@@ -53,7 +53,7 @@ myDouble :: Double
 myDouble = 1337.0
 ```
 
-String are actually made up out of lists of characters by default, but because `Strings` are common
+Strings are actually made up out of lists of characters by default, but because strings are common
 we'll cover them here:
 
 ```haskell
