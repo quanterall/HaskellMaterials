@@ -32,7 +32,7 @@ The basic types in Haskell are:
 - `Float` (32-bit floating point)
 - `Double` (64-bit floating point)
 - `Bool`
-- `Char`
+- `Char` (a single character)
 
 ```haskell
 import Prelude
