@@ -481,10 +481,10 @@ safeDivide x divisor =
 
 And when we run it:
 
-```haskell
-root@d4adb818701f:/workspace# stack run -- 5 0
+```bash
+$ stack run -- 5 0
 You tried to divide by zero
-root@d4adb818701f:/workspace# stack run -- 5 2
+$ stack run -- 5 2
 Your result was: 2.5
 ```
 
