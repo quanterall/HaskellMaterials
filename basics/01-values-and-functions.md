@@ -89,7 +89,7 @@ addInts a b = (+) a b
 ```
 
 The application of a function is done by just writing the function name followed by a space and then
-a space for each parameter, making it as lightweight an operation as possible.
+spaces between the parameters, making it as lightweight an operation as possible.
 
 ```haskell
 import Prelude
