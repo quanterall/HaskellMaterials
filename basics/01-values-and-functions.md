@@ -17,50 +17,39 @@ myCoolValue :: Bool
 ```
 
 The actual definition for it comes immediately after and is written with `=` to signify that the
-name on the left is equal to the expression on the right. In the case of values we don't have to
-consider parameters:
+name on the left is equal to the expression on the right:
 
 ```haskell
 -- We can create a value of type `Bool` using either `True` or `False`
+myCoolValue :: Bool
 myCoolValue = True
 ```
 
-The basic types in Haskell are:
-
-- `Int` (limited in size)
-- `Integer` (can widen as needed, useful if you know you'll move into BigInt territory)
-- `Float` (32-bit floating point)
-- `Double` (64-bit floating point)
-- `Bool`
-- `Char` (a single character)
+The basic types in Haskell:
 
 ```haskell
 import Prelude
 
-myAnswerToEverything :: Int
+myAnswerToEverything :: Int -- Integer, limited in size
 myAnswerToEverything = 42
 
-myInteger :: Integer
+myInteger :: Integer -- Integer, can grow as needed
 myInteger = 42
 
-myChar :: Char
+myChar :: Char -- A single character
 myChar = '$'
 
-myFloat :: Float
+myFloat :: Float -- 32-bit floating point value
 myFloat = 1337.0
 
-myDouble :: Double
+myDouble :: Double -- 64-bit floating point value
 myDouble = 1337.0
-```
 
-Strings are actually made up out of lists of characters by default, but because strings are common
-we'll cover them here:
-
-```haskell
-import Prelude
-
-myString :: String -- <- this is just an alias for `[Char]`
+myString :: String -- Actually just a type alias for a list of characters; `[Char]`
 myString = "This is not the best string in the world, it's just a tribute"
+
+myBool :: Bool -- `True` or `False`
+myBool = False
 ```
 
 ## Functions
