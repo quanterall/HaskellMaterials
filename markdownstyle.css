@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap");
+
+pre {
+  background-color: #f6f8fa;
+}
+
+code.language-haskell {
+  font-family: "Ubuntu Mono";
+  font-size: 16px !important;
+}
+
+.hljs-comment {
+  color: #2c7a2c;
+}
