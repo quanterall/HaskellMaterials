@@ -44,11 +44,11 @@ myFloat = 1337.0
 myDouble :: Double -- 64-bit floating point value
 myDouble = 1337.0
 
-myString :: String -- Actually just a type alias for a list of characters; `[Char]`
-myString = "This is not the best string in the world, it's just a tribute"
-
 myBool :: Bool -- `True` or `False`
 myBool = False
+
+myString :: String -- Actually just a type alias for a list of characters; `[Char]`
+myString = "This is not the best string in the world, it's just a tribute"
 ```
 
 ## Functions
