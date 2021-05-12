@@ -13,16 +13,15 @@ good documentation to specify the intended type.
 A type signature is written with the name of the thing it's for, followed by `::` and then the type:
 
 ```haskell
-myCoolValue :: Bool
+myValue :: Int
 ```
 
 The actual definition for it comes immediately after and is written with `=` to signify that the
 name on the left is equal to the expression on the right:
 
 ```haskell
--- We can create a value of type `Bool` using either `True` or `False`
-myCoolValue :: Bool
-myCoolValue = True
+myValue :: Int
+myValue = 42
 ```
 
 The basic types in Haskell:
