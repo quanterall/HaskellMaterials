@@ -158,8 +158,21 @@ In the above example, `List.map` takes the list it is working with as the last a
 can just partially apply it and still get the function we expect. Since we are not passing the list
 argument to `List.map` here we get a function that expects a list of integers and will return one.
 
-We are also partially applying our `+`. The function that we are expected to pass to `List.map` is
-expected to be of type `Int -> Int`, which is what we get when we write `(+ 42)`.
+We can also partially apply our `+`. The function that we are passing to `List.map` is expected to
+be of type `Int -> Int`, which is what we get when we write `(+ 42)`:
+
+```haskell
+import qualified Data.List as List
+import Prelude
+
+-- | Adds 42 to every item in a list
+add42ToAll :: [Int] -> [Int]
+add42ToAll = List.map (+ 42) -- could also be `(42 +)`
+```
+
+Since operators expect arguments both on the left and right side we can partially apply whichever
+side we want, so `(42 +)` is also valid. This obviously depends on the operator, as an operator like
+`-` would behave differently depending on which side you are omitting.
 
 ## Pipelines using partial application
 
