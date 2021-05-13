@@ -29,9 +29,9 @@ We could also use pattern-matching via the `case` keyword here to inspect the va
 import Prelude
 
 add42or1337 :: Bool -> Int -> Int
-add42or1337 shouldAdd42 x = case shouldAdd42 of
-  True -> x + 42
-  False -> x + 1337
+add42or1337 shouldAdd42 x = x + case shouldAdd42 of
+  True -> 42
+  False -> 1337
 ```
 
 Each `case` branch can deconstruct the different constructors of a union type (which `Bool` is),
