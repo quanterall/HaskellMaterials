@@ -177,8 +177,13 @@ intercalate between strings =
   mconcat $ List.intersperse between strings
 ```
 
-For a complete, put-together, version of these code snippets see
-[this file](./02b-person-printing.md).
+Running this on our previously defined profile we get:
+
+```haskell
+Q> profileToString rickard
+"rickard (34y, active) is interested in: Programming, Problem Solving, Teaching"
+```
+
 
 ## Generic datatypes
 
