@@ -150,8 +150,8 @@ import qualified Data.List as List
 import Prelude
 
 -- | Adds 42 to every item in a list
-add42 :: [Int] -> [Int]
-add42 = List.map (+ 42)
+add42ToAll :: [Int] -> [Int]
+add42ToAll = List.map (\x -> x + 42)
 ```
 
 In the above example, `List.map` takes the list it is working with as the last argument, meaning we
