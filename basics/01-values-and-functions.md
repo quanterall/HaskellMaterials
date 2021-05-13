@@ -310,6 +310,13 @@ whether or not it matches some kind of predicate. Let's look at a few ways to do
 import qualified System.Environment as Environment
 import Prelude
 
+-- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value
+  | value < lowerBound = lowerBound
+  | value > upperBound = upperBound
+  | otherwise = value
+
 runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
@@ -319,13 +326,6 @@ runMain = do
        in print $ clamp 0 255 number
     _otherwise ->
       putStrLn "Need a number to be passed as an argument"
-
--- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound upperBound value
-  | value < lowerBound = lowerBound
-  | value > upperBound = upperBound
-  | otherwise = value
 ```
 
 The above is likely the most natural way of doing this in this very example, because we have several
@@ -344,6 +344,14 @@ Another example:
 import qualified System.Environment as Environment
 import Prelude
 
+-- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value =
+  if
+      | value < lowerBound -> lowerBound
+      | value > upperBound -> upperBound
+      | otherwise -> value
+
 runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
@@ -353,14 +361,6 @@ runMain = do
        in print $ clamp 0 255 number
     _otherwise ->
       putStrLn "Need a number to be passed as an argument"
-
--- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound upperBound value =
-  if
-      | value < lowerBound -> lowerBound
-      | value > upperBound -> upperBound
-      | otherwise -> value
 ```
 
 The above example shares a lot of structure with our other example. Again, the first example is
@@ -379,6 +379,14 @@ having to introduce another, more roundabout way of being able to use guards:
 import qualified System.Environment as Environment
 import Prelude
 
+-- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+clamp :: Int -> Int -> Int -> Int
+clamp lowerBound upperBound value =
+  case () of
+    () | value < lowerBound -> lowerBound
+    () | value > upperBound -> upperBound
+    () | otherwise -> value
+
 runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
@@ -388,14 +396,6 @@ runMain = do
        in print $ clamp 0 255 number
     _otherwise ->
       putStrLn "Need a number to be passed as an argument"
-
--- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound upperBound value =
-  case () of
-    () | value < lowerBound -> lowerBound
-    () | value > upperBound -> upperBound
-    () | otherwise -> value
 ```
 
 Because `case` expressions allow us to use guards we can introduce this `case` expression context
