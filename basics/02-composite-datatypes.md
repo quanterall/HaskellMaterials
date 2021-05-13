@@ -52,182 +52,51 @@ version as it also allows you to have some of the arguments be bound only for ce
 and generally keeps each case separate. In this case the first version makes the most sense because
 only the amount added depends on this boolean.
 
-## Record types
+## Newtypes
 
-A record type is a collection of fields and values that all exist together at the same time:
+Before we move into advanced composite types, let's look at a very basic tool in the Haskell
+toolbelt: `newtype`.
+
+Newtypes are types that wrap other types in order to make distinct versions of them. Let's look at
+what that means in practice.
+
+Let's imagine a function `filteredCopy` that takes a source filename, destination filename as well
+as a string to filter by such that we only copy lines that contain that string:
 
 ```haskell
-import Prelude
-
-data Person = Person
-  { personName :: String,
-    personAge :: Age,
-    personProfession :: Profession
-  }
+filteredCopy :: String -> String -> String -> IO ()
+filteredCopy source destination copyPattern = ...
 ```
 
-We only have one constructor here `Person`, and it takes a name, age and profession. The reason that
-we might name fields with what they relate to is that every record field actually is a function that
-takes the constructed type and returns the field's type.
+The `IO ()` for the purposes of this example means that we are doing something effectful and there
+is no useful return value.
+
+What happens if we by mistake use this function with `filteredCopy destination source copyPattern`
+or any other incorrect order for the parameters? The type system doesn't know anything about what
+these strings represent.
+
+The solution is fairly simple:
 
 ```haskell
--- The constructor is actually a function that takes the arguments in order
-Person :: String -> Age -> Profession -> Person
+newtype Source = Source String
 
--- Each field has an associated function that extracts that thing from a `Person`
-personName :: Person -> String
-personAge :: Person -> Age
-personProfession :: Person -> Profession
+newtype Destination = Destination String
+
+newtype CopyPattern = CopyPattern String
+
+filteredCopy :: Source -> Destination -> CopyPattern -> IO ()
+filteredCopy source destination copyPattern = ...
 ```
 
-When we create a `Person` and want to create it like a record we can do so as follows:
+When we use `filteredCopy` now we will have to wrap our strings:
 
 ```haskell
-aPerson :: Person
-aPerson =
-  Person
-    { personName = "Victor Vega",
-      personAge = Living 42,
-      personProfession = FictionalCharacter (Antagonist (FictionalWorkName "Reservoir Dogs"))
-    }
+filteredCopy (Source source) (Destination destination) (CopyPattern copyPattern)
 ```
 
-It's likely best to prefer using the field names like this in order to be clearer about which fields
-have which values. The alternative way is less clear about which part is what and can be very
-confusing when you have big records:
-
-```haskell
-aPerson :: Person
-aPerson =
-  Person
-    "Victor Vega"
-    (Living 42)
-    (FictionalCharacter (Antagonist (FictionalWorkName "Reservoir Dogs")))
-
-```
-
-This becomes more and more clear when you have descriptive types like the `Profession` type that
-make it clearer what is what, but we should try to mention the field names when it doesn't hamper
-our ability to write clear code.
-
-## Union types
-
-Union types are where we can see the basics of modelling broader relationships between things.
-
-_Note that the following is a demonstration of using union types, not a logical definition of which
-professions exist and what you can be a student/professor of._
-
-```haskell
--- These are here only to distinguish "normal strings" from these particular types of strings.
--- `newtype` doesn't actually create a new type for runtime, but exists only as a distinction
--- between the types for compile-time.
-newtype CompanyName = CompanyName String
-newtype FictionalWorkName = FictionalWorkName String
-
-data Age
-  = Dead
-  | Living Int
-
--- Our union cases can care about wildly different things.
-data Profession
-  = Programmer ProgrammerRole CompanyName
-  | Professor Subject
-  | Student Subject
-  | FictionalCharacter FictionalCharacter
-  | Unemployed
-
-data ProgrammerRole
-  = Backend
-  | Frontend
-  | Fullstack
-
-data Subject
-  = Finance
-  | Physics AppliedOrTheoretical
-  | Mathematics AppliedOrTheoretical
-  | ComputerScience
-  | ComputerEngineering
-
-data AppliedOrTheoretical = Applied | Theoretical
-
-data FictionalCharacter
-  = Protagonist FictionalWorkName
-  | Antagonist FictionalWorkName
-```
-
-Our types can embed other types that we've created and generally we are free to specify exactly
-as much information as we care to for each case, which leads to a very organic type structure that
-enables us to be very precise about what we care about in each case.
-
-```haskell
-printPerson :: Person -> String
-printPerson
-  Person
-    { personName = name,
-      personAge = Living age,
-      personProfession = profession
-    } =
-    name <> " is a " <> show age <> " years old " <> printProfession profession
-printPerson
-  Person
-    { personName = name,
-      personAge = Dead,
-      personProfession = profession
-    } =
-    name <> " was a " <> printProfession profession
-```
-
-Above we can see the first case of where the distinction between two cases matters: `Living` &
-`Dead`. In the case where someone is living there is an age (`Int`) attached to this information, so
-we pull it out and use it. We also print "is a" in this case. When a person is defined as `Dead` we
-have no extra information and instead print "was a".
-
-The rest of the printing follows much the same structure; we match on the constructors in the
-top-level and decide what to print based on it. In certain cases we have access to more or less
-information connected to the constructor in question and we might call another function to print
-that data.
-
-```haskell
-printPerson :: Person -> String
-printPerson
-  Person
-    { personName = name,
-      personAge = Living age,
-      personProfession = profession
-    } =
-    name <> " is a " <> show age <> " years old " <> printProfession profession
-printPerson
-  Person
-    { personName = name,
-      personAge = Dead,
-      personProfession = profession
-    } =
-    name <> " was a " <> printProfession profession
-
-printProfession :: Profession -> String
-printProfession Unemployed = "unemployed person"
-printProfession (Professor subject) = "professor of " <> printSubject subject
-printProfession (Student subject) = "student of " <> printSubject subject
-printProfession (FictionalCharacter fictionRole) = printFictionRole fictionRole
-printProfession (Programmer role (CompanyName name)) =
-  printProgrammerRole role <> " programmer at " <> name
-
-printSubject :: Subject -> String
--- Note here how we are matching on two different physics & mathematics cases, one for applied
--- and one for theoretical.
-printSubject (Physics Applied) = "applied physics"
-printSubject (Physics Theoretical) = "theoretical physics"
-printSubject (Mathematics Applied) = "applied mathematics"
-printSubject (Mathematics Theoretical) = "theoretical mathematics"
-printSubject ComputerScience = "computer science"
-printSubject ComputerEngineering = "computer engineering"
-printSubject Finance = "some finance thing"
-
-printFictionRole :: FictionalCharacter -> String
-printFictionRole (Protagonist (FictionalWorkName name)) =
-  "protagonist of '" <> name <> "'"
-printFictionRole (Antagonist (FictionalWorkName name)) =
-  "antagonist of '" <> name <> "'"
+We can still make the mistake of wrapping our `source` in a `Destination` wrapper, to be clear, but
+it's much easier to spot this mistake and if a value is produced in one place in a program as a
+`Destination` it simply cannot be passed blindly to a place where a `Source` is required.
 
 printProgrammerRole :: ProgrammerRole -> String
 printProgrammerRole Backend = "backend"
