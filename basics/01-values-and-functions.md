@@ -314,7 +314,7 @@ runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
   case arguments of
-    [numberString] -> do
+    [numberString] ->
       let number = read numberString
        in print $ clamp 0 255 number
     _otherwise ->
@@ -348,7 +348,7 @@ runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
   case arguments of
-    [numberString] -> do
+    [numberString] ->
       let number = read numberString
        in print $ clamp 0 255 number
     _otherwise ->
@@ -383,7 +383,7 @@ runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
   case arguments of
-    [numberString] -> do
+    [numberString] ->
       let number = read numberString
        in print $ clamp 0 255 number
     _otherwise ->
@@ -414,7 +414,7 @@ runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
   case arguments of
-    [xString, divisorString] -> do
+    [xString, divisorString] ->
       let x = read xString
           divisor = read divisorString
        in print $ safeDivide x divisor
@@ -457,7 +457,7 @@ runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
   case arguments of
-    [xString, divisorString] -> do
+    [xString, divisorString] ->
       let x = read xString
           divisor = read divisorString
        in -- Note how we use `case` here to deconstruct the result
@@ -583,7 +583,7 @@ runMain :: IO ()
 runMain = do
   arguments <- Environment.getArgs
   case arguments of
-    [xString, divisorString] -> do
+    [xString, divisorString] ->
       let x = read xString
           divisor = read divisorString
           -- This pipeline is basically saying to take the divisor we have, clamp it to within the
