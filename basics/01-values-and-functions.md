@@ -190,7 +190,7 @@ dataPartLength' :: String -> Int
 dataPartLength' = reverse >>> takeWhile (/= '1') >>> length
 
 dataPartLength'' :: String -> Int
-dataPartLength'' string = reverse string & takeWhile (/= '1') & length
+dataPartLength'' string = string & reverse & takeWhile (/= '1') & length
 ```
 
 In the above examples we are pipelining functions that operate on the result of a previous function
