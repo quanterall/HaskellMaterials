@@ -219,7 +219,7 @@ using function composition and partial application to get the answer to a mildly
 >
 > Find the sum of all the multiples of 3 or 5 below 1000.
 
-Let's first look at the example:
+Let's first look at the given example numbers in action:
 
 ```haskell
 import Data.Function ((&))
