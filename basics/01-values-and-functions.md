@@ -620,7 +620,7 @@ clamp lowerBound upperBound value
 ```
 
 Running this we can see that we've effectively removed the issue of unsafe division by clamping the
-divisor:
+divisor to a minimum of `1`:
 
 ```bash
 $ stack run -- 5 0
