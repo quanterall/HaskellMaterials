@@ -54,7 +54,7 @@ myString = "This is not the best string in the world, it's just a tribute"
 ## Functions
 
 Functions are written much like values, but have arrows in their type. The types, starting at the
-leftmost, represent the arguments/parameters passed to the function, with the last (rightmost) one
+leftmost, represent the arguments/parameters passed to the function, with the final (rightmost) one
 representing the return value.
 
 ```haskell
