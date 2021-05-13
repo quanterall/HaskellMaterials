@@ -202,9 +202,12 @@ the length of the resulting string.
 The example using `>>>` does the same thing, but can be read from left to right. The last example is
 the same as commonly used pipeline operators like `|>` from F#, Elm & Elixir, and might be more
 readable to some. The difference is that it requires a value on the left side, which means we have
-to name our `string` value here at first. The difference is minor and I would argue that while it's
-quite common to see the first example, one should strongly consider whether or not those versions
-are written more because of tradition than anything else.
+to name our `string` value here at first.
+
+While we aren't changing the meaning of our program based on which way we compose our functions, one
+should consider whether or not it makes sense for the intended reader of the code to read it
+left-to-right like we usually do with English and how most of our language constructs work, over the
+alternative with `.` where we instead have to read the flow of things from right-to-left.
 
 ## A "Project Euler" example
 
