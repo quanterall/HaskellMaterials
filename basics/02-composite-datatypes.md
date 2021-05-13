@@ -98,65 +98,83 @@ We can still make the mistake of wrapping our `source` in a `Destination` wrappe
 it's much easier to spot this mistake and if a value is produced in one place in a program as a
 `Destination` it simply cannot be passed blindly to a place where a `Source` is required.
 
-printProgrammerRole :: ProgrammerRole -> String
-printProgrammerRole Backend = "backend"
-printProgrammerRole Frontend = "frontend"
-printProgrammerRole Fullstack = "fullstack"
-```
+## Record types
 
-When we create these types we just follow the different constructor paths as you would expect and
-the result generally is a fairly self-explanatory structure:
+Records are useful when we want to store multiple values together in a named structure. The
+individual parts, or "fields", are named as well. We begin a record definition with the keyword
+`data` after which we give the name of the type. Following an `=` we then give the constructor for
+the type; a function that takes the record data and constructs the type.
 
 ```haskell
-aBackendProgrammer :: Person
-aBackendProgrammer =
-  Person
-    { personName = "Kristina",
-      personAge = Living 24,
-      personProfession =
-        Programmer Backend (CompanyName "Quanterall")
-    }
-
-aFrontendProgrammer :: Person
-aFrontendProgrammer =
-  Person
-    { personName = "Pesho",
-      personAge = Living 42,
-      personProfession =
-        Programmer Frontend (CompanyName "Quanterall")
-    }
-
-aFullstackProgrammer :: Person
-aFullstackProgrammer =
-  Person
-    { personName = "Sasho",
-      personAge = Living 18,
-      personProfession =
-        Programmer Fullstack (CompanyName "Quanterall")
-    }
-
-aProfessor :: Person
-aProfessor =
-  Person
-    { personName = "John Atanasoff",
-      personAge = Dead,
-      personProfession = Professor (Physics Theoretical)
-    }
+--      type       constructor
+data UserProfile = UserProfile
+  { username :: String,
+    age :: Int,
+    active :: Bool,
+    interests :: [String]
+  }
 ```
 
-Here are some examples of running `printPerson` with our values:
+The constructor name can be different than the type name, but this is comparatively rare.
+
+One thing to note about record definitions in Haskell is that each field will have an associated
+function that takes the type and returns the field:
 
 ```haskell
-Q> printPerson aPerson
-"Victor Vega was a antagonist of Reservoir Dogs"
-Q> printPerson aBackendProgrammer
-"Kristina is a 24 years old backend programmer at Quanterall"
-Q> printPerson aFrontendProgrammer
-"Pesho is a 42 years old frontend programmer at Quanterall"
-Q> printPerson aFullstackProgrammer
-"Sasho is a 18 years old fullstack programmer at Quanterall"
-Q> printPerson aProfessor
-"John Atanasoff was a professor of theoretical physics"
+Q> :t username
+username :: UserProfile -> String
+Q> :t age
+age :: UserProfile -> Int
+Q> :t active
+active :: UserProfile -> Bool
+Q> :t interests
+interests :: UserProfile -> [String]
+Q> rickard = UserProfile {username = "rickard", age = 34, active = True, interests = ["Programming", "Problem Solving", "Teaching"]}
+Q> rickard
+UserProfile
+    { username = "rickard"
+    , age = 34
+    , active = True
+    , interests =
+        [ "Programming"
+        , "Problem Solving"
+        , "Teaching"
+        ]
+    }
+Q> username rickard
+"rickard"
+Q> age rickard
+34
+Q> active rickard
+True
+Q> interests rickard
+[ "Programming"
+, "Problem Solving"
+, "Teaching"
+]
+```
+
+We can see this in action in this snippet where we turn a profile into a presentation string:
+
+```haskell
+profileToString :: UserProfile -> String
+profileToString profile =
+  let ageString = show $ age profile
+      activeString = if active profile then "active" else "not Active"
+      interestsString = intercalate ", " (interests profile)
+   in mconcat
+        [ username profile,
+          " (",
+          ageString,
+          "y, ",
+          activeString,
+          ") is interested in: ",
+          interestsString
+        ]
+
+intercalate :: String -> [String] -> String
+intercalate between strings =
+  mconcat $ List.intersperse between strings
 ```
 
 For a complete, put-together, version of these code snippets see
