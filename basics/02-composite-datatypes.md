@@ -359,6 +359,31 @@ Note how we now have a type variable on the left side of `=` which means that wh
 type it will take a type name. If we were holding a `Int`, for example, the type is `Holder Int`.
 The corresponding constructor call (or pattern match) is `Holding value`.
 
+This basic type doesn't have much going for it in terms of functionality, but it's useful to show
+how we express type variables in data types. Fortunately for us we only need to extend the record
+and union definitions with the same parts as we are using in this basic one in order to get generic
+versions of them.
+
+If we were to define a generic record, for example, we could just do the following:
+
+```haskell
+data HttpResponse a = HttpResponse
+  { status :: HttpStatus,
+    headers :: [HttpHeader],
+    body :: a
+  }
+```
+
+We can see here that our HTTP Response is generic over different type of body types. This means we
+can construct it with different types and still get the expected structure for the rest of the
+response. Since only the body will differ here we are free to say that it could be a JSON value,
+bytestring or maybe UTF8 text. Much like our `Holder` example this would mean that when we refer to
+the type we would have, for example, `HttpResponse JSONValue`, `HttpResponse ByteString` or
+`HttpResponse UTF8Text`.
+
+With unions we predictably have the same format for generic unions as we do for basic ones and we
+will go through several of them now.
+
 ## Commonly used composite datatypes
 
 It's usually very instructive to look at some of the supplied composite datatypes that one can find
