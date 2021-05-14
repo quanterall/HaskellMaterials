@@ -382,7 +382,7 @@ the type we would have, for example, `HttpResponse JSONValue`, `HttpResponse Byt
 `HttpResponse UTF8Text`.
 
 With unions we predictably have the same format for generic unions as we do for basic ones and we
-will go through several of them now.
+will go through several popular and representative definitions below.
 
 ## Commonly used composite datatypes
 
