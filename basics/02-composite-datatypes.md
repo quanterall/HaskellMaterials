@@ -306,10 +306,10 @@ site. However, if we instead make the `spouse` field take a custom type that all
 name **or** a userprofile, we can express this conundrum more clearly:
 
 ```haskell
-data MarriageInfo = MarriageInfo {spouse :: SpouseProfile, date :: Day}
+data MarriageInfo = MarriageInfo {spouse :: Spouse, date :: Day}
   deriving (Eq, Show)
 
-data SpouseProfile
+data Spouse
   = SpouseProfile UserProfile
   | SpouseName String
   deriving (Eq, Show)
