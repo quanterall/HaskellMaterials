@@ -302,8 +302,8 @@ business logic and having those changes be reflected in our functions.
 
 As an example, if we decided that our marriage information should hold a `UserProfile`, that would
 require users on our site to only be able to set their "married" status if their spouse is on the
-site. However, if we instead make the `spouse` field take a custom type that allows us to have a
-name **or** a userprofile, we can express this conundrum more clearly:
+site. However, if we instead make the `spouse` field take a type that allows us to have a name
+**or** a userprofile, we can express this conundrum more clearly:
 
 ```haskell
 data MarriageInfo = MarriageInfo {spouse :: Spouse, date :: Day}
