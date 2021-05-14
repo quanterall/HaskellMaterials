@@ -129,11 +129,16 @@ Q> :t active
 active :: UserProfile -> Bool
 Q> :t interests
 interests :: UserProfile -> [String]
-Q> rickard = UserProfile {username = "rickard", age = 34, active = True, interests = ["Programming", "Problem Solving", "Teaching"]}
+Q> rickard = UserProfile {
+     username = "rickard",
+     age = 33,
+     active = True,
+     interests = ["Programming", "Problem Solving", "Teaching"]
+   }
 Q> rickard
 UserProfile
     { username = "rickard"
-    , age = 34
+    , age = 33
     , active = True
     , interests =
         [ "Programming"
@@ -144,7 +149,7 @@ UserProfile
 Q> username rickard
 "rickard"
 Q> age rickard
-34
+33
 Q> active rickard
 True
 Q> interests rickard
@@ -181,9 +186,166 @@ Running this on our previously defined profile we get:
 
 ```haskell
 Q> profileToString rickard
-"rickard (34y, active) is interested in: Programming, Problem Solving, Teaching"
+"rickard (33y, active) is interested in: Programming, Problem Solving, Teaching"
 ```
 
+**Note:** Record types are sometimes called product types. Later material will elaborate on why that
+is and what it means.
+
+## Union types
+
+While a record represents a collection of values that make up a whole, all of them present, a
+**union type** represents a set of alternatives that are all valid, but only one at a time. The
+built-in `Bool` type is a union type; we can only have either `True` **or** `False`.
+
+We define a union type with the `data` keyword followed by the type name and `=`. Then we list the
+**constructors** of the type with `|` between them:
+
+```haskell
+data RelationshipStatus
+  = MarriedTo MarriageData -- This could be `MarriedTo UserProfile UTCTime`
+  | EngagedTo UserProfile
+  | ItsComplicated
+  | Single
+
+data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
+```
+
+The different constructors all represent different cases and contain different data. In the case of
+`MarriedTo` the constructor holds an entire record. If we wanted to we could take several arguments
+to the constructor, but have elected to name the components because it can sometimes be clearer to
+take an entire record. In the case of `EngagedTo` it's perfectly clear that the user is engaged to
+another user profile. For the subsequent cases the constructors don't carry any additional data.
+
+## Combining records and unions
+
+As we saw in the previous section it's trivial to combine records and unions; our `MarriageInfo` type
+is already embedded in the `MarriedTo` constructor. So let's take that one step further and enrich
+our `UserProfile` data type:
+
+```haskell
+import qualified Data.List as List
+import Data.Time (Day)
+import qualified Data.Time as Time
+import Prelude
+
+data UserProfile = UserProfile
+  { username :: String,
+    age :: Int,
+    active :: Bool,
+    interests :: [String],
+    relationshipStatus :: RelationshipStatus
+  }
+  deriving (Eq, Show)
+
+data RelationshipStatus
+  = MarriedTo MarriageInfo
+  | EngagedTo UserProfile
+  | ItsComplicated
+  | Single
+  deriving (Eq, Show)
+
+data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
+  deriving (Eq, Show)
+
+profileToString :: UserProfile -> String
+profileToString profile =
+  let ageString = show $ age profile
+      activeString = if active profile then "active" else "not Active"
+      interestsString = intercalate ", " (interests profile)
+      relationshipStatusString = case relationshipStatus profile of
+        MarriedTo MarriageInfo {spouse, date} ->
+          let dateString = Time.showGregorian date
+           in -- `unwords` takes a `[String]` and joins them into a string with spaces inbetween
+              unwords ["Married to:", spouse, "on", dateString]
+        EngagedTo UserProfile {username} -> unwords ["Engaged to:", username]
+        ItsComplicated -> "It's complicated"
+        Single -> "Single"
+   in mconcat
+        [ username profile,
+          " (",
+          ageString,
+          "y, ",
+          activeString,
+          ", ",
+          relationshipStatusString,
+          ") is interested in: ",
+          interestsString
+        ]
+
+intercalate :: String -> [String] -> String
+intercalate between strings =
+  mconcat $ List.intersperse between strings
+```
+
+If we now construct our `rickard` profile with this in mind we get the following:
+
+```haskell
+Q> rickard = UserProfile {
+     username = "rickard",
+     age = 33,
+     active = True,
+     interests = ["Programming", "Problem Solving", "Teaching"],
+     relationshipStatus = MarriedTo MarriageInfo {
+       spouse = "Ivana",
+       date = Time.fromGregorian 2015 06 04
+     }
+   }
+Q> profileToString rickard
+"rickard (33y, active, Married to: Ivana on 2015-06-04) is interested in: Programming, Problem Solving, Teaching"
+```
+
+Combining record types and union types is the basis for domain modelling in Haskell and allows us to
+construct very rich datatypes that we can work safely with. Armed with more knowledge in the future
+it will be easy for you to look at the above example and modify it according to hypothetical
+business logic and having those changes be reflected in our functions.
+
+As an example, if we decided that our marriage information should hold a `UserProfile`, that would
+require users on our site to only be able to set their "married" status if their spouse is on the
+site. However, if we instead make the `spouse` field take a custom type that allows us to have an
+offsite user or a userprofile, we can express this conundrum more clearly:
+
+```haskell
+data MarriageInfo = MarriageInfo {spouse :: SpouseProfile, date :: Day}
+  deriving (Eq, Show)
+
+data SpouseProfile
+  = SpouseProfile UserProfile
+  | SpouseName String
+  deriving (Eq, Show)
+```
+
+This will give us the same capability as before, because we still support spouse names with strings:
+
+```haskell
+Q> rickard = UserProfile {
+     username = "rickard",
+     age = 33,
+     active = True,
+     interests = ["Programming", "Problem Solving", "Teaching"],
+     relationshipStatus = MarriedTo MarriageInfo {
+       spouse = SpouseName "Ivana",
+       date = Time.fromGregorian 2015 06 04
+     }
+   }
+Q> profileToString rickard
+"rickard (33y, active, Married to: Ivana on 2015-06-04) is interested in: Programming, Problem Solving, Teaching"
+```
+
+But we can now also use a user profile in our `spouse` field:
+
+```haskell
+Q> ivana = UserProfile {username = "ivana", age = 31, active = True, interests = ["Web Design", "Cats", "Beer"], relationshipStatus = MarriedTo MarriageInfo {spouse = SpouseProfile rickard, date = Time.fromGregorian 2015 06 04}}
+Q> profileToString ivana
+"ivana (31y, active, Married to: rickard on 2015-06-04) is interested in: Web Design, Cats, Beer"
+```
+
+Since we are now using the `SpouseProfile` constructor for `spouse` we can pass our previously
+defined `rickard` `UserProfile` and it still works. If we were building this site we could link to
+to the user profile in this case but leave the other case as just a string in our presentation.
+
+For another example of modelling (part of) a domain with types, see
+[this file](./02b-person-printing.md).
 
 ## Generic datatypes
 
