@@ -493,8 +493,8 @@ data List a
 Lists are useful any time you need to have zero or more of something. It's important to note that
 while Haskell lists are technically pointers to pointers to pointers, etc. a lot of this
 inefficiency can be mitigated by the fact that Haskell doesn't ask for the next value in a list
-unless it needs it. This has to do with lazyness/non-strictness and is a language feature too
-big to detail here.
+unless it needs it. This has to do with lazyness/non-strictness, which will be covered later in this
+document.
 
 ### Tuples
 
