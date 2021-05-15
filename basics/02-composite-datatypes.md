@@ -341,8 +341,10 @@ Q> profileToString ivana
 ```
 
 Since we are now using the `SpouseProfile` constructor for `spouse` we can pass our previously
-defined `rickard` `UserProfile` and it still works. If we were building this site we could link to
-to the user profile in this case but leave the other case as just a string in our presentation.
+defined value `rickard` of type `UserProfile` and it still works. If we were building this site we
+could use the fact that we are guaranteed to have another `UserProfile` in the `SpouseProfile` case
+to insert a link to the other profile in this case and only output a string with the name in the
+other.
 
 For another example of modelling (part of) a domain with types, see
 [this file](./02b-person-printing.md).
