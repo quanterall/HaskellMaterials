@@ -649,3 +649,9 @@ We can also annotate expressions with exclamation marks if we enable the `BangPa
 which enables us to say that an expression we are binding to a name should be evaluated. We can also
 use `seq` and `deepseq` to force evaluation of an expression, one level deep or completely,
 respectively.
+
+### More extensive material on lazyness
+
+Michael Snoyman from FP Complete has written
+[a good article](https://www.fpcomplete.com/blog/2017/09/all-about-strictness/) on lazyness and
+strictness annotations that is worth reading.
