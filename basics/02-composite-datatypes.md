@@ -335,7 +335,16 @@ Q> profileToString rickard
 But we can now also use a user profile in our `spouse` field:
 
 ```haskell
-Q> ivana = UserProfile {username = "ivana", age = 31, active = True, interests = ["Web Design", "Cats", "Beer"], relationshipStatus = MarriedTo MarriageInfo {spouse = SpouseProfile rickard, date = Time.fromGregorian 2015 06 04}}
+Q> ivana = UserProfile {
+     username = "ivana",
+     age = 31,
+     active = True,
+     interests = ["Web Design", "Cats", "Beer"],
+     relationshipStatus = MarriedTo MarriageInfo {
+       spouse = SpouseProfile rickard,
+       date = Time.fromGregorian 2015 06 04
+     }
+   }
 Q> profileToString ivana
 "ivana (31y, active, Married to: rickard on 2015-06-04) is interested in: Web Design, Cats, Beer"
 ```
