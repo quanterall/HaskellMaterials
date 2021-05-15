@@ -212,10 +212,10 @@ data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
 ```
 
 The different constructors all represent different cases and contain different data. In the case of
-`MarriedTo` the constructor holds an entire record. If we wanted to we could take several arguments
-to the constructor, but have elected to name the components because it can sometimes be clearer to
-take an entire record. In the case of `EngagedTo` it's perfectly clear that the user is engaged to
-another user profile. For the subsequent cases the constructors don't carry any additional data.
+`MarriedTo` the constructor holds a record. If we wanted to we could take several arguments to the
+constructor, but have elected to name the components because it can sometimes be clearer to take a
+record. In the case of `EngagedTo` it's perfectly clear that the user is engaged to another user
+profile. For the subsequent cases the constructors don't carry any additional data.
 
 ## Combining records and unions
 
