@@ -642,3 +642,10 @@ transparently work the way you want them to in Haskell, so much so that we don't
 wins. Code in PureScript, a Haskell-like language that compiles to JavaScript, always has to
 consider whether or not something is stack safe and these considerations permeate the language. In
 a language based entirely on the composition of functions this can be quite a hassle sometimes.
+
+### More tools for strictness
+
+We can also annotate expressions with exclamation marks if we enable the `BangPatterns` extension,
+which enables us to say that an expression we are binding to a name should be evaluated. We can also
+use `seq` and `deepseq` to force evaluation of an expression, one level deep or completely,
+respectively.
