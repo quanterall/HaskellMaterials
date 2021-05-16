@@ -1,5 +1,22 @@
 # HaskellMaterials
 
+- [HaskellMaterials](#haskellmaterials)
+  - [Work In Progress](#work-in-progress)
+  - [Real World Haskell](#real-world-haskell)
+  - [Learning Haskell](#learning-haskell)
+    - [Resist the urge to try to learn exactly how everything works immediately](#resist-the-urge-to-try-to-learn-exactly-how-everything-works-immediately)
+    - [Keep in mind that learning Haskell is about getting things done](#keep-in-mind-that-learning-haskell-is-about-getting-things-done)
+    - [Category theory is a branch of mathematics](#category-theory-is-a-branch-of-mathematics)
+    - [Asking questions is good](#asking-questions-is-good)
+  - [Installing the build- and project management-tool `stack`](#installing-the-build--and-project-management-tool-stack)
+  - [Running the examples in this repository](#running-the-examples-in-this-repository)
+  - [Making your first example project](#making-your-first-example-project)
+    - [Using development containers in VSCode](#using-development-containers-in-vscode)
+  - [Using the REPL/GHCi](#using-the-replghci)
+  - [Basic reading materials](#basic-reading-materials)
+  - ["Help! I want to print a value but I can't print without IO!"](#"help!-i-want-to-print-a-value-but-i-can't-print-without-io!")
+  - ["I'm comfortable enough with Haskell basics but I don't know how to structure apps."](#"i'm-comfortable-enough-with-haskell-basics-but-i-don't-know-how-to-structure-apps.")
+
 ## Work In Progress
 
 This repository is (and likely will be for quite some time) a work in progress. Suggestions for
