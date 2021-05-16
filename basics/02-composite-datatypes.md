@@ -67,7 +67,8 @@ add42or1337 False x = x + 1337
 If the logic for a function differs a lot between the cases I would personally prefer the last
 version as it also allows you to have some of the arguments be bound only for certain cases, etc.,
 and generally keeps each case separate. In this case the first version makes the most sense because
-only the amount added depends on this boolean.
+only the amount added depends on the boolean and we have special syntax for boolean values with
+`if`.
 
 ## Newtypes
 
