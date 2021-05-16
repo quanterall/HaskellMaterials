@@ -1,5 +1,22 @@
 # Composite datatypes
 
+- [Composite datatypes](#composite-datatypes)
+  - [Bool](#bool)
+  - [Newtypes](#newtypes)
+  - [Record types](#record-types)
+  - [Union types](#union-types)
+  - [Combining records and unions](#combining-records-and-unions)
+  - [Generic datatypes](#generic-datatypes)
+  - [Commonly used composite datatypes](#commonly-used-composite-datatypes)
+    - [Maybe](#maybe)
+    - [Either](#either)
+    - [List / []](#list--)
+    - [Tuples](#tuples)
+  - [Strictness annotations](#strictness-annotations)
+    - [Lists and lazyness](#lists-and-lazyness)
+    - [More tools for strictness](#more-tools-for-strictness)
+    - [More extensive material on lazyness](#more-extensive-material-on-lazyness)
+
 Not everything is just a primitive, of course, and we've actually already seen an example of a more
 complex datatype in the previous chapter about "Values and functions": `Bool`.
 

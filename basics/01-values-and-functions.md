@@ -1,5 +1,14 @@
 # Values and functions (& basic types)
 
+- [Values and functions (& basic types)](#values-and-functions-&-basic-types)
+  - [Values](#values)
+  - [Functions](#functions)
+  - [Partial application](#partial-application)
+  - [Pipelines using partial application](#pipelines-using-partial-application)
+  - [A "Project Euler" example](#a-project-euler-example)
+  - [Asking questions about values](#asking-questions-about-values)
+  - [A note on functions, their parameter order and partial application](#a-note-on-functions-their-parameter-order-and-partial-application)
+
 The bread and butter of a Haskell program is of course values and functions.
 
 ## Values
