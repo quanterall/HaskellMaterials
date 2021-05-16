@@ -14,8 +14,8 @@
     - [Using development containers in VSCode](#using-development-containers-in-vscode)
   - [Using the REPL/GHCi](#using-the-replghci)
   - [Basic reading materials](#basic-reading-materials)
-  - ["Help! I want to print a value but I can't print without IO!"](#"help!-i-want-to-print-a-value-but-i-can't-print-without-io!")
-  - ["I'm comfortable enough with Haskell basics but I don't know how to structure apps."](#"i'm-comfortable-enough-with-haskell-basics-but-i-don't-know-how-to-structure-apps.")
+  - ["Help! I want to print a value but I can't print without IO!"](#help!-i-want-to-print-a-value-but-i-cant-print-without-io!)
+  - ["I'm comfortable enough with Haskell basics but I don't know how to structure apps."](#im-comfortable-enough-with-haskell-basics-but-i-dont-know-how-to-structure-apps.)
 
 ## Work In Progress
 
