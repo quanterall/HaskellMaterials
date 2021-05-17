@@ -3,7 +3,7 @@
 - ["Effectful"](#effectful)
   - [IO](#io)
   - [IO ()](#io-)
-    - [Interlude: IO is "higher-kinded"](#interlude:-io-is-higher-kinded)
+    - [Interlude: IO is "higher-kinded"](#interlude-io-is-higher-kinded)
     - [Back to `IO ()`](#back-to-io-)
   - [IO a](#io-a)
   - [What makes `IO` special?](#what-makes-io-special)
