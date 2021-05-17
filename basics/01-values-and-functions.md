@@ -193,6 +193,9 @@ import Data.Function ((&))
 import Prelude
 
 -- `/=` is the "not equal" operator in Haskell, analogous to `!=` in many other languages.
+-- Note how we're again using an operator with only one argument, and are missing the left-most one,
+-- which gives us a function expecting one argument, which is exactly what the predicate we pass to
+-- `takeWhile` here expects: `Char -> Bool`
 
 dataPartLength :: String -> Int
 dataPartLength = length . takeWhile (/= '1') . reverse
