@@ -192,6 +192,8 @@ import Control.Category ((>>>))
 import Data.Function ((&))
 import Prelude
 
+-- `/=` is the "not equal" operator in Haskell, analogous to `!=` in many other languages.
+
 dataPartLength :: String -> Int
 dataPartLength = length . takeWhile (/= '1') . reverse
 
