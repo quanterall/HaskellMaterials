@@ -352,7 +352,7 @@ questions to ask about the value and we can do so immediately in what are known 
 
 Note that we do not have an immediate `=` after our parameters but instead each `|` introduces a new
 question that we pose, a new **guard**. If the boolean expression that follows the pipe (`|`)
-evaluates to `True` the expression to the right of `=` is what will be evaluated.
+evaluates to `True` the expression to the right of `=` is what will be returned.
 
 The word `otherwise` is an always matching case and we can use this case as an "for all other cases"
 clause.
