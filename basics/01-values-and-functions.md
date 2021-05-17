@@ -2,7 +2,9 @@
 
 - [Values and functions (& basic types)](#values-and-functions--basic-types)
   - [Values](#values)
+    - [Exercises (Values)](#exercises-values)
   - [Functions](#functions)
+    - [Exercises (Functions)](#exercises-functions)
   - [Partial application](#partial-application)
   - [Pipelines using partial application](#pipelines-using-partial-application)
   - [A "Project Euler" example](#a-project-euler-example)
