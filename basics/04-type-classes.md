@@ -4,7 +4,7 @@
   - [Generics / Type variables](#generics--type-variables)
     - [identity](#identity)
     - [Constraints are **transitive**](#constraints-are-transitive)
-  - [Container types & type variables](#container-types-&-type-variables)
+  - [Container types & type variables](#container-types--type-variables)
   - [Important and common type classes](#important-and-common-type-classes)
     - [Num](#num)
     - [Eq](#eq)
