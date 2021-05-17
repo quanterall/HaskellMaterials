@@ -1,5 +1,14 @@
 # JSON data in Haskell
 
+- [JSON data in Haskell](#json-data-in-haskell)
+  - [The basics of `Aeson`](#the-basics-of-aeson)
+  - [Decoding](#decoding)
+    - [Defining a `FromJSON` instance](#defining-a-fromjson-instance)
+  - [Encoding](#encoding)
+    - [Defining a `ToJSON` instance](#defining-a-tojson-instance)
+  - [Automatically generated decoders and encoders](#automatically-generated-decoders-and-encoders)
+    - [More involved field modifications?](#more-involved-field-modifications)
+
 Note: It might be useful to read the [document on type classes](../basics/04-type-classes.md) since
 `Aeson` relies on type classes to implement JSON encoding and decoding.
 
