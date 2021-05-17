@@ -208,10 +208,10 @@ composition. One thing to note about this is that the application order is read 
 so we are applying `reverse` first, then `takeWhile` (to get characters that aren't '1'), then get
 the length of the resulting string.
 
-The example using `>>>` does the same thing, but can be read from left to right. The last example is
-the same as commonly used pipeline operators like `|>` from F#, Elm & Elixir, and might be more
-readable to some. The difference is that it requires a value on the left side, which means we have
-to name our `string` value here at first.
+The example using `>>>` does the same thing, but can be read from left to right. The last example,
+using the operator `&` is the same as commonly used pipeline operators like `|>` from F#, Elm &
+Elixir, and might be more readable to some. It works by taking whatever value we have on the left
+side of it and passing it to the function on the right.
 
 While we aren't changing the meaning of our program based on which way we compose our functions, one
 should consider whether or not it makes sense for the intended reader of the code to read it
