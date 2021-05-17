@@ -51,6 +51,12 @@ myString :: String -- Actually just a type alias for a list of characters; `[Cha
 myString = "This is not the best string in the world, it's just a tribute"
 ```
 
+### Exercises (Values)
+
+1. Define a value with the name `myOwnValue` with the type `Double` and the value `42`.
+
+2. Define a value with the type `String` and the value `['h', 'e', 'l', 'l', 'o']`
+
 ## Functions
 
 Functions are written much like values, but have arrows in their type. The types, starting at the
@@ -122,6 +128,17 @@ element `List.elem` ourList -- Is the element present in the list?
 We can apply this to any function, even functions with more than two arguments. It's important to
 recognize that it's not always a great idea to use this feature and each case should be examined on
 an individual basis in terms of whether or not it makes the code more or less easy to understand.
+
+### Exercises (Functions)
+
+1. Define a function that returns whether or not an `Int` is zero.
+
+2. Define a function that returns whether or not a `Float` is greater than zero.
+
+3. Define a function that adds 1/10th of a Double to itself.
+
+4. Define a function that takes 2 `Float`s `x` & `y` and returns the area of the rectangle they make
+   up.
 
 ## Partial application
 
