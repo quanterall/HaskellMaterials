@@ -51,9 +51,9 @@ Q> :kind []
 [] :: * -> *
 Q> :kind IO
 IO :: * -> *
-Q> :kind Map      
+Q> :kind Map
 Map :: * -> * -> *
-Q> :kind Set      
+Q> :kind Set
 Set :: * -> *
 Q> :kind Maybe
 Maybe :: * -> *

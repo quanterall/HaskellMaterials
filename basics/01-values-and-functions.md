@@ -1,6 +1,6 @@
 # Values and functions (& basic types)
 
-- [Values and functions (& basic types)](#values-and-functions-&-basic-types)
+- [Values and functions (& basic types)](#values-and-functions--basic-types)
   - [Values](#values)
   - [Functions](#functions)
   - [Partial application](#partial-application)
@@ -541,7 +541,7 @@ more clearly:
 ```haskell
 -- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
 clamp :: Int -> Int -> Int -> Int
-clamp lowerBound value upperBound 
+clamp lowerBound value upperBound
   | value < lowerBound = lowerBound
   | value > upperBound = upperBound
   | otherwise = value
@@ -556,7 +556,7 @@ takesUpperBound :: Int -> Int
 takesUpperBound = clamp 0 255
 
 clamp :: Int -> Int -> Int -> Int
-clamp lowerBound value upperBound 
+clamp lowerBound value upperBound
   | value < lowerBound = lowerBound
   | value > upperBound = upperBound
   | otherwise = value

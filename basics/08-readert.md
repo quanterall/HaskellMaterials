@@ -86,7 +86,7 @@ handleDeleteUserRequest userId = do
   case deletionResult of
     Deleted -> do
       logInfo $ "Found and deleted user with ID: " <> show userId
-      
+
     NotFound ->
       logWarn $ "Unable to find user with ID: " <> show userId <> " for deletion."
 

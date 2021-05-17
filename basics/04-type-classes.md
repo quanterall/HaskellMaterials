@@ -217,7 +217,7 @@ class Num a where
 
 These are the operations constraining our generic types with `Num` gets us. The `MINIMAL` part means
 that in order to satisfy the `Num` constraint we need to provide at least the listed functions, and
-the ` | ` part means that we can define `negate` **or** `(-)` and it'll use a default version for
+the `|` part means that we can define `negate` **or** `(-)` and it'll use a default version for
 the other if we don't specify it.
 
 ### Eq
@@ -472,7 +472,7 @@ There are 3 "laws" that a monad should obey; I will describe them in terms of co
 
 Law 1: "left identity"; `pure x` into `bind` into `f` can be replaced with `f x`
 
-`pure x >>= f`  === `f x`
+`pure x >>= f` === `f x`
 
 Written another way:
 

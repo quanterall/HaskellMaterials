@@ -152,7 +152,7 @@ For a queue of one or zero elements we can use `TMVar`, which the GHC documentat
 follows:
 
 > A TMVar is a synchronising variable, used for communication between concurrent threads. It can be
-thought of as a box, which may be empty or full.
+> thought of as a box, which may be empty or full.
 
 This means that we can essentially use it to block immediately from a writing thread when a value
 already exists and block immediately from a reading thread when a value does not exist. If it sounds

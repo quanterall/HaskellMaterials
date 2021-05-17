@@ -27,11 +27,11 @@ available material.
 
 The purpose of these documents is to at some point be able to teach Haskell, but as a supplement to
 them it can be useful to look at the book
-[*Real World Haskell*](http://book.realworldhaskell.org/read/) as it is freely available online.
+[_Real World Haskell_](http://book.realworldhaskell.org/read/) as it is freely available online.
 The need for this may lessen in time but since learning is such a difficult enterprise it's useful
 to simply look at many resources and absorb as much as possible.
 
-*Real World Haskell* is not super up-to-date but it teaches the basics of Haskell reasonably and
+_Real World Haskell_ is not super up-to-date but it teaches the basics of Haskell reasonably and
 also has in mind that Haskell is a language for writing actual solutions in, not code for its own
 sake. Additionally, it does not teach relatively modern Haskell application architecture, but the
 resources for this have been included in these documents and will be taught separately.
@@ -211,7 +211,7 @@ main :: IO ()
 main = do
   -- When this is run we will print `84`, but still get the passed in value bound to `x`.
   let x = pureFunction 42
-  
+
   -- Here we will be printing 'Done: 42'
   putStrLn $ "Done: " <> show x
 ```
