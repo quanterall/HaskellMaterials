@@ -1,5 +1,23 @@
 # HaskellMaterials
 
+- [HaskellMaterials](#haskellmaterials)
+  - [Work In Progress](#work-in-progress)
+  - [Real World Haskell](#real-world-haskell)
+  - [Learning Haskell](#learning-haskell)
+    - [Resist the urge to try to learn exactly how everything works immediately](#resist-the-urge-to-try-to-learn-exactly-how-everything-works-immediately)
+    - [Keep in mind that learning Haskell is about getting things done](#keep-in-mind-that-learning-haskell-is-about-getting-things-done)
+    - [Category theory is a branch of mathematics](#category-theory-is-a-branch-of-mathematics)
+    - [Asking questions is good](#asking-questions-is-good)
+  - [Installing the build- and project management-tool `stack`](#installing-the-build--and-project-management-tool-stack)
+  - [Running the examples in this repository](#running-the-examples-in-this-repository)
+  - [Making your first example project](#making-your-first-example-project)
+    - [Using development containers in VSCode](#using-development-containers-in-vscode)
+  - [Using the REPL/GHCi](#using-the-replghci)
+  - [Basic reading materials](#basic-reading-materials)
+  - ["Help! I want to print a value but I can't print without IO!"](#help-i-want-to-print-a-value-but-i-cant-print-without-io)
+  - ["I'm comfortable enough with Haskell basics but I don't know how to structure apps."](#im-comfortable-enough-with-haskell-basics-but-i-dont-know-how-to-structure-apps)
+  - [Workflow screencasts](#workflow-screencasts)
+
 ## Work In Progress
 
 This repository is (and likely will be for quite some time) a work in progress. Suggestions for
@@ -10,11 +28,11 @@ available material.
 
 The purpose of these documents is to at some point be able to teach Haskell, but as a supplement to
 them it can be useful to look at the book
-[*Real World Haskell*](http://book.realworldhaskell.org/read/) as it is freely available online.
+[_Real World Haskell_](http://book.realworldhaskell.org/read/) as it is freely available online.
 The need for this may lessen in time but since learning is such a difficult enterprise it's useful
 to simply look at many resources and absorb as much as possible.
 
-*Real World Haskell* is not super up-to-date but it teaches the basics of Haskell reasonably and
+_Real World Haskell_ is not super up-to-date but it teaches the basics of Haskell reasonably and
 also has in mind that Haskell is a language for writing actual solutions in, not code for its own
 sake. Additionally, it does not teach relatively modern Haskell application architecture, but the
 resources for this have been included in these documents and will be taught separately.
@@ -194,7 +212,7 @@ main :: IO ()
 main = do
   -- When this is run we will print `84`, but still get the passed in value bound to `x`.
   let x = pureFunction 42
-  
+
   -- Here we will be printing 'Done: 42'
   putStrLn $ "Done: " <> show x
 ```
@@ -232,3 +250,9 @@ point them out as things to do and experiment with:
 - Experiment with adding monad constraints like `CanModifyUsers m => User -> m ()` to your functions
   in order to limit them from being able to do anything else effectful; giving you ultimate control
   of exactly what effectful thing a function can do.
+
+## Workflow screencasts
+
+I've created [a playlist](https://www.youtube.com/playlist?list=PLEQTpgQ9eFCE8BhQKGrQQ4IVK0QEsntAk)
+with screen casts where I demonstrate a range of tasks in Haskell with a fairly standard workflow,
+as well as emphasize different parts of them.

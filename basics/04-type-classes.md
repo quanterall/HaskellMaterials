@@ -1,5 +1,22 @@
 # Type Classes
 
+- [Type Classes](#type-classes)
+  - [Generics / Type variables](#generics--type-variables)
+    - [identity](#identity)
+    - [Constraints are **transitive**](#constraints-are-transitive)
+  - [Container types & type variables](#container-types--type-variables)
+  - [Important and common type classes](#important-and-common-type-classes)
+    - [Num](#num)
+    - [Eq](#eq)
+    - [Ord](#ord)
+    - [Semigroup](#semigroup)
+    - [Monoid](#monoid)
+    - [Functor](#functor)
+    - [Applicative](#applicative)
+    - [Monad](#monad)
+      - [`do`-notation](#do-notation)
+      - [Monads and their "laws"](#monads-and-their-laws)
+
 Type classes can be found in few languages. Haskell and Scala are the primary examples of where, but
 a version of them can be found in Rust's "traits". C++20 also has the "concepts" feature, which
 ultimately is an extended (and seemingly much more powerful) version of type classes / traits.
@@ -200,7 +217,7 @@ class Num a where
 
 These are the operations constraining our generic types with `Num` gets us. The `MINIMAL` part means
 that in order to satisfy the `Num` constraint we need to provide at least the listed functions, and
-the ` | ` part means that we can define `negate` **or** `(-)` and it'll use a default version for
+the `|` part means that we can define `negate` **or** `(-)` and it'll use a default version for
 the other if we don't specify it.
 
 ### Eq
@@ -455,7 +472,7 @@ There are 3 "laws" that a monad should obey; I will describe them in terms of co
 
 Law 1: "left identity"; `pure x` into `bind` into `f` can be replaced with `f x`
 
-`pure x >>= f`  === `f x`
+`pure x >>= f` === `f x`
 
 Written another way:
 

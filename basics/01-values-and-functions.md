@@ -1,5 +1,14 @@
 # Values and functions (& basic types)
 
+- [Values and functions (& basic types)](#values-and-functions--basic-types)
+  - [Values](#values)
+  - [Functions](#functions)
+  - [Partial application](#partial-application)
+  - [Pipelines using partial application](#pipelines-using-partial-application)
+  - [A "Project Euler" example](#a-project-euler-example)
+  - [Asking questions about values](#asking-questions-about-values)
+  - [A note on functions, their parameter order and partial application](#a-note-on-functions-their-parameter-order-and-partial-application)
+
 The bread and butter of a Haskell program is of course values and functions.
 
 ## Values
@@ -125,7 +134,7 @@ key `Map.member` ourMap -- Is the key defined in the map?
 element `List.elem` ourList -- Is the element present in the list?
 ```
 
-We can apply this to any function, even functions with more than two arguments. It's important to
+We can use this with any function, even functions with more than two arguments. It's important to
 recognize that it's not always a great idea to use this feature and each case should be examined on
 an individual basis in terms of whether or not it makes the code more or less easy to understand.
 
@@ -172,8 +181,9 @@ add42ToAll = List.map (\x -> x + 42)
 ```
 
 In the above example, `List.map` takes the list it is working with as the last argument, meaning we
-can just partially apply it and still get the function we expect. Since we are not passing the list
-argument to `List.map` here we get a function that expects a list of integers and will return one.
+can just partially apply it and still get the function we expect; a function that expects a list of
+integer values that we then add `42` to, returning the resulting list. Since we are not passing the
+list argument to `List.map` here we get exactly that function signature.
 
 We can also partially apply our `+`. The function that we are passing to `List.map` is expected to
 be of type `Int -> Int`, which is what we get when we write `(+ 42)`:
@@ -200,6 +210,11 @@ import Control.Category ((>>>))
 import Data.Function ((&))
 import Prelude
 
+-- `/=` is the "not equal" operator in Haskell, analogous to `!=` in many other languages.
+-- Note how we're again using an operator with only one argument, and are missing the left-most one,
+-- which gives us a function expecting one argument, which is exactly what the predicate we pass to
+-- `takeWhile` here expects: `Char -> Bool`
+
 dataPartLength :: String -> Int
 dataPartLength = length . takeWhile (/= '1') . reverse
 
@@ -213,13 +228,17 @@ dataPartLength'' string = string & reverse & takeWhile (/= '1') & length
 In the above examples we are pipelining functions that operate on the result of a previous function
 call. The first example does this using the `.` operator, which represents classic function
 composition. One thing to note about this is that the application order is read from right to left,
-so we are applying `reverse` first, then `takeWhile` (to get characters that aren't '1'), then get
-the length of the resulting string.
+so we are applying `reverse` first, then `takeWhile`, then `length`.
 
-The example using `>>>` does the same thing, but can be read from left to right. The last example is
-the same as commonly used pipeline operators like `|>` from F#, Elm & Elixir, and might be more
-readable to some. The difference is that it requires a value on the left side, which means we have
-to name our `string` value here at first.
+`reverse` takes a `String` and will reverse it. The result is then passed to `takeWhile (/= '1')`
+which will take all initial characters of the string until we find one that is `'1'`. The result of
+that is then passed to `length` which will return the length.
+
+The example using `>>>` does the same thing, but can be read from left to right. The last example,
+using the operator `&` is the same as commonly used pipeline operators like `|>` from F#, Elm &
+Elixir, and might be more readable to some. It works by taking whatever value we have on the left
+side of it and passing it to the function on the right. Like F# and Elm the value is passed as the
+last argument to the function on the right, as opposed to Elixir where it is passed as the first.
 
 While we aren't changing the meaning of our program based on which way we compose our functions, one
 should consider whether or not it makes sense for the intended reader of the code to read it
@@ -350,7 +369,7 @@ questions to ask about the value and we can do so immediately in what are known 
 
 Note that we do not have an immediate `=` after our parameters but instead each `|` introduces a new
 question that we pose, a new **guard**. If the boolean expression that follows the pipe (`|`)
-evaluates to `True` the expression to the right of `=` is what will be evaluated.
+evaluates to `True` the expression to the right of `=` is what will be returned.
 
 The word `otherwise` is an always matching case and we can use this case as an "for all other cases"
 clause.
@@ -522,11 +541,11 @@ putStrLn $ case safeDivide x divisor of
 
 Here we are saying that `putStrLn` will take whatever our `case` expression returns, meaning it in
 this case always will have to return a `String`. What this means is that `case` expressions have to
-return values of the same type in all branches and indeed there is no "empty case" where we return
-`void` or the like.
+return values of the same type in all branches and there is no "empty case" where we return `void`
+or the like.
 
-As we saw in the previous example we can indeed execute actions in our case branches. That example,
-where we printed a string in each branch of the `case`, worked because we were constructing an
+As we saw in the previous example we can execute actions in our case branches. That example, where
+we printed a string in each branch of the `case`, worked because we were constructing an
 action of type `IO ()` in each branch when we executed `putStrLn ...`.
 
 ## A note on functions, their parameter order and partial application
@@ -549,7 +568,7 @@ more clearly:
 ```haskell
 -- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
 clamp :: Int -> Int -> Int -> Int
-clamp lowerBound value upperBound 
+clamp lowerBound value upperBound
   | value < lowerBound = lowerBound
   | value > upperBound = upperBound
   | otherwise = value
@@ -564,7 +583,7 @@ takesUpperBound :: Int -> Int
 takesUpperBound = clamp 0 255
 
 clamp :: Int -> Int -> Int -> Int
-clamp lowerBound value upperBound 
+clamp lowerBound value upperBound
   | value < lowerBound = lowerBound
   | value > upperBound = upperBound
   | otherwise = value

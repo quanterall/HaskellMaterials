@@ -1,5 +1,12 @@
 # Mutable variables
 
+- [Mutable variables](#mutable-variables)
+  - [`IORef`](#ioref)
+  - [`TVar`](#tvar)
+    - [Use of `TVar`s](#use-of-tvars)
+    - [`stm-chans`](#stm-chans)
+    - [TBMQueue example](#tbmqueue-example)
+
 While there is a lot of focus on purity in parts of the Haskell community, Haskell has runtime
 support for mutable variables that stretches beyond most programming environments' support. The
 difference is that by default things are immutable and we have to opt in to using mutable variables.
@@ -145,7 +152,7 @@ For a queue of one or zero elements we can use `TMVar`, which the GHC documentat
 follows:
 
 > A TMVar is a synchronising variable, used for communication between concurrent threads. It can be
-thought of as a box, which may be empty or full.
+> thought of as a box, which may be empty or full.
 
 This means that we can essentially use it to block immediately from a writing thread when a value
 already exists and block immediately from a reading thread when a value does not exist. If it sounds

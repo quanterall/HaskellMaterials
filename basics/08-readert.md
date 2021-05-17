@@ -1,5 +1,10 @@
 # The ReaderT Monad Transformer
 
+- [The ReaderT Monad Transformer](#the-readert-monad-transformer)
+  - [Monad transformers](#monad-transformers)
+  - [ReaderT](#readert)
+  - [Hypothetical example](#hypothetical-example)
+
 ## Monad transformers
 
 A monad transformer is a data type that allows us to wrap one monad in another. What this means is
@@ -81,7 +86,7 @@ handleDeleteUserRequest userId = do
   case deletionResult of
     Deleted -> do
       logInfo $ "Found and deleted user with ID: " <> show userId
-      
+
     NotFound ->
       logWarn $ "Unable to find user with ID: " <> show userId <> " for deletion."
 

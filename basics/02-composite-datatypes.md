@@ -1,5 +1,22 @@
 # Composite datatypes
 
+- [Composite datatypes](#composite-datatypes)
+  - [Bool](#bool)
+  - [Newtypes](#newtypes)
+  - [Record types](#record-types)
+  - [Union types](#union-types)
+  - [Combining records and unions](#combining-records-and-unions)
+  - [Generic datatypes](#generic-datatypes)
+  - [Commonly used composite datatypes](#commonly-used-composite-datatypes)
+    - [Maybe](#maybe)
+    - [Either](#either)
+    - [List / []](#list--)
+    - [Tuples](#tuples)
+  - [Strictness annotations](#strictness-annotations)
+    - [Lists and lazyness](#lists-and-lazyness)
+    - [More tools for strictness](#more-tools-for-strictness)
+    - [More extensive material on lazyness](#more-extensive-material-on-lazyness)
+
 Not everything is just a primitive, of course, and we've actually already seen an example of a more
 complex datatype in the previous chapter about "Values and functions": `Bool`.
 
@@ -50,7 +67,8 @@ add42or1337 False x = x + 1337
 If the logic for a function differs a lot between the cases I would personally prefer the last
 version as it also allows you to have some of the arguments be bound only for certain cases, etc.,
 and generally keeps each case separate. In this case the first version makes the most sense because
-only the amount added depends on this boolean.
+only the amount added depends on the boolean and we have special syntax for boolean values with
+`if`.
 
 ## Newtypes
 
@@ -518,3 +536,140 @@ needed because the scope of the created value is small or the names themselves w
 useful. The utility of tuples should be examined on a case-by-case basis to ensure that they don't
 make code harder to understand because of their lack of information/context. A name for both a
 constructor and the individual fields/components can in many cases be very illuminating.
+
+## Strictness annotations
+
+When reading (and subsequently writing) Haskell code you will likely stumble upon type definitions
+that have exclamation marks (`!`) right before type names:
+
+```haskell
+data Tuple = Tuple !Int String
+  deriving (Eq, Show)
+
+-- This takes the string from our tuples
+stringFromTuple :: Tuple -> String
+stringFromTuple (Tuple _ string) = string
+```
+
+The exclamation mark before the `Int` here is a strictness annotation. Let's look at how this
+affects the behavior of our constructor first and then see why that is. First let's evaluate an
+error to see what an crash looks like in our REPL:
+
+```haskell
+Q> error "CRASH"
+*** Exception: CRASH
+CallStack (from HasCallStack):
+  error, called at <interactive>:24:1 in interactive:Ghci2
+Q> crash = error "CRASH"
+Q> crash
+*** Exception: CRASH
+CallStack (from HasCallStack):
+  error, called at <interactive>:25:5 in interactive:Ghci2
+```
+
+We first evaluate the error, then set `crash` to be that expression. Evaluating `c` now reliably
+causes the crash to happen.
+
+Let's see how this strictness annotation seems to work out for our `stringFromTuple` function:
+
+```haskell
+Q> tuple = Tuple crash "hello"
+Q> stringFromTuple tuple
+*** Exception: CRASH
+CallStack (from HasCallStack):
+  error, called at <interactive>:45:9 in interactive:Ghci1
+```
+
+So, we first bind `tuple` to the expression that creates a `Tuple` out of our crash value and
+"hello". It might seem surprising to some, but consider that if you defined a function to crash
+you'd also have to execute it in order to have it crash. After we've defined that we then use our
+function that takes the string (which is just a normal value, no crash) out of the `Tuple` and we
+indeed see a crash happen.
+
+Let's take a look at what happens when we remove our strictness annotation:
+
+```haskell
+Q> tuple = Tuple crash "hello"
+Q> stringFromTuple tuple
+"hello"
+```
+
+We don't see a crash, even though the crashing value is plainly in the `Tuple`. This happens because
+Haskell defaults to lazy/non-strict evaluation, meaning it will only actually evaluate expressions
+when they are needed by something else. Printing our `Tuple` to the terminal evaluates our crash
+immediately so we might not notice this distinction in that case, but creating a function that only
+uses parts of a structure can find these distinctions much more easily.
+
+What we are doing when we add the strictness annotation to `Int` in our crashing example is say that
+we want this piece of data to be fully evaluated when the structure itself is evaluated, even in the
+case where the default behavior would not evaluate it.
+
+Since this behavior applies to all expressions in Haskell (we only evaluate what is needed), what
+does that mean for the actual execution of a program. In short, it means that every expression you
+define is actually really just a recipe/formula for whatever value it should be producing,
+represented as a function. If that function is never called, neither the expressions in it nor the
+value it should be returning will materialize at all.
+
+What it also means is that we have to be conscious that we may be building up massive amounts of
+these functions, called "thunks", when we stitch together expressions. This is called a "space leak"
+and is a common theme in Haskell users' frustrations when debugging the behavior of their program.
+
+### Lists and lazyness
+
+```haskell
+Q> take 3 [1 :: Int, 2, 3, crash]
+[ 1
+, 2
+, 3
+]
+Q> take 4 [1 :: Int, 2, 3, crash]
+*** Exception: CRASH
+CallStack (from HasCallStack):
+  error, called at <interactive>:59:9 in interactive:Ghci1
+```
+
+Here we can see that the list type in Haskell is lazy by default, and the values we get from it
+will only ever be evaluated if a function actually uses them. This also means that if I were to
+bind the second expression to a name, we will be holding on to an expression that will crash,
+unless we also happen to not use the 4th item of the list.
+
+Lazyness is in Haskell for a reason, however, so it's important to also consider what we are
+getting out of this feature. The easiest thing to show is how infinite lists are easy to work with:
+
+```haskell
+Q> take 5 [1..]
+[ 1
+, 2
+, 3
+, 4
+, 5
+]
+```
+
+What we are doing here is creating an infinite list of natural numbers (`[1..]`) and then passing
+that infinite list to `take`, with which we are only asking for 5 numbers. The end result is that
+we indeed only get 5 numbers, even though this infinite list expression is supposed to create an
+infinite list... But since it's really only a description of how to create this infinite list, we
+successively ask for more and more elements and eventually just stop asking, so at no point in time
+does an infinite (or close to it) list exist.
+
+This applies to many other similar contexts as well and is (in my personal opinion) a very nice
+feature to have, so much so that I'm convinced that the benefits outweigh the cost. I think it's a
+fair characterization that many things that in strict languages would be stack overflows
+transparently work the way you want them to in Haskell, so much so that we don't even notice the
+wins. Code in PureScript, a Haskell-like language that compiles to JavaScript, always has to
+consider whether or not something is stack safe and these considerations permeate the language. In
+a language based entirely on the composition of functions this can be quite a hassle sometimes.
+
+### More tools for strictness
+
+We can also annotate expressions with exclamation marks if we enable the `BangPatterns` extension,
+which enables us to say that an expression we are binding to a name should be evaluated. We can also
+use `seq` and `deepseq` to force evaluation of an expression, one level deep or completely,
+respectively.
+
+### More extensive material on lazyness
+
+Michael Snoyman from FP Complete has written
+[a good article](https://www.fpcomplete.com/blog/2017/09/all-about-strictness/) on lazyness and
+strictness annotations that is worth reading.
