@@ -128,7 +128,7 @@ key `Map.member` ourMap -- Is the key defined in the map?
 element `List.elem` ourList -- Is the element present in the list?
 ```
 
-We can apply this to any function, even functions with more than two arguments. It's important to
+We can use this with any function, even functions with more than two arguments. It's important to
 recognize that it's not always a great idea to use this feature and each case should be examined on
 an individual basis in terms of whether or not it makes the code more or less easy to understand.
 
