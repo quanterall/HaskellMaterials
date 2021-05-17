@@ -164,8 +164,9 @@ add42ToAll = List.map (\x -> x + 42)
 ```
 
 In the above example, `List.map` takes the list it is working with as the last argument, meaning we
-can just partially apply it and still get the function we expect. Since we are not passing the list
-argument to `List.map` here we get a function that expects a list of integers and will return one.
+can just partially apply it and still get the function we expect; a function that expects a list of
+integer values that we then add `42` to, returning the resulting list. Since we are not passing the
+list argument to `List.map` here we get exactly that function signature.
 
 We can also partially apply our `+`. The function that we are passing to `List.map` is expected to
 be of type `Int -> Int`, which is what we get when we write `(+ 42)`:
