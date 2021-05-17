@@ -213,7 +213,8 @@ the length of the resulting string.
 The example using `>>>` does the same thing, but can be read from left to right. The last example,
 using the operator `&` is the same as commonly used pipeline operators like `|>` from F#, Elm &
 Elixir, and might be more readable to some. It works by taking whatever value we have on the left
-side of it and passing it to the function on the right.
+side of it and passing it to the function on the right. Like F# and Elm the value is passed as the
+last argument to the function on the right, as opposed to Elixir where it is passed as the first.
 
 While we aren't changing the meaning of our program based on which way we compose our functions, one
 should consider whether or not it makes sense for the intended reader of the code to read it
