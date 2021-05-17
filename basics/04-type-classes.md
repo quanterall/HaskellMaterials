@@ -1,5 +1,22 @@
 # Type Classes
 
+- [Type Classes](#type-classes)
+  - [Generics / Type variables](#generics--type-variables)
+    - [identity](#identity)
+    - [Constraints are **transitive**](#constraints-are-transitive)
+  - [Container types & type variables](#container-types-&-type-variables)
+  - [Important and common type classes](#important-and-common-type-classes)
+    - [Num](#num)
+    - [Eq](#eq)
+    - [Ord](#ord)
+    - [Semigroup](#semigroup)
+    - [Monoid](#monoid)
+    - [Functor](#functor)
+    - [Applicative](#applicative)
+    - [Monad](#monad)
+      - [`do`-notation](#do-notation)
+      - [Monads and their "laws"](#monads-and-their-laws)
+
 Type classes can be found in few languages. Haskell and Scala are the primary examples of where, but
 a version of them can be found in Rust's "traits". C++20 also has the "concepts" feature, which
 ultimately is an extended (and seemingly much more powerful) version of type classes / traits.
