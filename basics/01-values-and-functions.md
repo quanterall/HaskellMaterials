@@ -4,6 +4,7 @@
   - [Values](#values)
     - [Exercises (Values)](#exercises-values)
   - [Functions](#functions)
+    - [Boolean & arithmetic operations](#boolean--arithmetic-operations)
     - [Exercises (Functions)](#exercises-functions)
   - [Partial application](#partial-application)
   - [Pipelines using partial application](#pipelines-using-partial-application)
@@ -140,6 +141,49 @@ We can use this with any function, even functions with more than two arguments. 
 recognize that it's not always a great idea to use this feature and each case should be examined on
 an individual basis in terms of whether or not it makes the code more or less easy to understand.
 
+### Boolean & arithmetic operations
+
+| Math | Haskell | Notes |
+| :--: | :-----: | :------------------: |
+|  +   |    +    |                      |
+|  -   |    -    |                      |
+|  *   |    *    |                      |
+|  /   |    /    |                      |
+|  >   |    >    |                      |
+|  <   |    <    |                      |
+|  ≥   |   >=    |                      |
+|  ≤   |   <=    |                      |
+|  =   |   ==    |                      |
+|  ≠   |   /=    |                      |
+|  ^   |    ^    | `Int` & `Integer`    |
+|  ^   |   **    | `Float` & `Double`   |
+| mod  |   rem   | `Int` & `Integer`[0] |
+| mod  |   mod   | `Int` & `Integer`[0] |
+
+| Math |  C   | Haskell |        Notes        |
+| :--: | :-:  | :-----: | :-----------------: |
+|  ¬   |  !   |   not   |                     |
+|  ∧   |  &&  |   &&    |                     |
+|  ∨   |  ǀǀ  |   ǀǀ    | Two pipe characters |
+
+[0]:
+
+```haskell
+-- Note: Use `rem` if you know your parameters are both positive
+
+5 `mod` 3 == 2
+5 `rem` 3 == 2
+
+5 `mod` (-3) == -1
+5 `rem` (-3) == 2
+
+(-5) `mod` 3 == 1
+(-5) `rem` 3 == -2
+
+(-5) `mod` (-3) == -2
+(-5) `rem` (-3) == -2
+```
+
 ### Exercises (Functions)
 
 1. Define a function that returns whether or not an `Int` is zero.
@@ -148,8 +192,10 @@ an individual basis in terms of whether or not it makes the code more or less ea
 
 3. Define a function that adds 1/10th of a Double to itself.
 
-4. Define a function that takes 2 `Float`s `x` & `y` and returns the area of the rectangle they make
-   up.
+4. Define a function that takes 2 `Float`s `length` & `width` and returns the area of the rectangle
+   they make up.
+
+5. Define a function that takes a radius of type `Float` and returns the area of a circle.
 
 ## Partial application
 
