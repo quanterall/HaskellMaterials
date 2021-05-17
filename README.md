@@ -16,6 +16,7 @@
   - [Basic reading materials](#basic-reading-materials)
   - ["Help! I want to print a value but I can't print without IO!"](#help-i-want-to-print-a-value-but-i-cant-print-without-io)
   - ["I'm comfortable enough with Haskell basics but I don't know how to structure apps."](#im-comfortable-enough-with-haskell-basics-but-i-dont-know-how-to-structure-apps)
+  - [Workflow screencasts](#workflow-screencasts)
 
 ## Work In Progress
 
@@ -249,3 +250,9 @@ point them out as things to do and experiment with:
 - Experiment with adding monad constraints like `CanModifyUsers m => User -> m ()` to your functions
   in order to limit them from being able to do anything else effectful; giving you ultimate control
   of exactly what effectful thing a function can do.
+
+## Workflow screencasts
+
+I've created [a playlist](https://www.youtube.com/playlist?list=PLEQTpgQ9eFCE8BhQKGrQQ4IVK0QEsntAk)
+with screen casts where I demonstrate a range of tasks in Haskell with a fairly standard workflow,
+as well as emphasize different parts of them.
