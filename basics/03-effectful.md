@@ -1,5 +1,14 @@
 # "Effectful"
 
+- ["Effectful"](#effectful)
+  - [IO](#io)
+  - [IO ()](#io-)
+    - [Interlude: IO is "higher-kinded"](#interlude:-io-is-higher-kinded)
+    - [Back to `IO ()`](#back-to-io-)
+  - [IO a](#io-a)
+  - [What makes `IO` special?](#what-makes-io-special)
+  - [Should you avoid effectful things?](#should-you-avoid-effectful-things)
+
 Lots of texts, these materials included, will talk about things being "effectful". So what does that
 actually mean?
 
