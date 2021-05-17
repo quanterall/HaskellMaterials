@@ -211,8 +211,8 @@ dataPartLength'' string = string & reverse & takeWhile (/= '1') & length
 In the above examples we are pipelining functions that operate on the result of a previous function
 call. The first example does this using the `.` operator, which represents classic function
 composition. One thing to note about this is that the application order is read from right to left,
-so we are applying `reverse` first, then `takeWhile` (to get characters that aren't '1'), then get
-the length of the resulting string.
+so we are applying `reverse` first, then `takeWhile` (to get all characters until we encounter one
+that matches '1'), then get the length of the resulting string.
 
 `reverse` takes a `String` and will reverse it. The result is then passed to `takeWhile (/= '1')`
 which will take all initial characters of the string as long as they are not `'1'`. The result of
