@@ -1,5 +1,12 @@
 # Mutable variables
 
+- [Mutable variables](#mutable-variables)
+  - [`IORef`](#ioref)
+  - [`TVar`](#tvar)
+    - [Use of `TVar`s](#use-of-tvars)
+    - [`stm-chans`](#stm-chans)
+    - [TBMQueue example](#tbmqueue-example)
+
 While there is a lot of focus on purity in parts of the Haskell community, Haskell has runtime
 support for mutable variables that stretches beyond most programming environments' support. The
 difference is that by default things are immutable and we have to opt in to using mutable variables.
