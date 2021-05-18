@@ -7,6 +7,7 @@
     - [Boolean & arithmetic operations](#boolean--arithmetic-operations)
     - [Exercises (Functions)](#exercises-functions)
   - [Partial application](#partial-application)
+    - [Exercises (Partial application)](#exercises-partial-application)
   - [Pipelines using partial application](#pipelines-using-partial-application)
   - [A "Project Euler" example](#a-project-euler-example)
   - [Asking questions about values](#asking-questions-about-values)
