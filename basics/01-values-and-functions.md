@@ -275,7 +275,7 @@ as an operator like `-` would behave differently depending on which side you are
    reaches one that does not meet that criteria. `takeWhile`[2] can be useful for this. Use partial
    application both for `takeWhile`[2] and the predicate you pass to it.
 
-6. Define a function that takes the last 3 elements of a `[Int]`. Use notes[3][4] as inspiration.
+6. Define a function that takes the last 3 elements of a `[Int]`. Use notes as inspiration.
 
 #### Exercise notes
 
