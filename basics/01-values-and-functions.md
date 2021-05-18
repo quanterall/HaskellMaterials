@@ -298,7 +298,9 @@ as an operator like `-` would behave differently depending on which side you are
 
 ## Pipelines using partial application
 
-The above pattern also works well when composing different functions to achieve an end result:
+Partial application is especially useful in pipelines, since we can construct new functions by
+partially applying other functions, easily creating a function that takes the result of a previous
+operation and returning a new one, possibly passing it along to yet another function:
 
 ```haskell
 import Control.Category ((>>>))
