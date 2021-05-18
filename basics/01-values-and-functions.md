@@ -256,6 +256,18 @@ Since operators expect arguments both on the left and right side we can partiall
 side we want, so `(42 +)` is also valid. This obviously depends on the operator, as an operator like
 `-` would behave differently depending on which side you are omitting.
 
+### Exercises (Partial application)
+
+1. Define a function that takes a list of `Int`s and multiplies each with `2`.
+
+2. Define a function that takes a list of `Int`s and squares each.
+
+3. `filter` over a list of `Int` takes a function of type `Int -> Bool`. Construct a function that
+   checks whether or not the number is `0` without naming it.
+
+4. Define a function that returns all of the `Int`s in a list over `0`, use partial application for
+   both the check and `filter`.
+
 ## Pipelines using partial application
 
 The above pattern also works well when composing different functions to achieve an end result:
