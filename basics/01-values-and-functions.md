@@ -20,7 +20,7 @@ The bread and butter of a Haskell program is of course values and functions.
 
 ## Running examples
 
-If you want to run the examples, I recommend to install `stack` via the link found in the README and
+If you want to run the examples, I recommend installing `stack` via the link found in the README and
 using our ready-made template for small applications: `stack new project-name quanterall/basic`.
 This will give you an already set-up project and you can put the example code in the `Library.hs`
 file.
