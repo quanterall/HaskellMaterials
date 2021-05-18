@@ -69,7 +69,7 @@ myString = "This is not the best string in the world, it's just a tribute"
 1. Define a value with the name `myOwnValue` with the type `Double` and the value `42`.
 
 2. Define a value with the type `String` and the value `['h', 'e', 'l', 'l', 'o']`, then a value
-   with the type `String` and the value `"hello"`.
+   with the type `String` and the value `"hello"`. Why do both of these work?
 
 ## Functions
 
