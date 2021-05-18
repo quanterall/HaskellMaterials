@@ -9,6 +9,7 @@
     - [Exercises (Functions)](#exercises-functions)
       - [Exercise notes (Functions)](#exercise-notes-functions)
   - [Asking questions about values](#asking-questions-about-values)
+    - [`if` expressions](#if-expressions)
     - [Guards](#guards)
     - [Multi-way `if`](#multi-way-if)
     - [`case` expressions](#case-expressions)
@@ -410,14 +411,16 @@ We can use `case` to immediately ask questions about this structure:
 import qualified System.Environment as Environment
 import Prelude
 
-usingSafeDivide :: IO ()
+usingSafeDivide :: String
 usingSafeDivide x divisor =
   -- Note how we use `case` here to deconstruct the result
   case safeDivide x divisor of
     DivideSuccess result ->
-      putStrLn $ "Your result was: " <> show result
+      -- `show` takes a "showable" value and turns it into a `String`
+      -- `<>` here is a way to concatenate two strings together
+      "Your result was: " <> show result
     DivisionByZero ->
-      putStrLn "You tried to divide by zero"
+      "You tried to divide by zero"
 
 data DivisionResult
   = DivideSuccess Float
@@ -436,9 +439,9 @@ And when we run our `usingSafeDivide` function:
 
 ```haskell
 Q> usingSafeDivide 5 0
-You tried to divide by zero
+"You tried to divide by zero"
 Q> usingSafeDivide 5 2
-Your result was: 2.5
+"Your result was: 2.5"
 ```
 
 You may have noticed that I have referred to `case` as an expression; this is not a mistake. If we
