@@ -255,8 +255,8 @@ add42ToAll = List.map (+ 42) -- could also be `(42 +)`
 ```
 
 Since operators expect arguments both on the left and right side we can partially apply whichever
-side we want, so `(42 +)` is also valid. This obviously depends on the operator, as an operator like
-`-` would behave differently depending on which side you are omitting.
+side we want, so `(42 +)` is also valid. The resulting behavior obviously depends on the operator,
+as an operator like `-` would behave differently depending on which side you are omitting.
 
 ### Exercises (Partial application)
 
