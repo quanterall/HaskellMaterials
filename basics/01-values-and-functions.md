@@ -197,6 +197,9 @@ an individual basis in terms of whether or not it makes the code more or less ea
 
 5. Define a function that takes a radius of type `Float` and returns the area of a circle.
 
+6. Define a function `calculateBMI` that takes a `Float` representing weight and an `Int`
+   representing height in centimeters and returns the person's BMI.
+
 ## Partial application
 
 When you apply a function, you can choose to **not** pass all the arguments it's expecting. This
