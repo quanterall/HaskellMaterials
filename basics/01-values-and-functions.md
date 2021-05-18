@@ -14,6 +14,8 @@
   - [Pipelines using partial application](#pipelines-using-partial-application)
   - [A "Project Euler" example](#a-project-euler-example)
   - [Asking questions about values](#asking-questions-about-values)
+    - [Exercises (Asking questions about values)](#exercises-asking-questions-about-values)
+      - [Exercise notes (Asking questions about values)](#exercise-notes-asking-questions-about-values)
   - [A note on functions, their parameter order and partial application](#a-note-on-functions-their-parameter-order-and-partial-application)
 
 The bread and butter of a Haskell program is of course values and functions.
