@@ -216,8 +216,8 @@ an individual basis in terms of whether or not it makes the code more or less ea
 ## Partial application
 
 When you apply a function, you can choose to **not** pass all the arguments it's expecting. This
-will result in the return value being a function that expects the remaining arguments and that will
-have the same return value:
+will result in a function that expects the remaining arguments and that will have the same return
+value:
 
 ```haskell
 import Prelude
