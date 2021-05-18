@@ -213,9 +213,10 @@ integer number with a floating point number? Let's see:
 ```haskell
 --              integer  float   result
 divideInteger :: Int -> Float -> Float
--- This is the same as `(fromInteger x) / f` because `/` divides everything on the left by
+-- This is the same as `(fromIntegral x) / f` because `/` divides everything on the left by
 -- everything on the right.
-divideInteger integer float = fromInteger integer / float
+-- `fromIntegral` is a function that takes anything integer-like and turns it into a `Float`.
+divideInteger integer float = fromIntegral integer / float
 ```
 
 ### Exercises (Functions)
@@ -233,7 +234,7 @@ divideInteger integer float = fromInteger integer / float
 6. Define a function that takes 2 `Float`s `length'` & `width` and returns the area of the rectangle
    they make up.
 
-7. Define a function that takes a radius of type `Float` and returns the area of a circle.
+7. Define a function that takes a radius of type `Float` and returns the area of a circle[0].
 
 8. Define a function `calculateBMI` that takes a `Float` representing weight and an `Int`
    representing height in centimeters and returns the person's BMI.
