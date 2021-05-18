@@ -312,6 +312,12 @@ import Prelude
 -- which gives us a function expecting one argument, which is exactly what the predicate we pass to
 -- `takeWhile` here expects: `Char -> Bool`
 
+-- Types for this example:
+--
+-- reverse :: String -> String
+-- takeWhile :: (Char -> Bool) -> String -> String
+-- length :: String -> Int
+
 dataPartLength :: String -> Int
 dataPartLength = length . takeWhile (/= '1') . reverse
 
