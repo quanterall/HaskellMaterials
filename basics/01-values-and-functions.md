@@ -8,6 +8,7 @@
     - [Exercises (Functions)](#exercises-functions)
   - [Partial application](#partial-application)
     - [Exercises (Partial application)](#exercises-partial-application)
+      - [Exercise notes](#exercise-notes)
   - [Pipelines using partial application](#pipelines-using-partial-application)
   - [A "Project Euler" example](#a-project-euler-example)
   - [Asking questions about values](#asking-questions-about-values)
@@ -260,15 +261,29 @@ as an operator like `-` would behave differently depending on which side you are
 
 ### Exercises (Partial application)
 
-1. Define a function that takes a list of `Int`s and multiplies each with `2`.
+1. Define a function that takes a list of `Int`s and multiplies each with `2`. Remember `map`[0].
 
-2. Define a function that takes a list of `Int`s and squares each.
+2. Define a function that takes a list of `Int`s and squares each. Remember `map`[0].
 
-3. `filter` over a list of `Int` takes a function of type `Int -> Bool`. Construct a function that
-   checks whether or not the number is `0` without naming it.
+3. `filter`[1] over a list of `Int` takes a function of type `Int -> Bool`. Construct a function
+   that checks whether or not the number is `0` without naming it.
 
 4. Define a function that returns all of the `Int`s in a list over `0`, use partial application for
-   both the check and `filter`.
+   both the check and `filter`[1].
+
+5. Define a function that takes all the first numbers of a list of `Int`s below 10, stopping when it
+   reaches one that does not meet that criteria. `takeWhile`[2] can be useful for this. Use partial
+   application both for `takeWhile`[2] and the predicate you pass to it.
+
+6. Define a function that takes the last 3 elements of a `[Int]`. Use notes[3][4] as inspiration.
+
+#### Exercise notes
+
+0. [`map`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:map)
+1. [`filter`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:filter)
+2. [`takeWhile`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:takeWhile)
+3. [`take`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:take)
+4. [`reverse`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:reverse)
 
 ## Pipelines using partial application
 
