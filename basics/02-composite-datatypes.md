@@ -310,7 +310,8 @@ Q> rickard = UserProfile {
      }
    }
 Q> profileToString rickard
-"rickard (33y, active, Married to: Ivana on 2015-06-04) is interested in: Programming, Problem Solving, Teaching"
+"rickard (33y, active, Married to: Ivana on 2015-06-04) is interested in: Programming, Problem
+Solving, Teaching"
 ```
 
 Combining record types and union types is the basis for domain modelling in Haskell and allows us to
@@ -347,7 +348,8 @@ Q> rickard = UserProfile {
      }
    }
 Q> profileToString rickard
-"rickard (33y, active, Married to: Ivana on 2015-06-04) is interested in: Programming, Problem Solving, Teaching"
+"rickard (33y, active, Married to: Ivana on 2015-06-04) is interested in: Programming, Problem
+Solving, Teaching"
 ```
 
 But we can now also use a user profile in our `spouse` field:

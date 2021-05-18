@@ -1,2 +1,3 @@
+default: true
 MD029: false
 MD013: {line_length: 102}
