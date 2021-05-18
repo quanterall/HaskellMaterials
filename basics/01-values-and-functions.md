@@ -88,6 +88,10 @@ myBool = False
 
 myString :: String -- Actually just a type alias for a list of characters; `[Char]`
 myString = "This is not the best string in the world, it's just a tribute"
+
+-- `String`s also handle exotic encodings
+helloThere :: String
+helloThere = "Ехо, Генерал Кеноби"
 ```
 
 ### Exercises (Values)
