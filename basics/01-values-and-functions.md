@@ -1,6 +1,7 @@
 # Values and functions (& basic types)
 
 - [Values and functions (& basic types)](#values-and-functions--basic-types)
+  - [Running examples](#running-examples)
   - [Values](#values)
     - [Exercises (Values)](#exercises-values)
   - [Functions](#functions)
@@ -16,6 +17,22 @@
   - [A note on functions, their parameter order and partial application](#a-note-on-functions-their-parameter-order-and-partial-application)
 
 The bread and butter of a Haskell program is of course values and functions.
+
+## Running examples
+
+If you want to run the examples, I recommend to install `stack` via the link found in the README and
+using our ready-made template for small applications: `stack new project-name quanterall/basic`.
+This will give you an already set-up project and you can put the example code in the `Library.hs`
+file.
+
+If you are so inclined, you can use development containers to get a functioning development
+environment that I've set up; the prompt should pop up when you open the project. If you don't feel
+like you want this, you can install the "Simple GHC (Haskell) Integration" (extension ID
+dramforever.vscode-ghc-simple`) in VSCode for a setup that is known to work. When you save you
+should be able to get compiler warnings and errors.
+
+Most examples have (and should have) the needed imports in the examples themselves, so if you find
+one that doesn't, please let me know.
 
 ## Values
 
