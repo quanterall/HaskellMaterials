@@ -276,8 +276,27 @@ Q> subtractRoundedFloat 5 5.4
 ## Asking questions about values
 
 Quite regularly we will have to pose some kind of question about the structure of a value, or
-whether or not it matches some kind of predicate. Let's look at a few ways to do this in the case of
-"clamping" a number.
+whether or not it matches some kind of predicate.
+
+### `if` expressions
+
+`if` in Haskell is a lot like `if` in other languages, with the one slight difference to some of
+them that both the `True` and `False` branch need to be present, and both branches need to return
+the same type of value. This is because `if`, like most other things in Haskell, is an expression
+and the result can be bound to a name.
+
+```haskell
+value :: Int -> Int
+value x = if x < 10 then x else 10
+
+value' :: Int -> Int
+value' x =
+  if x < 10
+    then x
+    else 10
+```
+
+Let's look at a few ways to ask questions about values in the case of "clamping" a number.
 
 ### Guards
 
