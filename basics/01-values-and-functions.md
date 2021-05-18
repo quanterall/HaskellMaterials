@@ -125,6 +125,8 @@ import Prelude
 isDivisibleBy :: Int -> Int -> Bool
 isDivisibleBy x divisor =
   -- When we want to divide our problem into smaller parts we can use `let`.
+  -- `rem` here is a function that takes an integer and returns the remainder of dividing it by the
+  -- second argument. It is the same as the `%` operator (modulo) from C, JavaScript, and so on.
   let remainderOfDivision = rem x divisor
   -- `let` has to be followed by `in` and then the final expression that is to be executed.
    in remainderOfDivision == 0
