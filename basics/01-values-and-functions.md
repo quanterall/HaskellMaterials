@@ -207,6 +207,17 @@ an individual basis in terms of whether or not it makes the code more or less ea
 (-5) `rem` (-3) == -2
 ```
 
+Arithmetic can only be done with numbers of the same type, so what happens when we want to divide an
+integer number with a floating point number? Let's see:
+
+```haskell
+--              integer  float   result
+divideInteger :: Int -> Float -> Float
+-- This is the same as `(fromInteger x) / f` because `/` divides everything on the left by
+-- everything on the right.
+divideInteger integer float = fromInteger integer / float
+```
+
 ### Exercises (Functions)
 
 1. Define a function that returns whether or not an `Int` is zero.
@@ -230,7 +241,6 @@ an individual basis in terms of whether or not it makes the code more or less ea
 #### Exercise notes (Functions)
 
 0. `pi` is available by default.
-1. `fromInteger` can be used to turn an integer into a `Float`.
 
 ## Partial application
 
