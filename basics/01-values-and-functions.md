@@ -277,6 +277,9 @@ as an operator like `-` would behave differently depending on which side you are
 
 6. Define a function that takes the last 3 elements of a `[Int]`. Use notes as inspiration.
 
+7. Define a function that checks whether or not all `Int`s in a a list are even. Use notes to figure
+   out how and use partial application for your definition.
+
 #### Exercise notes
 
 0. [`map`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:map)
@@ -284,6 +287,8 @@ as an operator like `-` would behave differently depending on which side you are
 2. [`takeWhile`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:takeWhile)
 3. [`take`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:take)
 4. [`reverse`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:reverse)
+5. [`all`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:all)
+6. [`even`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:even)
 
 ## Pipelines using partial application
 
