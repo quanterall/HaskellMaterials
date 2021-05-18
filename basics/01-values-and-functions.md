@@ -6,9 +6,10 @@
   - [Functions](#functions)
     - [Boolean & arithmetic operations](#boolean--arithmetic-operations)
     - [Exercises (Functions)](#exercises-functions)
+      - [Exercise notes (Functions)](#exercise-notes-functions)
   - [Partial application](#partial-application)
     - [Exercises (Partial application)](#exercises-partial-application)
-      - [Exercise notes](#exercise-notes)
+      - [Exercise notes (Partial application)](#exercise-notes-partial-application)
   - [Pipelines using partial application](#pipelines-using-partial-application)
   - [A "Project Euler" example](#a-project-euler-example)
   - [Asking questions about values](#asking-questions-about-values)
@@ -199,13 +200,18 @@ an individual basis in terms of whether or not it makes the code more or less ea
 
 5. Define a function that adds 1/10th of a Double to itself.
 
-6. Define a function that takes 2 `Float`s `length` & `width` and returns the area of the rectangle
+6. Define a function that takes 2 `Float`s `length'` & `width` and returns the area of the rectangle
    they make up.
 
 7. Define a function that takes a radius of type `Float` and returns the area of a circle.
 
 8. Define a function `calculateBMI` that takes a `Float` representing weight and an `Int`
    representing height in centimeters and returns the person's BMI.
+
+#### Exercise notes (Functions)
+
+0. `pi` is available by default.
+1. `fromInteger` can be used to turn an integer into a `Float`.
 
 ## Partial application
 
@@ -280,7 +286,7 @@ as an operator like `-` would behave differently depending on which side you are
 7. Define a function that checks whether or not all `Int`s in a a list are even. Use notes to figure
    out how and use partial application for your definition.
 
-#### Exercise notes
+#### Exercise notes (Partial application)
 
 0. [`map`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:map)
 1. [`filter`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:filter)
