@@ -9,6 +9,9 @@
     - [Exercises (Functions)](#exercises-functions)
       - [Exercise notes (Functions)](#exercise-notes-functions)
   - [Asking questions about values](#asking-questions-about-values)
+    - [Guards](#guards)
+    - [Multi-way `if`](#multi-way-if)
+    - [`case` expressions](#case-expressions)
     - [Exercises (Asking questions about values)](#exercises-asking-questions-about-values)
       - [Exercise notes (Asking questions about values)](#exercise-notes-asking-questions-about-values)
   - [Partial application](#partial-application)
@@ -274,7 +277,9 @@ Q> subtractRoundedFloat 5 5.4
 
 Quite regularly we will have to pose some kind of question about the structure of a value, or
 whether or not it matches some kind of predicate. Let's look at a few ways to do this in the case of
-"clamping" a number:
+"clamping" a number.
+
+### Guards
 
 ```haskell
 import qualified System.Environment as Environment
@@ -298,7 +303,9 @@ evaluates to `True` the expression to the right of `=` is what will be returned.
 The word `otherwise` is an always matching case and we can use this case as an "for all other cases"
 clause.
 
-Another example:
+### Multi-way `if`
+
+The same example can be shown with a "multi-way" `if`, where we also use guards:
 
 ```haskell
 import qualified System.Environment as Environment
@@ -375,6 +382,8 @@ DivisionByZero
 Q> safeDivide 5 2
 DivideSuccess 2.5
 ```
+
+### `case` expressions
 
 We can use `case` to immediately ask questions about this structure:
 
