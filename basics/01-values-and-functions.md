@@ -18,8 +18,6 @@
       - [Exercise notes (Asking questions about values)](#exercise-notes-asking-questions-about-values)
   - [A note on functions, their parameter order and partial application](#a-note-on-functions-their-parameter-order-and-partial-application)
 
-The bread and butter of a Haskell program is of course values and functions.
-
 ## Running examples
 
 If you want to run the examples, I recommend installing `stack` via the link found in the README and
@@ -42,6 +40,8 @@ have been defined, as well as all the standard library. If you want to make chan
 reflected in the session, you can issue the `:r` command in it and it will reload the project files.
 
 ## Values
+
+The bread and butter of a Haskell program is of course values and functions.
 
 Before a value or a function definition comes the type of the definition. This is by convention to a
 large degree, we don't actually **have to** specify types for a lot of things depending on whether
