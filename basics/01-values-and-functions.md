@@ -219,6 +219,23 @@ divideInteger :: Int -> Float -> Float
 divideInteger integer float = fromIntegral integer / float
 ```
 
+Likewise we can also take a float and turn it into an integer, though this can obviously lead to a
+loss of precision in our calculations:
+
+```haskell
+subtractRoundedFloat :: Int -> Float -> Int
+subtractRoundedFloat int float = int - fromFractional float
+```
+
+If we were to run this we'd see:
+
+```haskell
+Q> subtractRoundedFloat 5 5.5
+-1
+Q> subtractRoundedFloat 5 5.4
+0
+```
+
 ### Exercises (Functions)
 
 1. Define a function that returns whether or not an `Int` is zero.
