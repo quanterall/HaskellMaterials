@@ -236,7 +236,10 @@ divideInteger integer float = fromIntegral integer / float
 
 7. Define a function that takes a radius of type `Float` and returns the area of a circle[0].
 
-8. Define a function `calculateBMI` that takes a `Float` representing weight and an `Int`
+8. Define a function that subtracts an integer from another, but if the result is less than zero,
+   instead return `0`. Use the function you defined in exercise 3.
+
+9. Define a function `calculateBMI` that takes a `Float` representing weight and an `Int`
    representing height in centimeters and returns the person's BMI.
 
 #### Exercise notes (Functions)
