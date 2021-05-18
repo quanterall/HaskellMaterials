@@ -34,6 +34,11 @@ should be able to get compiler warnings and errors.
 Most examples have (and should have) the needed imports in the examples themselves, so if you find
 one that doesn't, please let me know.
 
+If you want to run the examples interactively you can run `stack repl` in the root directory of the
+generated project and it will start an interactive session where you can execute the functions that
+have been defined, as well as all the standard library. If you want to make changes and see these
+reflected in the session, you can issue the `:r` command in it and it will reload the project files.
+
 ## Values
 
 Before a value or a function definition comes the type of the definition. This is by convention to a
