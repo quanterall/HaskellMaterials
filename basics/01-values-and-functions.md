@@ -105,6 +105,9 @@ helloThere = "Ехо... Генерал Кеноби"
 2. Define a value with the type `String` and the value `['h', 'e', 'l', 'l', 'o']`, then a value
    with the type `String` and the value `"hello"`. Why do both of these work?
 
+3. Define a value with the type `String` and the value `'hello'`. What happens and why do you think
+   that is?
+
 ## Functions
 
 Functions are written much like values, but have arrows in their type. The types, starting at the
