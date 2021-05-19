@@ -20,6 +20,8 @@
       - [Exercise notes (Partial application)](#exercise-notes-partial-application)
   - [Pipelines using partial application](#pipelines-using-partial-application)
     - [A "Project Euler" example](#a-project-euler-example)
+    - [Exercises (Pipelines using partial application)](#exercises-pipelines-using-partial-application)
+      - [Exercise notes (Pipelines using partial application)](#exercise-notes-pipelines-using-partial-application)
   - [A note on functions, their parameter order and partial application](#a-note-on-functions-their-parameter-order-and-partial-application)
 
 ## Running examples
@@ -706,6 +708,23 @@ solution upperBound divisors =
 
 -- `solution 1000 [3, 5]` will give us the value 233168
 ```
+
+### Exercises (Pipelines using partial application)
+
+1. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in it,
+   multiplies them all by two and returns the sum[1]. Create a version that uses a named argument
+   and one that does not.
+
+2. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in the
+   beginning of the list[2], multiplies them all by two, sums them up and returns whether or not the
+   sum is even. Create a version that uses a named argument and one that does not.
+
+#### Exercise notes (Pipelines using partial application)
+
+0. Remember that `&` is defined in `Data.Function` and `>>>` is defined in `Control.Category`. These
+   can be imported with `import Data.Function ((&))` and `import Control.Category ((>>>))`.
+1. [sum](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:sum)
+2. See examples and previous notes for inspiration and help with this
 
 ## A note on functions, their parameter order and partial application
 
