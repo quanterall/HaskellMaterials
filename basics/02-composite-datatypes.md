@@ -4,6 +4,7 @@
   - [Bool](#bool)
     - [Exercises (Bool)](#exercises-bool)
   - [Newtypes](#newtypes)
+    - [Exercises (Newtypes)](#exercises-newtypes)
   - [Record types](#record-types)
   - [Union types](#union-types)
   - [Combining records and unions](#combining-records-and-unions)
@@ -122,6 +123,17 @@ filteredCopy (Source source) (Destination destination) (CopyPattern copyPattern)
 We can still make the mistake of wrapping our `source` in a `Destination` wrapper, to be clear, but
 it's much easier to spot this mistake and if a value is produced in one place in a program as a
 `Destination` it simply cannot be passed blindly to a place where a `Source` is required.
+
+### Exercises (Newtypes)
+
+1. Define a newtype that wraps `Float`, called `Meters`. Define a function that takes two `Meters`
+   and adds them together to return a new `Meters`.
+
+2. Define two newtypes wrapping `Float`, called `Meters` and `Kilometers`. Define a function that
+   takes `Meters` and correctly converts them into `Kilometers`.
+
+3. Define a newtype wrapping `String` that is called `Username`, then a function that takes a
+   `Username` and returns its length.
 
 ## Record types
 
