@@ -293,7 +293,7 @@ let userProfile =
       UserProfile {username = "rickard", age, active, interests}
     age = 33
     active = True
-    interests = [ "Programming" , "Problem Solving" , "Teaching"]
+    interests = ["Programming" , "Problem Solving" , "Teaching"]
 ```
 
 The `userProfile` value above is a valid way to construct a `UserProfile`. When we don't use `=` for
