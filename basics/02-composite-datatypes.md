@@ -8,6 +8,7 @@
     - [Exercises (Newtypes)](#exercises-newtypes)
   - [Record types](#record-types)
   - [Union types](#union-types)
+    - [Exercises (Union types)](#exercises-union-types)
   - [Combining records and unions](#combining-records-and-unions)
   - [Generic datatypes](#generic-datatypes)
   - [Commonly used composite datatypes](#commonly-used-composite-datatypes)
@@ -329,6 +330,71 @@ The different constructors all represent different cases and contain different d
 constructor, but have elected to name the components because it can sometimes be clearer to take a
 record. In the case of `EngagedTo` it's perfectly clear that the user is engaged to another user
 profile. For the subsequent cases the constructors don't carry any additional data.
+
+We can inspect and act on this data in several ways:
+
+```haskell
+-- Note how we can put an underscore alone or before some text here to say that we do not care what
+-- the contents actually are, but we are saying that yes, there is a value there.
+isSingle :: RelationshipStatus -> Bool
+isSingle (MarriedTo _) = False
+isSingle (EngagedTo _userProfile) = False
+isSingle ItsComplicated = True
+isSingle Single = True
+
+isSingle' :: RelationshipStatus -> Bool
+isSingle' status = case status of
+  MarriedTo _marriageInfo -> False
+  EngagedTo _ -> False
+  ItsComplicated -> True
+  Single -> True
+```
+
+The above functions are of course very course grained; it's a very binary thing. To accurately
+represent what is actually the case we sometimes need to introduce more choices. Let's define a type
+that is perhaps more accurate:
+
+```haskell
+data IsSingle
+  = DefinitelySingle
+  | MaybeSingle
+  | DefinitelyNotSingle
+
+isSingle :: RelationshipStatus -> IsSingle
+isSingle (MarriedTo _) = DefinitelyNotSingle
+isSingle (EngagedTo _userProfile) = DefinitelyNotSingle
+isSingle ItsComplicated = MaybeSingle
+isSingle Single = DefinitelySingle
+
+isSingle' :: RelationshipStatus -> IsSingle
+isSingle' status = case status of
+  MarriedTo _marriageInfo -> DefinitelyNotSingle
+  EngagedTo _ -> DefinitelyNotSingle
+  ItsComplicated -> MaybeSingle
+  Single -> DefinitelySingle
+```
+
+When we introduce new types like this we enable our programs to more accurately model and act on the
+information that flows through our systems. In the case above we've now enabled a choice for a
+"maybe single" profile that previously had to be discerned from the `ItsComplicated` constructor. We
+now allow the user of `isSingle` to be aware only of these three states that `IsSingle` encompasses,
+and not have to derive what to do based on the bigger, more information-dense `RelationshipStatus`
+type.
+
+### Exercises (Union types)
+
+1. Return to the `DivisionResult` data type and `safeDivide` function that we defined in chapter 1
+   and create a function that takes a default `Float` value as well as a `DivisionResult` and if
+   the division result is a division by zero, returns the default. Otherwise it returns the result.
+   Create a solution with top-level pattern matching as well as one with `case`.
+
+2. Define a function `spouseName` that takes a `RelationshipStatus` and returns a `String`. Choose
+   either top-level pattern matching or using `case`. What do we do when a case does not have a
+   spouse?
+
+3. Add a data type that more accurately reflects the having or not of a spouse and modify the
+   function you defined in exercise 2 to return this data type. What happened to the cases where we
+   do not have a spouse name to take from the relationship status?
 
 ## Combining records and unions
 
