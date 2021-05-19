@@ -308,7 +308,7 @@ We define a union type with the `data` keyword followed by the type name and `=`
 
 ```haskell
 data RelationshipStatus
-  = MarriedTo MarriageData -- This could also be `MarriedTo UserProfile Day`
+  = MarriedTo MarriageData -- This could also be `MarriedTo String Day`
   | EngagedTo UserProfile
   | ItsComplicated
   | Single
