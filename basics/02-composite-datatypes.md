@@ -52,7 +52,7 @@ add42or1337 shouldAdd42 x = x + case shouldAdd42 of
 ```
 
 Each `case` branch can deconstruct the different constructors of a union type (which `Bool` is),
-even if they had associated data. We'll see this later.
+even if they have associated data in them. We'll see this later.
 
 We could also pattern-match "in the top-level", meaning on the left of the `=`:
 
@@ -68,7 +68,7 @@ If the logic for a function differs a lot between the cases I would personally p
 version as it also allows you to have some of the arguments be bound only for certain cases, etc.,
 and generally keeps each case separate. In this case the first version makes the most sense because
 only the amount added depends on the boolean and we have special syntax for boolean values with
-`if`.
+`if`. `Bool` values also work naturally with `if`.
 
 ## Newtypes
 
