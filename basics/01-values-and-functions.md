@@ -242,7 +242,7 @@ loss of precision in our calculations:
 
 ```haskell
 subtractRoundedFloat :: Int -> Float -> Int
-subtractRoundedFloat int float = int - fromFractional float
+subtractRoundedFloat int float = int - round float
 ```
 
 If we were to run this we'd see:
