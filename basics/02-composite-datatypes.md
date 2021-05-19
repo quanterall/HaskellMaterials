@@ -2,6 +2,7 @@
 
 - [Composite datatypes](#composite-datatypes)
   - [Bool](#bool)
+    - [Exercises (Bool)](#exercises-bool)
   - [Newtypes](#newtypes)
   - [Record types](#record-types)
   - [Union types](#union-types)
@@ -69,6 +70,12 @@ version as it also allows you to have some of the arguments be bound only for ce
 and generally keeps each case separate. In this case the first version makes the most sense because
 only the amount added depends on the boolean and we have special syntax for boolean values with
 `if`. `Bool` values also work naturally with `if`.
+
+### Exercises (Bool)
+
+1. Create a function that takes two functions of the type `(Bool -> Int)` as well as a `Bool` and
+   applies one if the `Bool` is `True` and the other if it's `False`. Define one version that does
+   this with `if`, one that does it with `case` and one that matches in the top-level.
 
 ## Newtypes
 
