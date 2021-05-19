@@ -226,6 +226,77 @@ Q> profileToString rickard
 "rickard (33y, active) is interested in: Programming, Problem Solving, Teaching"
 ```
 
+We could also pattern match on our `UserProfile` type:
+
+```haskell
+profileToString' :: UserProfile -> String
+profileToString'
+  UserProfile
+    { username = username,
+      age = age,
+      active = active,
+      interests = interests
+    } =
+  let ageString = show age
+      activeString = if active then "active" else "not Active"
+      interestsString = intercalate ", " interests
+   in mconcat
+        [ username,
+          " (",
+          ageString,
+          "y, ",
+          activeString,
+          ") is interested in: ",
+          interestsString
+        ]
+```
+
+We can see that we've now bound the values we care about in our function definition "head" and so
+the logic inside of the function is somewhat less busy, with values already being pulled out of our
+profile value for us. There is one issue, however; our function head is so wide that we've now been
+forced to spread it out over several lines, and we are repeating the field and variable names
+unnecessarily. When we are using the same name for a field we are matching as the name we are
+binding it to, we can use this nice shorthand:
+
+```haskell
+profileToString :: UserProfile -> String
+profileToString UserProfile {username, age, active, interests} =
+  let ageString = show age
+      activeString = if active then "active" else "not Active"
+      interestsString = intercalate ", " interests
+   in mconcat
+        [ username,
+          " (",
+          ageString,
+          "y, ",
+          activeString,
+          ") is interested in: ",
+          interestsString
+        ]
+```
+
+If we omit the `=` in our bindings Haskell will assume we are binding the fields into a name equal
+to the field's name. This mirrors the behavior you can find in, for example, JavaScript and other
+languages and also applies when we construct records:
+
+```haskell
+let userProfile =
+      -- Note how we don't have to pass all of these without `=`
+      UserProfile {username = "rickard", age, active, interests}
+    age = 33
+    active = True
+    interests = [ "Programming" , "Problem Solving" , "Teaching"]
+```
+
+The `userProfile` value above is a valid way to construct a `UserProfile`. When we don't use `=` for
+a field and we have a field with the same name as our value, Haskell again assumes that we mean to
+set the corresponding field to that value. Passing a field that doesn't exist in the type is still
+an error, so this is completely safe.
+
+This behavior with the shorthand deconstruction and construction is available through a language
+extension called `NamedFieldPuns`, that we by default enable in our Quanterall templates, so you
+should see this work without issue when using them.
+
 **Note:** Record types are sometimes called product types. Later material will elaborate on why that
 is and what it means.
 
