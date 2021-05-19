@@ -146,13 +146,13 @@ One thing to note about record definitions in Haskell is that each field will ha
 function that takes the type and returns the field:
 
 ```haskell
-Q> :t username
+Q> :type username
 username :: UserProfile -> String
-Q> :t age
+Q> :type age
 age :: UserProfile -> Int
-Q> :t active
+Q> :type active
 active :: UserProfile -> Bool
-Q> :t interests
+Q> :type interests
 interests :: UserProfile -> [String]
 Q> rickard = UserProfile {
      username = "rickard",
