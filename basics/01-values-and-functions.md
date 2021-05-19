@@ -267,10 +267,7 @@ Q> subtractRoundedFloat 5 5.4
 
 5. Define a function that takes a radius of type `Float` and returns the area of a circle[0].
 
-6. Define a function that subtracts an integer from another, but if the result is less than zero,
-   instead return `0`. Use the function you defined in exercise 3.
-
-7. Define a function `calculateBMI` that takes a `Float` representing weight and an `Int`
+6. Define a function `calculateBMI` that takes a `Float` representing weight and an `Int`
    representing height in centimeters and returns the person's BMI.
 
 #### Exercise notes (Functions)
@@ -474,7 +471,10 @@ action of type `IO ()` in each branch when we executed `putStrLn ...`.
 
 2. Define a function that takes two `Int`s and returns the smallest of the two.
 
-3. Define a function that takes an `Int` and if it's smaller than zero returns `0`, if it's bigger
+3. Define a function that subtracts an integer from another, but if the result is less than zero,
+   instead return `0`. Use the function you defined in exercise 1.
+
+4. Define a function that takes an `Int` and if it's smaller than zero returns `0`, if it's bigger
    than 255 returns `255`. Use the functions you defined in exercises 3 and 4[0].
 
 #### Exercise notes (Asking questions about values)
