@@ -3,6 +3,7 @@
 - [Composite datatypes](#composite-datatypes)
   - [Bool](#bool)
     - [Exercises (Bool)](#exercises-bool)
+  - [Interlude: `deriving (Eq, Show)`](#interlude-deriving-eq-show)
   - [Newtypes](#newtypes)
     - [Exercises (Newtypes)](#exercises-newtypes)
   - [Record types](#record-types)
@@ -77,6 +78,13 @@ only the amount added depends on the boolean and we have special syntax for bool
 1. Create a function that takes two functions of the type `(Bool -> Int)` as well as a `Bool` and
    applies one if the `Bool` is `True` and the other if it's `False`. Define one version that does
    this with `if`, one that does it with `case` and one that matches in the top-level.
+
+## Interlude: `deriving (Eq, Show)`
+
+In these examples you'll often find that there is a line under a lot of data definitions reading
+`deriving (Eq, Show)`. We'll look at what `deriving` and the other components to this mean later,
+but what you need to know right now is that this line will automatically generate the capability for
+these types to be displayed the terminal, as well as be compared to eachother value for value.
 
 ## Newtypes
 
