@@ -719,12 +719,16 @@ solution upperBound divisors =
    beginning of the list[2], multiplies them all by two, sums them up and returns whether or not the
    sum is even. Create a version that uses a named argument and one that does not.
 
+3. Define a function using a pipeline that takes a list of strings, takes out all the strings
+   beginning with "#", then discards all leading "#" or " " from the resulting strings.
+
 #### Exercise notes (Pipelines using partial application)
 
 0. Remember that `&` is defined in `Data.Function` and `>>>` is defined in `Control.Category`. These
    can be imported with `import Data.Function ((&))` and `import Control.Category ((>>>))`.
 1. [sum](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:sum)
 2. See examples and previous notes for inspiration and help with this
+3. [dropWhile](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:dropWhile)
 
 ## A note on functions, their parameter order and partial application
 
