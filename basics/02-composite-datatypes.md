@@ -297,9 +297,6 @@ This behavior with the shorthand deconstruction and construction is available th
 extension called `NamedFieldPuns`, that we by default enable in our Quanterall templates, so you
 should see this work without issue when using them.
 
-**Note:** Record types are sometimes called product types. Later material will elaborate on why that
-is and what it means.
-
 ## Union types
 
 While a record represents a collection of values that make up a whole, all of them present, a
