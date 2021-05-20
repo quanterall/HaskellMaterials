@@ -314,7 +314,7 @@ should see this work without issue when using them.
 1. Define a function that takes a `String` and returns a datatype that stores both the length of the
    string and the string itself.
 
-2. Define a HTTP Request datatype that has a `url`, a list of query parameters[0] and a HTTP
+2. Define a HTTP request datatype that has a `url`, a list of query parameters[0] and a HTTP
    method[1] and a body.
 
 #### Exercise notes (Record types)
@@ -412,8 +412,14 @@ type.
    function you defined in exercise 2 to return this data type. What happened to the cases where we
    do not have a spouse name to take from the relationship status?
 
-4. Return to the HTTP Request type we defined in the "Record types" exercise and more accurately
+4. Return to the HTTP request type we defined in the "Record types" exercise and more accurately
    model the "method" field[0].
+
+5. Define a `TradeOrder` type that can be either a `SellOrder` or a `BuyOrder`, both taking a
+   `TickerSymbol` (a `newtype` around a `String`) and a `Float`. Define a function that takes a
+   `TradeOrder` and a `[TradeOrder]` and returns whether or not we matched a sell/trade to an
+   existing opposite trade/sell in the list of orders. If there is a match, return the amount of the
+   match and if there isn't a match, indicate this in the return value.
 
 #### Exercise notes (Union types)
 
