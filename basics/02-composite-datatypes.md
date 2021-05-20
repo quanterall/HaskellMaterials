@@ -15,6 +15,7 @@
   - [Combining records and unions](#combining-records-and-unions)
     - [Exercise (Combining records and unions)](#exercise-combining-records-and-unions)
   - [Generic datatypes](#generic-datatypes)
+    - [Exercises (Generic datatypes)](#exercises-generic-datatypes)
   - [Commonly used composite datatypes](#commonly-used-composite-datatypes)
     - [Maybe](#maybe)
     - [Either](#either)
@@ -593,6 +594,7 @@ The most basic generic datatype is a type that can hold anything:
 
 ```haskell
 data Holder a = Holding a
+  deriving (Eq, Show)
 ```
 
 Note how we now have a type variable on the left side of `=` which means that when we refer to the
@@ -623,6 +625,21 @@ the type we would have, for example, `HttpResponse JSONValue`, `HttpResponse Byt
 
 With unions we predictably have the same format for generic unions as we do for basic ones and we
 will go through several popular and representative definitions below.
+
+### Exercises (Generic datatypes)
+
+1. Define a function `mapHolder :: (a -> b) -> Holder a -> Holder b` that applies the passed in
+   function to the value inside the `Holder` and wraps it up again. After implementing it, try
+   creating different concrete types like `Holder Int` and passing matching arguments to the
+   function you wrote. As an example, try passing `length` and a `Holder [Int]` to the function and
+   see what comes out.
+
+2. Define a function `foldHolder :: (a -> b) -> Holder a -> b`. What is the most natural way to
+   implement this function?
+
+3. Add a constructor to the `Holder` type that has no arguments and is named `NoValue`. What can we
+   return in our `mapHolder` function in the case where the `Holder` is `NoValue`? Likewise, what do
+   we need to do in order to make `foldHolder` compile again?
 
 ## Commonly used composite datatypes
 
