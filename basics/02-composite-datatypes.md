@@ -317,9 +317,11 @@ should see this work without issue when using them.
 2. Define a HTTP request datatype that has a `url`, a list of query parameters[0] and a HTTP
    method[1] and a body.
 
+3. Add `newtype`s to the definition you made for exercise 2 where you think they are appropriate.
+
 #### Exercise notes (Record types)
 
-0. You may want to define a type for this.
+0. You may want to define a type for what a query parameter is.
 1. This is fine as a string for now.
 
 ## Union types
