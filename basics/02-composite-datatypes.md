@@ -87,9 +87,10 @@ only the amount added depends on the boolean and we have special syntax for bool
 ## Interlude: `deriving (Eq, Show)`
 
 In these examples you'll often find that there is a line under a lot of data definitions reading
-`deriving (Eq, Show)`. We'll look at what `deriving` and the other components to this mean later,
-but what you need to know right now is that this line will automatically generate the capability for
-these types to be displayed the terminal, as well as be compared to eachother value for value.
+`deriving (Eq, Show)`. We'll look at what `deriving` and the other components to this mean in the,
+next chapter, but what you need to know right now is that this line will automatically generate the
+capability for these types to be displayed the terminal, as well as be compared to eachother value
+for value.
 
 ## Newtypes
 
