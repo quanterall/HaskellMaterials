@@ -430,13 +430,14 @@ type.
    `TickerSymbol` (a `newtype` around a `String`) and an `Int`. Define a function that takes a
    `TradeOrder` and a `[TradeOrder]` and returns whether or not we matched a sell/trade to an
    existing opposite trade/sell in the list of orders. If there is a match, return the matching
-   entry as well as the list of trade orders **without** it. If there isn't a match, indicate this
-   in the return value.
+   entry as well as the list of trade orders **without** the matched order[1]. If there isn't a
+   match, indicate this in the return value.
 
 #### Exercise notes (Union types)
 
 0. Remember that constructors can take payloads or not, so a method that has a body associated with
    it could take one and a method that doesn't could be designed to not take one.
+1. [`delete`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Data-List.html#v:delete)
 
 ## Combining records and unions
 
