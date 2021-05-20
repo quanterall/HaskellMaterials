@@ -11,6 +11,7 @@
       - [Exercise notes (Record types)](#exercise-notes-record-types)
   - [Union types](#union-types)
     - [Exercises (Union types)](#exercises-union-types)
+      - [Exercise notes (Union types)](#exercise-notes-union-types)
   - [Combining records and unions](#combining-records-and-unions)
   - [Generic datatypes](#generic-datatypes)
   - [Commonly used composite datatypes](#commonly-used-composite-datatypes)
@@ -410,6 +411,14 @@ type.
 3. Add a data type that more accurately reflects the having or not of a spouse and modify the
    function you defined in exercise 2 to return this data type. What happened to the cases where we
    do not have a spouse name to take from the relationship status?
+
+4. Return to the HTTP Request type we defined in the "Record types" exercise and more accurately
+   model the "method" field[0].
+
+#### Exercise notes (Union types)
+
+0. Remember that constructors can take payloads or not, so a method that has a body associated with
+   it could take one and a method that doesn't could be designed to not take one.
 
 ## Combining records and unions
 
