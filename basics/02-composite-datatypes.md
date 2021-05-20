@@ -7,6 +7,8 @@
   - [Newtypes](#newtypes)
     - [Exercises (Newtypes)](#exercises-newtypes)
   - [Record types](#record-types)
+    - [Exercises (Record types)](#exercises-record-types)
+      - [Exercise notes (Record types)](#exercise-notes-record-types)
   - [Union types](#union-types)
     - [Exercises (Union types)](#exercises-union-types)
   - [Combining records and unions](#combining-records-and-unions)
@@ -305,6 +307,19 @@ an error, so this is completely safe.
 This behavior with the shorthand deconstruction and construction is available through a language
 extension called `NamedFieldPuns`, that we by default enable in our Quanterall templates, so you
 should see this work without issue when using them.
+
+### Exercises (Record types)
+
+1. Define a function that takes a `String` and returns a datatype that stores both the length of the
+   string and the string itself.
+
+2. Define a HTTP Request datatype that has a `url`, a list of query parameters[0] and a HTTP
+   method[1] and a body.
+
+#### Exercise notes (Record types)
+
+0. You may want to define a type for this.
+1. This is fine as a string for now.
 
 ## Union types
 
