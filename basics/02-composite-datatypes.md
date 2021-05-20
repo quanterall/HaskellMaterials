@@ -118,10 +118,13 @@ The solution is fairly simple:
 
 ```haskell
 newtype Source = Source String
+  deriving (Eq, Show)
 
 newtype Destination = Destination String
+  deriving (Eq, Show)
 
 newtype CopyPattern = CopyPattern String
+  deriving (Eq, Show)
 
 filteredCopy :: Source -> Destination -> CopyPattern -> IO ()
 filteredCopy source destination copyPattern = ...
@@ -163,6 +166,7 @@ data UserProfile = UserProfile
     active :: Bool,
     interests :: [String]
   }
+  deriving (Eq, Show)
 ```
 
 The constructor name can be different than the type name, but this is comparatively rare.
@@ -340,8 +344,10 @@ data RelationshipStatus
   | EngagedTo UserProfile
   | ItsComplicated
   | Single
+  deriving (Eq, Show)
 
 data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
+  deriving (Eq, Show)
 ```
 
 The different constructors all represent different cases and contain different data. In the case of
@@ -378,6 +384,7 @@ data IsSingle
   = DefinitelySingle
   | MaybeSingle
   | DefinitelyNotSingle
+  deriving (Eq, Show)
 
 isSingle :: RelationshipStatus -> IsSingle
 isSingle (MarriedTo _) = DefinitelyNotSingle
