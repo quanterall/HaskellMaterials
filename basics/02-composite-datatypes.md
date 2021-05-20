@@ -418,7 +418,7 @@ type.
    model the "method" field[0].
 
 5. Define a `TradeOrder` type that can be either a `SellOrder` or a `BuyOrder`, both taking a
-   `TickerSymbol` (a `newtype` around a `String`) and a `Float`. Define a function that takes a
+   `TickerSymbol` (a `newtype` around a `String`) and an `Int`. Define a function that takes a
    `TradeOrder` and a `[TradeOrder]` and returns whether or not we matched a sell/trade to an
    existing opposite trade/sell in the list of orders. If there is a match, return the matching
    entry as well as the list of trade orders **without** it. If there isn't a match, indicate this
