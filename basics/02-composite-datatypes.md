@@ -13,7 +13,7 @@
     - [Exercises (Union types)](#exercises-union-types)
       - [Exercise notes (Union types)](#exercise-notes-union-types)
   - [Combining records and unions](#combining-records-and-unions)
-    - [Exercise (Combining records and unions)](#exercise-combining-records-and-unions)
+    - [Exercises (Combining records and unions)](#exercises-combining-records-and-unions)
   - [Generic datatypes](#generic-datatypes)
     - [Exercises (Generic datatypes)](#exercises-generic-datatypes)
   - [Commonly used composite datatypes](#commonly-used-composite-datatypes)
@@ -583,7 +583,7 @@ other.
 For another example of modelling (part of) a domain with types, see
 [this file](./02b-person-printing.md).
 
-### Exercise (Combining records and unions)
+### Exercises (Combining records and unions)
 
 1. Modify the `EngagedTo` constructor in `RelationshipStatus` to also take a `Spouse` and then
    modify the latest version of `profileToString` accordingly.
