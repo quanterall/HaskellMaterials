@@ -17,6 +17,7 @@
   - ["Help! I want to print a value but I can't print without IO!"](#help-i-want-to-print-a-value-but-i-cant-print-without-io)
   - ["I'm comfortable enough with Haskell basics but I don't know how to structure apps."](#im-comfortable-enough-with-haskell-basics-but-i-dont-know-how-to-structure-apps)
   - [Workflow screencasts](#workflow-screencasts)
+  - [Acknowledgements](#acknowledgements)
 
 ## Work In Progress
 
@@ -256,3 +257,15 @@ point them out as things to do and experiment with:
 I've created [a playlist](https://www.youtube.com/playlist?list=PLEQTpgQ9eFCE8BhQKGrQQ4IVK0QEsntAk)
 with screen casts where I demonstrate a range of tasks in Haskell with a fairly standard workflow,
 as well as emphasize different parts of them.
+
+## Acknowledgements
+
+As is usually the case with these things, people have helped make things possible and with improving
+things:
+
+Ivana Andersson - For helping by reading the chapters and going through exercises, pointing out how
+they could be improved.
+
+Radiana Koleva - For giving general advice on structure.
+
+Anton Andonov & Quanterall - For making this repository possible.
