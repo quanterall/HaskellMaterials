@@ -834,10 +834,8 @@ data List a
 ```
 
 Lists are useful any time you need to have zero or more of something. It's important to note that
-while Haskell lists are technically pointers to pointers to pointers, etc. a lot of this
-inefficiency can be mitigated by the fact that Haskell doesn't ask for the next value in a list
-unless it needs it. This has to do with lazyness/non-strictness, which will be covered later in this
-document.
+Haskell lists are pointers to pointers to pointers, which can be quite inefficient in many
+situations.
 
 We've seen many functions so far that have been operating on lists, but we have yet to work with
 them with pattern matching. If we want to examine a list in similar ways to our other data we can do
@@ -877,6 +875,12 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 1. Define a function that takes a `[Int]` and divides the first element by the sum[0] of the rest of
    the list. If the sum of the "tail" (rest) is 0 or there are no elements in the list, return
    `Nothing`.
+
+2. Define a function that takes a `[a]` and returns a `Maybe [a]` where the returned list is the
+   tail of the list. Consider what to return if the list is empty.
+
+3. Define an `average` function that takes a `[Int]` and returns `Maybe Float` where the return
+   value is the average value.
 
 ##### Exercise notes (Lists)
 
