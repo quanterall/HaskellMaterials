@@ -304,7 +304,6 @@ Let's look at a few ways to ask questions about values in the case of "clamping"
 ### Guards
 
 ```haskell
-import qualified System.Environment as Environment
 import Prelude
 
 -- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
@@ -330,7 +329,6 @@ clause.
 The same example can be shown with a "multi-way" `if`, where we also use guards:
 
 ```haskell
-import qualified System.Environment as Environment
 import Prelude
 
 -- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
@@ -355,7 +353,6 @@ this as a standard part of the language. Why? Because it's very flexible and sol
 having to introduce another, more roundabout way of being able to use guards:
 
 ```haskell
-import qualified System.Environment as Environment
 import Prelude
 
 -- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
@@ -376,7 +373,6 @@ on the structure of a given value, either with literal values exactly or want to
 structure via their constructors and field names:
 
 ```haskell
-import qualified System.Environment as Environment
 import Prelude
 
 data DivisionResult
@@ -410,7 +406,6 @@ DivideSuccess 2.5
 We can use `case` to immediately ask questions about this structure:
 
 ```haskell
-import qualified System.Environment as Environment
 import Prelude
 
 usingSafeDivide :: String
