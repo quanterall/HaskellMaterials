@@ -23,8 +23,10 @@
     - [Either](#either)
       - [Exercises (Either)](#exercises-either)
         - [Exercise notes (Either)](#exercise-notes-either)
-    - [List / []](#list--)
     - [Tuples](#tuples)
+    - [List / []](#list--)
+      - [Exercises (Lists)](#exercises-lists)
+        - [Exercise notes (Lists)](#exercise-notes-lists)
   - [Strictness annotations](#strictness-annotations)
     - [Lists and lazyness](#lists-and-lazyness)
     - [More tools for strictness](#more-tools-for-strictness)
@@ -776,34 +778,6 @@ descriptive in certain contexts.
 0. [`DivisionResult`](./01-values-and-functions.md#case-expressions)
 1. [either](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:either)
 
-### List / []
-
-`List` / `[]` is interesting because it's defined in terms of operators:
-
-```haskell
-data [] a
-  = []
-  | a : [a]
-```
-
-So we have a type, called `[]` that takes an `a`. The constructors are `[]` itself, which is the
-empty list, and `:` which as the left argument takes an `a` and as the right argument takes another
-list, `[a]`.
-
-Defined another way we have the following:
-
-```haskell
-data List a
-  = EmptyList -- This is commonly called `Nil`
-  | Prepend a (List a) -- This is commonly called `Cons`
-```
-
-Lists are useful any time you need to have zero or more of something. It's important to note that
-while Haskell lists are technically pointers to pointers to pointers, etc. a lot of this
-inefficiency can be mitigated by the fact that Haskell doesn't ask for the next value in a list
-unless it needs it. This has to do with lazyness/non-strictness, which will be covered later in this
-document.
-
 ### Tuples
 
 A tuple is an ad-hoc collection of values that can be of different types. Tuples are a staple of
@@ -826,6 +800,87 @@ needed because the scope of the created value is small or the names themselves w
 useful. The utility of tuples should be examined on a case-by-case basis to ensure that they don't
 make code harder to understand because of their lack of information/context. A name for both a
 constructor and the individual fields/components can in many cases be very illuminating.
+
+### List / []
+
+`List` / `[]` is interesting because it's defined in terms of operators:
+
+```haskell
+data [] a
+  = []
+  | a : [a]
+```
+
+So we have a type, called `[]` that takes an `a`. The constructors are `[]` itself, which is the
+empty list, and `:` which as the left argument takes an `a` and as the right argument takes another
+list, `[a]`. This means that a list is effectively the `:` operator applied over and over until it
+is connecting to a `[]`, which marks the end of the list:
+
+```haskell
+Q> 1 : 2 : 3 : 4 : []
+[ 1
+, 2
+, 3
+, 4
+]
+```
+
+Defined another way we have the following:
+
+```haskell
+data List a
+  = EmptyList -- This is commonly called `Nil`
+  | Prepend a (List a) -- This is commonly called `Cons`
+```
+
+Lists are useful any time you need to have zero or more of something. It's important to note that
+while Haskell lists are technically pointers to pointers to pointers, etc. a lot of this
+inefficiency can be mitigated by the fact that Haskell doesn't ask for the next value in a list
+unless it needs it. This has to do with lazyness/non-strictness, which will be covered later in this
+document.
+
+We've seen many functions so far that have been operating on lists, but we have yet to work with
+them with pattern matching. If we want to examine a list in similar ways to our other data we can do
+so using the same tools we would otherwise:
+
+```haskell
+maybeFirstElement :: [a] -> Maybe a
+maybeFirstElement (a : _) = Just a
+maybeFirstElement [] = Nothing
+
+maybeFirstElement' :: [a] -> Maybe a
+maybeFirstElement' list = case list of
+  a : _ -> Just a
+  [] -> Nothing
+
+maybeFirstTwoElements :: [a] -> Maybe (a, a)
+maybeFirstTwoElements (a : b : _) = Just (a, b)
+maybeFirstTwoElements [] = Nothing
+
+maybeFirstTwoElements' :: [a] -> Maybe (a, a)
+maybeFirstTwoElements' list = case list of
+  a : b : _ -> Just (a, b)
+  [] -> Nothing
+
+maybeFirstAndRest :: [a] -> Maybe (a, [a])
+maybeFirstAndRest (a : rest) = Just (a, rest)
+maybeFirstAndRest _anyOtherCase = Nothing
+
+-- We can also match to a set structure of a list
+maybeExactlyTwoElements :: [a] -> Maybe (a, a)
+maybeExactlyTwoElements [a, b] = Just (a, b)
+maybeExactlyTwoElements _anyOtherCase = Nothing
+```
+
+#### Exercises (Lists)
+
+1. Define a function that takes a `[Int]` and divides the first element by the sum[0] of the rest of
+   the list. If the sum of the "tail" (rest) is 0 or there are no elements in the list, return
+   `Nothing`.
+
+##### Exercise notes (Lists)
+
+0. [sum](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:sum)
 
 ## Strictness annotations
 
@@ -857,7 +912,7 @@ CallStack (from HasCallStack):
   error, called at <interactive>:25:5 in interactive:Ghci2
 ```
 
-We first evaluate the error, then set `crash` to be that expression. Evaluating `c` now reliably
+We first evaluate the error, then set `crash` to be that expression. Evaluating `crash` now reliably
 causes the crash to happen.
 
 Let's see how this strictness annotation seems to work out for our `stringFromTuple` function:
