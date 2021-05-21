@@ -477,7 +477,7 @@ action of type `IO ()` in each branch when we executed `putStrLn ...`.
    instead return `0`. Use the function you defined in exercise 1.
 
 4. Define a function that takes an `Int` and if it's smaller than zero returns `0`, if it's bigger
-   than 255 returns `255`. Use the functions you defined in exercises 3 and 4[0].
+   than 255 returns `255`. Use the functions you defined in exercises 1 and 2[0].
 
 #### Exercise notes (Asking questions about values)
 
