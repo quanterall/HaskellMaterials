@@ -866,7 +866,7 @@ maybeFirstAndRest :: [a] -> Maybe (a, [a])
 maybeFirstAndRest (a : rest) = Just (a, rest)
 maybeFirstAndRest _anyOtherCase = Nothing
 
--- We can also match to a set structure of a list
+-- We can also match to an exact structure of a list
 maybeExactlyTwoElements :: [a] -> Maybe (a, a)
 maybeExactlyTwoElements [a, b] = Just (a, b)
 maybeExactlyTwoElements _anyOtherCase = Nothing
