@@ -198,8 +198,8 @@ an individual basis in terms of whether or not it makes the code more or less ea
 |  ≤   |   <=    |                      |
 |  =   |   ==    |                      |
 |  ≠   |   /=    |                      |
-|  ^   |    ^    | `Int` & `Integer`    |
-|  ^   |   **    | `Float` & `Double`   |
+|  xⁿ  |  x ^ n  |    n is integral     |
+|  xⁿ  | x ** n  | `Float` & `Double`   |
 | mod  |   rem   | `Int` & `Integer`[0] |
 | mod  |   mod   | `Int` & `Integer`[0] |
 
@@ -269,8 +269,8 @@ Q> subtractRoundedFloat 5 5.4
 
 5. Define a function that takes a radius of type `Float` and returns the area of a circle[0].
 
-6. Define a function `calculateBMI` that takes a `Float` representing weight and an `Int`
-   representing height in centimeters and returns the person's BMI.
+6. Define a function `calculateBMI` that takes a `Float` representing weight in kilograms and an
+   `Int` representing height in centimeters and returns the person's BMI.
 
 #### Exercise notes (Functions)
 
