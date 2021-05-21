@@ -695,6 +695,10 @@ If we wanted to convert a `ResourceLoadStatus` to a `Maybe Resource`, we could d
 data ResourceLoadStatus
   = NotYetLoaded
   | Loaded Resource
+  deriving (Eq, Show)
+
+newtype Resource = Resource String
+  deriving (Eq, Show)
 
 resourceLoadStatusToMaybe :: ResourceLoadStatus -> Maybe Resource
 resourceLoadStatusToMaybe NotYetLoaded = Nothing
@@ -740,14 +744,17 @@ This, again, can be specialized down to something custom but still retain the sa
 data ResourceLoadResult
   = LoadFailure ResourceLoadError
   | LoadSuccess Resource
+  deriving (Eq, Show)
 
 newtype Resource = Resource String
+  deriving (Eq, Show)
 
 data ResourceLoadError
   = ResourceBusy
   | ResourceAccessDenied
   | ResourceHasBadData
   | UnknownResourceError String
+  deriving (Eq, Show)
 ```
 
 The above definition holds the same information as a `Either ErrorData Resource`, but can be more
