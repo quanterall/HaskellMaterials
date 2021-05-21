@@ -687,6 +687,18 @@ a complicated endevour to define the functions you need for this type and in the
 load status it's likely the case that you're pattern matching to see if you need to load the
 resource, or just want to display "N/A" when it's not loaded.
 
+If we wanted to convert a `ResourceLoadStatus` to a `Maybe Resource`, we could do the following:
+
+```haskell
+data ResourceLoadStatus
+  = NotYetLoaded
+  | Loaded Resource
+
+resourceLoadStatusToMaybe :: ResourceLoadStatus -> Maybe Resource
+resourceLoadStatusToMaybe NotYetLoaded = Nothing
+resourceLoadStatusToMaybe (Loaded resource) = Just resource
+```
+
 #### Exercises (Maybe)
 
 1. Define a type called `User` that has a username, e-mail address, **maybe** has a full name, and
