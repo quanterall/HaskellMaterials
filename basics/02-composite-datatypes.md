@@ -18,6 +18,8 @@
     - [Exercises (Generic datatypes)](#exercises-generic-datatypes)
   - [Commonly used composite datatypes](#commonly-used-composite-datatypes)
     - [Maybe](#maybe)
+      - [Exercises (Maybe)](#exercises-maybe)
+        - [Exercise notes (Maybe)](#exercise-notes-maybe)
     - [Either](#either)
     - [List / []](#list--)
     - [Tuples](#tuples)
@@ -684,6 +686,21 @@ custom type makes things much clearer when looking at your data structures, then
 a complicated endevour to define the functions you need for this type and in the case of a resource
 load status it's likely the case that you're pattern matching to see if you need to load the
 resource, or just want to display "N/A" when it's not loaded.
+
+#### Exercises (Maybe)
+
+1. Define a type called `User` that has a username, e-mail address, **maybe** has a full name, and
+   **maybe** has a telephone number. Make newtypes for each of these.
+
+2. Define a function that gets a telephone number string from a `User`. If the `User` has no
+   telephone number, return `"N/A"`. Use pattern matching in the top-level to accomplish this.
+
+3. Reimplement the previous function for getting a telephone number string from a `User`, but use
+   the `maybe` function[0]. If the `User` has no telephone number, return `"N/A"`.
+
+##### Exercise notes (Maybe)
+
+0. [maybe](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:maybe)
 
 ### Either
 
