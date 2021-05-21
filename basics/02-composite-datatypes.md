@@ -21,6 +21,8 @@
       - [Exercises (Maybe)](#exercises-maybe)
         - [Exercise notes (Maybe)](#exercise-notes-maybe)
     - [Either](#either)
+      - [Exercises (Either)](#exercises-either)
+        - [Exercise notes (Either)](#exercise-notes-either)
     - [List / []](#list--)
     - [Tuples](#tuples)
   - [Strictness annotations](#strictness-annotations)
@@ -736,12 +738,36 @@ This, again, can be specialized down to something custom but still retain the sa
 
 ```haskell
 data ResourceLoadResult
-  = LoadFailure ErrorData
+  = LoadFailure ResourceLoadError
   | LoadSuccess Resource
+
+newtype Resource = Resource String
+
+data ResourceLoadError
+  = ResourceBusy
+  | ResourceAccessDenied
+  | ResourceHasBadData
+  | UnknownResourceError String
 ```
 
 The above definition holds the same information as a `Either ErrorData Resource`, but can be more
 descriptive in certain contexts.
+
+#### Exercises (Either)
+
+1. Define a function that takes a `DivisionResult`[0] and turns it into a `Either String Float`.
+
+2. Define a function that takes a `ResourceLoadResult` and turns it into a
+   `Either ResourceLoadError Resource`.
+
+3. Define a function that takes a `ResourceLoadResult`, uses your previous function for turning it
+   into an `Either ResourceLoadError Resource` and then pipes the result into `either` to return a
+   `String`.
+
+##### Exercise notes (Either)
+
+0. [`DivisionResult`](./01-values-and-functions.md#case-expressions)
+1. [either](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:either)
 
 ### List / []
 
