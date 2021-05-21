@@ -269,3 +269,7 @@ they could be improved.
 Radiana Koleva - For giving general advice on structure.
 
 Anton Andonov & Quanterall - For making this repository possible.
+
+Michael Snoyman & FP Complete - For their tireless work in producing material and libraries for
+Haskell in order to make it more useful and accessible. Several of their blog posts, workshop
+snippets and so on are included in these repositories.
