@@ -207,7 +207,9 @@ the asynchronous nature does not matter in terms of the values they represent.
    all files in that path. You will need to determine what is a file and what isn't([2],[3],[4]).
 
 5. Make the function that you created in exercise 3 work for an entire directory, returning a list
-   of the type you defined.
+   of the type you defined. Use the function you defined in exercise 4 and see if you can find a
+   function that allows you to run the function from exercise 3 on the list of files, returning a
+   list of whatever type you return from that.
 
 6. Define a data type `FileType` representing either a `Directory` or `File` and create a function
    that takes a path and returns all the paths inside of it as either `Directory`[5] or `File`,
@@ -228,6 +230,7 @@ the asynchronous nature does not matter in terms of the values they represent.
 4. [`filterM`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Control-Monad.html#v:filterM)
    allows one to filter a structure with a predicate that returns something monadic, like `IO Bool`.
 5. [`doesDirectoryExist`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:doesDirectoryExist).
+6. [`traverse`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:traverse)
 
 ## What makes `IO` special?
 
