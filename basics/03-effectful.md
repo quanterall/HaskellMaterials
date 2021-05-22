@@ -209,6 +209,14 @@ the asynchronous nature does not matter in terms of the values they represent.
 5. Make the function that you created in exercise 3 work for an entire directory, printing a line of
    statistics for each file in the current directory.
 
+6. Define a data type `FileType` representing either a `Directory` or `File` and create a function
+   that takes a path and returns all the paths inside of it as either `Directory`[5] or `File`,
+   depending on their file type.
+
+7. Make the function that you created in exercise 5 work for a given directory and all its
+   sub-directories, recursively. Use the function from exercise 6 to figure out when you need to go
+   deeper into a directory.
+
 #### Exercise notes (`IO a`)
 
 0. [`lines`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:lines)
@@ -219,6 +227,7 @@ the asynchronous nature does not matter in terms of the values they represent.
    returns `True` for any path that is a file.
 4. [`filterM`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Control-Monad.html#v:filterM)
    allows one to filter a structure with a predicate that returns something monadic, like `IO Bool`.
+5. [`doesDirectoryExist`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:doesDirectoryExist).
 
 ## What makes `IO` special?
 
