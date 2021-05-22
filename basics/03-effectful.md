@@ -8,6 +8,8 @@
     - [Exercises (`IO ()`)](#exercises-io-)
       - [Exercise notes (`IO ()`)](#exercise-notes-io-)
   - [IO a](#io-a)
+    - [Exercises (`IO a`)](#exercises-io-a)
+      - [Exercise notes (`IO a`)](#exercise-notes-io-a)
   - [What makes `IO` special?](#what-makes-io-special)
   - [Should you avoid effectful things?](#should-you-avoid-effectful-things)
 
@@ -190,6 +192,33 @@ It's perhaps helpful to draw the analogy to `await` in JavaScript, where we some
 "in the `Promise` monad" and so we can do asynchronous things. We unpack these asynchronous values
 by using `await` (or `.then()` for people who aren't up-to-date) and when we refer to them in code
 the asynchronous nature does not matter in terms of the values they represent.
+
+### Exercises (`IO a`)
+
+1. Define a function that takes a file path and returns the lines[0] in the file (`[String]`).
+
+2. Define a function that takes a file path and returns the lines in the file that match a predicate
+   that you pass to the function.
+
+3. Define a function that takes a file path and returns the amount of characters, lines and words[1]
+   in the file. Define a type to hold this information and return it from the function.
+
+4. Define a function `filesInDirectory :: FilePath -> IO [FilePath]` that takes a path and returns
+   all files in that path. You will need to determine what is a file and what isn't([2],[3],[4]).
+
+5. Make the function that you created in exercise 3 work for an entire directory, printing a line of
+   statistics for each file in the current directory.
+
+#### Exercise notes (`IO a`)
+
+0. [`lines`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:lines)
+1. [`words`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:words)
+2. [`listDirectory`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:listDirectory)
+   lists all the files in the path given to it. `"."` can be used to refer to the current directory.
+3. [`doesFileExist`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:doesFileExist)
+   returns `True` for any path that is a file.
+4. [`filterM`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Control-Monad.html#v:filterM)
+   allows one to filter a structure with a predicate that returns something monadic, like `IO Bool`.
 
 ## What makes `IO` special?
 
