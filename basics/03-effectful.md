@@ -206,8 +206,8 @@ the asynchronous nature does not matter in terms of the values they represent.
 4. Define a function `filesInDirectory :: FilePath -> IO [FilePath]` that takes a path and returns
    all files in that path. You will need to determine what is a file and what isn't([2],[3],[4]).
 
-5. Make the function that you created in exercise 3 work for an entire directory, printing a line of
-   statistics for each file in the current directory.
+5. Make the function that you created in exercise 3 work for an entire directory, returning a list
+   of the type you defined.
 
 6. Define a data type `FileType` representing either a `Directory` or `File` and create a function
    that takes a path and returns all the paths inside of it as either `Directory`[5] or `File`,
