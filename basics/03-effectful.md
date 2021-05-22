@@ -127,6 +127,20 @@ have in common is that they cause something to happen, which is likely the reaso
 These can be the building blocks that our program uses behind the scenes in order to actually do
 something in the end.
 
+When a function returns `IO ()` we can put it on its own line without binding the result value and
+Haskell, since it knows that `()` is deemed an unimportant return value, will not complain:
+
+```haskell
+import qualified System.Directory as Directory
+import Prelude
+
+main :: IO ()
+main = do
+  -- If this function returned `IO String`, for example, Haskell would say we were discarding a
+  -- return value and warn us about it.
+  Directory.createDirectory "new-directory"
+```
+
 ## IO a
 
 So what happens when we want to use functions that do effectful things but we also want to use
