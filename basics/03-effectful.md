@@ -148,14 +148,14 @@ main = do
 ### Exercises (`IO ()`)
 
 1. Try to create a program that does something (vaguely) useful out of only functions that return
-   `IO ()`. Use the modules `System.Directory`[0], `System.Environment`[1] & `System.IO`[2]. If you
+   `IO ()`. Use the modules `Prelude`, `System.Directory`[1] & `System.IO`[2]. If you
    are using our stack templates you can just put the code in `runMain` in `Library.hs`.
 
 #### Exercise notes (`IO ()`)
 
-0. Requires the package `directory`, add it in `package.yaml`. Module info can be found here:
+0. [`Prelude`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html)
+1. Requires the package `directory`, add it in `package.yaml`. Module info can be found here:
    [`System.Directory`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html)
-1. [`System.Environment`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/System-Environment.html)
 2. [`System.IO`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/System-IO.html)
 
 ## IO a
