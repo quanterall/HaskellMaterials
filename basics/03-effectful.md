@@ -5,6 +5,8 @@
   - [IO ()](#io-)
     - [Interlude: IO is "higher-kinded"](#interlude-io-is-higher-kinded)
     - [Back to `IO ()`](#back-to-io-)
+    - [Exercises (`IO ()`)](#exercises-io-)
+      - [Exercise notes (`IO ()`)](#exercise-notes-io-)
   - [IO a](#io-a)
   - [What makes `IO` special?](#what-makes-io-special)
   - [Should you avoid effectful things?](#should-you-avoid-effectful-things)
@@ -127,6 +129,19 @@ have in common is that they cause something to happen, which is likely the reaso
 These can be the building blocks that our program uses behind the scenes in order to actually do
 something in the end.
 
+### Exercises (`IO ()`)
+
+1. Try to create a program that does something (vaguely) useful out of only functions that return
+   `IO ()`. Use the modules `System.Directory`[0], `System.Environment`[1] & `System.IO`[2]. If you
+   are using our stack templates you can just put the code in `runMain` in `Library.hs`.
+
+#### Exercise notes (`IO ()`)
+
+0. Requires the package `directory`, add it in `package.yaml`. Module info can be found here:
+   [`System.Directory`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html)
+1. [`System.Environment`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/System-Environment.html)
+2. [`System.IO`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/System-IO.html)
+
 ## IO a
 
 So what happens when we want to use functions that do effectful things but we also want to use
@@ -151,6 +166,7 @@ import qualified System.Environment as Environment
 
 main :: IO ()
 main = do
+  -- If we were to not bind the result of this call to a name we would get a warning about it
   dockerFileName <- Environment.getEnv "DOCKERFILE" -- has the type `IO String`
   dockerFileContents <- readFile dockerFileName -- `IO String` again
   putStrLn dockerFileContents -- `IO ()`
