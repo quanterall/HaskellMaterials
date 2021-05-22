@@ -217,7 +217,8 @@ the asynchronous nature does not matter in terms of the values they represent.
 
 7. Make the function that you created in exercise 5 work for a given directory and all its
    sub-directories, recursively. Use the function from exercise 6 to figure out when you need to go
-   deeper into a directory.
+   deeper into a directory. Make sure that the path you are using in recursive calls is actually the
+   complete path to a file.
 
 #### Exercise notes (`IO a`)
 
