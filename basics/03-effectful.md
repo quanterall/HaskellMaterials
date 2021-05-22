@@ -232,6 +232,8 @@ the asynchronous nature does not matter in terms of the values they represent.
    allows one to filter a structure with a predicate that returns something monadic, like `IO Bool`.
 5. [`doesDirectoryExist`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:doesDirectoryExist).
 6. [`traverse`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:traverse)
+7. [`concat`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:concat)
+8. [`foldMap`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:foldMap)
 
 ## What makes `IO` special?
 
