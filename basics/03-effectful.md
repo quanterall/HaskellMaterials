@@ -246,8 +246,10 @@ the asynchronous nature does not matter in terms of the values they represent.
 1. [`words`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:words)
 2. [`listDirectory`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:listDirectory)
    lists all the files in the path given to it. `"."` can be used to refer to the current directory.
+   Requires the package `directory`, add to `package.yaml` in the `dependencies` section.
 3. [`doesFileExist`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:doesFileExist)
    returns `True` for any path that is a file.
+   Requires the package `directory`, add to `package.yaml` in the `dependencies` section.
 4. [`filterM`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Control-Monad.html#v:filterM)
    allows one to filter a structure with a predicate that returns something monadic, like `IO Bool`.
 5. [`doesDirectoryExist`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:doesDirectoryExist).
@@ -255,7 +257,8 @@ the asynchronous nature does not matter in terms of the values they represent.
 7. [`concat`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:concat)
 8. [`foldMap`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:foldMap)
 9. [`(</>)`](https://www.stackage.org/haddock/lts-17.12/filepath-1.4.2.1/System-FilePath-Posix.html#v:-60--47--62-).
-   requires the package `filepath`, add to `package.yaml` in the `dependencies` section.
+   Concatenates two paths together, making sure there is a path separator between them.
+   Requires the package `filepath`, add to `package.yaml` in the `dependencies` section.
 10. [`makeAbsolute`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:makeAbsolute).
 11. [`inits`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Data-List.html#v:inits)
 12. [`splitPath`](https://www.stackage.org/haddock/lts-17.12/filepath-1.4.2.1/System-FilePath-Posix.html#v:splitPath).
