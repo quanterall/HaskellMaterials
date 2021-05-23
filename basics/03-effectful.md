@@ -221,8 +221,9 @@ the asynchronous nature does not matter in terms of the values they represent.
    complete path to a file. You can use `(</>)`[9] to combine paths together.
 
 8. Define a function that gets the absolute path[10] for a given `path`, then returns a list of all
-   preceding path segments([11],[12]). For example: `pathSegments "./src"` in the development
-   container should return `["/workspace/src" , "/workspace/" , "/"]`.
+   preceding path segments([11],[12]) along with the full segment of the given path. For example:
+   `pathSegments "./src"` in the development container should return
+   `["/workspace/src" , "/workspace/" , "/"]`.
 
 9. Define a function `findProjectRoot :: FilePath -> IO (Maybe FilePath)` that will search backwards
    starting from a given path, looking for a directory called `.git`. When it finds it, it returns
