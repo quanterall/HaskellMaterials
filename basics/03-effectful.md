@@ -226,7 +226,7 @@ the asynchronous nature does not matter in terms of the values they represent.
 
 9. Define a function `findProjectRoot :: FilePath -> IO (Maybe FilePath)` that will search backwards
    starting from a given path, looking for a directory called `.git`. When it finds it, it returns
-   the result.
+   the result. If it can't find a it, returns `Nothing`.
 
 #### Exercise notes (`IO a`)
 
