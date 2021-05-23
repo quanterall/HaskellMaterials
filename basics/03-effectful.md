@@ -148,8 +148,8 @@ main = do
 ### Exercises (`IO ()`)
 
 1. Try to create a program that does something (vaguely) useful out of only functions that return
-   `IO ()`. Use the modules `Prelude`, `System.Directory`[1] & `System.IO`[2]. If you
-   are using our stack templates you can just put the code in `runMain` in `Library.hs`.
+   `IO ()`. Use the modules `Prelude`[0], `System.Directory`[1] & `System.IO`[2]. If you are using
+   our stack templates you can just put the code in `runMain` in `Library.hs`.
 
 #### Exercise notes (`IO ()`)
 
