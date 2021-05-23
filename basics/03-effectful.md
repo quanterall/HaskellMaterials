@@ -261,6 +261,13 @@ the asynchronous nature does not matter in terms of the values they represent.
    Requires the package `filepath`, add to `package.yaml` in the `dependencies` section.
 10. [`makeAbsolute`](https://www.stackage.org/haddock/lts-17.12/directory-1.3.6.0/System-Directory.html#v:makeAbsolute).
 11. [`inits`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Data-List.html#v:inits)
+    Returns a list of successively more segments of a given list. Example:
+
+    ```haskell
+    Q> List.inits ["Research", "In", "Motion"]       
+    [[],["Research"],["Research","In"],["Research","In","Motion"]]
+    ```
+
 12. [`splitPath`](https://www.stackage.org/haddock/lts-17.12/filepath-1.4.2.1/System-FilePath-Posix.html#v:splitPath).
    Splits a given path on path separators, giving you the different components of the path.
    Requires the package `filepath`, add to `package.yaml` in the `dependencies` section.
