@@ -882,9 +882,18 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 3. Define an `average` function that takes a `[Int]` and returns `Maybe Float` where the return
    value is the average value.
 
+4. Define a function `maybeMaximumInt :: [Int] -> Maybe Int` function that takes a list of integers
+   and finds the maximum integer of the list using the function `foldr`[1]. Figure out what to pass
+   as the "empty list" argument.
+
+5. Define a function `maximumInt :: Int -> [Int] -> Int` function that takes a default value and a
+   list of integers, then either returns the default value or the found maximum value. Use the
+   function you defined in exercise 4.
+
 ##### Exercise notes (Lists)
 
 0. [sum](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:sum)
+1. [foldr](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:foldr)
 
 ## Strictness annotations
 
