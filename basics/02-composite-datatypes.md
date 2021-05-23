@@ -634,16 +634,18 @@ will go through several popular and representative definitions below.
 
 ### Exercises (Generic datatypes)
 
-1. Define a function `mapHolder :: (a -> b) -> Holder a -> Holder b` that applies the passed in
+1. Define a value of type `Holder Int` as well as a value of type `Holder String`.
+
+2. Define a function `mapHolder :: (a -> b) -> Holder a -> Holder b` that applies the passed in
    function to the value inside the `Holder` and wraps it up again. After implementing it, try
    creating different concrete types like `Holder Int` and passing matching arguments to the
    function you wrote. As an example, try passing `length` and a `Holder [Int]` to the function and
    see what comes out.
 
-2. Define a function `foldHolder :: (a -> b) -> Holder a -> b`. What is the most natural way to
+3. Define a function `foldHolder :: (a -> b) -> Holder a -> b`. What is the most natural way to
    implement this function?
 
-3. Add a constructor to the `Holder` type that has no arguments and is named `NoValue`. What can we
+4. Add a constructor to the `Holder` type that has no arguments and is named `NoValue`. What can we
    return in our `mapHolder` function in the case where the `Holder` is `NoValue`? Likewise, what do
    we need to do in order to make `foldHolder` compile again?
 
