@@ -228,6 +228,17 @@ the asynchronous nature does not matter in terms of the values they represent.
    starting from a given path, looking for a directory called `.git`. When it finds it, it returns
    the result. If it can't find a it, returns `Nothing`.
 
+   Examples:
+
+   ```haskell
+   Q> findProjectRoot "/bin/"
+   Nothing
+   Q> findProjectRoot ".stack-work/install/x86_64-linux/"
+   Just "/workspace/"
+   Q> findProjectRoot "src"
+   Just "/workspace/"
+   ```
+
 #### Exercise notes (`IO a`)
 
 0. [`lines`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:lines)
