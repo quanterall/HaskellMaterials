@@ -888,7 +888,14 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 
 5. Define a function `maximumInt :: Int -> [Int] -> Int` function that takes a default value and a
    list of integers, then either returns the default value or the found maximum value. Use the
-   function you defined in exercise 4.
+   function you defined in exercise 4 together with `maybe`.
+
+6. Define a function `firstMatch :: (a -> Bool) -> [a] -> Maybe a` that returns the first element in
+   a list that matches a given predicate, or `Nothing` otherwise. Try to create a version that uses
+   `foldr` and one that recursively goes through the list with pattern matching.
+
+7. Define a function `firstMatchOr :: (a -> Bool) -> a -> [a] -> a` that uses the `firstMatch`
+   function together with `maybe` to provide a default value unless we find a matching element.
 
 ##### Exercise notes (Lists)
 
