@@ -7,8 +7,10 @@
   - [Container types & type variables](#container-types--type-variables)
   - [Important and common type classes](#important-and-common-type-classes)
     - [Num](#num)
+      - [Exercises (Num)](#exercises-num)
     - [Eq](#eq)
     - [Ord](#ord)
+      - [Exercises (Ord)](#exercises-ord)
     - [Semigroup](#semigroup)
     - [Monoid](#monoid)
     - [Functor](#functor)
@@ -215,6 +217,11 @@ class Num a where
   {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
 ```
 
+#### Exercises (Num)
+
+1. Define a function that takes a `[a]` and returns the sum of all elements. The return value type
+   should be `a` as well. Otherwise, feel free to implement it any way you choose.
+
 These are the operations constraining our generic types with `Num` gets us. The `MINIMAL` part means
 that in order to satisfy the `Num` constraint we need to provide at least the listed functions, and
 the `|` part means that we can define `negate` **or** `(-)` and it'll use a default version for
@@ -264,6 +271,10 @@ hence the superclass requirement.
 When we use an `Ord` constraint in a function type, we get access in that function to both the `Ord`
 functions as well as the `Eq` functions, because the existence of an `Ord` instance also implies the
 existence of `Eq`.
+
+#### Exercises (Ord)
+
+1. Implement `clamp` from chapter 1 but for a type `a`. Add type class constraints as necessary.
 
 ### Semigroup
 
