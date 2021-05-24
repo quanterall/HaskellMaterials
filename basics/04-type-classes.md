@@ -222,6 +222,9 @@ class Num a where
 1. Define a function that takes a `[a]` and returns the sum of all elements. The return value type
    should be `a` as well. Otherwise, feel free to implement it any way you choose.
 
+2. Reimplement the rectangle area and circle area functions you defined in chapter 1, but for any
+   type `a` that has a `Num` instance.
+
 These are the operations constraining our generic types with `Num` gets us. The `MINIMAL` part means
 that in order to satisfy the `Num` constraint we need to provide at least the listed functions, and
 the `|` part means that we can define `negate` **or** `(-)` and it'll use a default version for
