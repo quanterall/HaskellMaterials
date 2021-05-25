@@ -492,7 +492,7 @@ import Prelude
 addInts :: Int -> Int -> Int
 addInts a b = a + b
 
-add42 :: Int -> Int
+add42 ::          Int -> Int
 add42 = addInts 42
 ```
 
