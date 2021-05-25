@@ -388,7 +388,7 @@ safeDivide x divisor =
    in DivideSuccess (xAsFloat / divisorAsFloat)
 ```
 
-We will go deeper into how to use `data` in the [next document](./02-composite-datatypes.md) but for
+We will go deeper into how to use `data` in the [next chapter](./02-composite-datatypes.md) but for
 now all we need to know is that `safeDivide` can either return a `DivisionByZero` result or a
 `DivideSuccess` result that also carries a float with it.
 
