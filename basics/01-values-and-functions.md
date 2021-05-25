@@ -408,7 +408,7 @@ We can use `case` to immediately ask questions about this structure:
 ```haskell
 import Prelude
 
-usingSafeDivide :: String
+usingSafeDivide :: Int -> Int -> String
 usingSafeDivide x divisor =
   -- Note how we use `case` here to deconstruct the result
   case safeDivide x divisor of
