@@ -113,6 +113,9 @@ are used because they cause something to happen and that's their main purpose.
 Examples:
 
 ```haskell
+-- Output a string to the terminal, followed by a newline.
+System.IO.putStrLn :: String -> IO ()
+
 -- Create a directory in the file system
 System.Directory.createDirectory :: FilePath -> IO ()
 
