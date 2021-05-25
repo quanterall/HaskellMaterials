@@ -464,9 +464,11 @@ action of type `IO ()` in each branch when we executed `putStrLn ...`.
 
 ### Exercises (Asking questions about values)
 
-1. Define a function that takes two `Int`s and returns the biggest of the two.
+1. Define a function that takes two `Int`s and returns the biggest of the two. Implement it both
+   with function guards as well as `if`.
 
-2. Define a function that takes two `Int`s and returns the smallest of the two.
+2. Define a function that takes two `Int`s and returns the smallest of the two. Implement it both
+   with function guards as well as `if`.
 
 3. Define a function that subtracts an integer from another, but if the result is less than zero,
    instead return `0`. Use the function you defined in exercise 1.
