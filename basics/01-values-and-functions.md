@@ -716,8 +716,8 @@ solution upperBound divisors =
    beginning of the list[2], multiplies them all by two, sums them up and returns whether or not the
    sum is even. Create a version that uses a named argument and one that does not.
 
-3. Define a function using a pipeline that takes a list of strings, takes out all the strings
-   beginning with "#", then discards all leading "#" or " " from the resulting strings.
+3. Define a function using a pipeline that takes a list of strings, takes all the strings beginning
+   with "#", then discards all leading "#" or " " from the resulting strings.
 
 #### Exercise notes (Pipelines using partial application)
 
