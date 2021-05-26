@@ -726,6 +726,7 @@ solution upperBound divisors =
 1. [sum](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:sum)
 2. See examples and previous notes for inspiration and help with this
 3. [dropWhile](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:dropWhile)
+4. [isPrefixOf](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Data-List.html#v:isPrefixOf)
 
 ## A note on functions, their parameter order and partial application
 
