@@ -2,6 +2,9 @@
 
 - [Composite datatypes](#composite-datatypes)
   - [Bool](#bool)
+    - [`if` and `Bool`](#if-and-bool)
+    - [`case` for pattern matching on datatypes](#case-for-pattern-matching-on-datatypes)
+    - [Top-level pattern matching](#top-level-pattern-matching)
     - [Exercises (Bool)](#exercises-bool)
   - [Interlude: `deriving (Eq, Show)`](#interlude-deriving-eq-show)
   - [Newtypes](#newtypes)
@@ -48,7 +51,9 @@ data Bool = True | False
 ```
 
 It can be either `True` or `False` and working with it is fairly instructive in terms of how one can
-work with these kinds of data declarations:
+work with these kinds of data declarations.
+
+### `if` and `Bool`
 
 ```haskell
 import Prelude
@@ -59,7 +64,14 @@ add42or1337 :: Bool -> Int -> Int
 add42or1337 shouldAdd42 x = x + if shouldAdd42 then 42 else 1337
 ```
 
-We could also use pattern-matching via the `case` keyword here to inspect the value of the bool:
+### `case` for pattern matching on datatypes
+
+We could also use pattern-matching via the `case` keyword here to inspect the value of the bool.
+This isn't something that only works for `Bool`, but rather something we can use for all datatype
+definitions. When we pattern-match on them we can use the constructors of the datatypes to
+deconstruct the information. Matches are tried from top to bottom, so if the boolean value in the
+below example was `True`, we would add `42` to our integer value and if it was `False`, we would
+add `1337`. If we didn't handle both cases here we would get a warning from the compiler:
 
 ```haskell
 import Prelude
@@ -73,7 +85,12 @@ add42or1337 shouldAdd42 x = x + case shouldAdd42 of
 Each `case` branch can deconstruct the different constructors of a union type (which `Bool` is),
 even if they have associated data in them. We'll see this later.
 
-We could also pattern-match "in the top-level", meaning on the left of the `=`:
+### Top-level pattern matching
+
+We could also pattern-match "in the top-level", meaning on the left of the `=`. The same rules as
+for `case` apply here; we need to cover both cases or the compiler will tell us the pattern-match is
+not exhaustive. The cases are tried in order and here we are saying that if the first value (`Bool`)
+is `True` we (again) add 42, etc.:
 
 ```haskell
 import Prelude
