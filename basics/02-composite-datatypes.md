@@ -146,12 +146,15 @@ these strings represent.
 The solution is fairly simple:
 
 ```haskell
+--       type    constructor
 newtype Source = Source String
   deriving (Eq, Show)
 
+--       type         constructor
 newtype Destination = Destination String
   deriving (Eq, Show)
 
+--       type         constructor
 newtype CopyPattern = CopyPattern String
   deriving (Eq, Show)
 
