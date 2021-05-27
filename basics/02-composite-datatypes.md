@@ -108,9 +108,9 @@ only the amount added depends on the boolean and we have special syntax for bool
 
 ### Exercises (Bool)
 
-1. Create a function that takes two functions of the type `(Bool -> Int)` as well as a `Bool` and
-   applies one if the `Bool` is `True` and the other if it's `False`. Define one version that does
-   this with `if`, one that does it with `case` and one that matches in the top-level.
+1. Create a function that takes two parameters of the type `Int` as well as a `Bool` and returns
+   one if the `Bool` is `True` and the other if it's `False`. Define one version that does this with
+   `if`, one that does it with `case` and one that matches in the top-level.
 
 ## Interlude: `deriving (Eq, Show)`
 
