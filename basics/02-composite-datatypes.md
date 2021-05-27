@@ -157,7 +157,10 @@ newtype CopyPattern = CopyPattern String
 
 filteredCopy :: Source -> Destination -> CopyPattern -> IO ()
 filteredCopy (Source source) (Destinationdestination) (CopyPattern copyPattern) = ...
--- ^ Note how we are deconstructing these wrappers just like with other forms of data definitions
+-- ^ Note how we can deconstruct these wrappers just like with other forms of data definitions. This
+-- is a very useful thing to do when we effectively want to be working with the strings that these
+-- types contain. It means that while we cannot blindly pass strings **to** this function, we still
+-- have the ease of working with the wrapped types inside of it.
 ```
 
 When we use `filteredCopy` now we will have to wrap our strings:
