@@ -40,7 +40,11 @@ complex datatype in the previous chapter about "Values and functions": `Bool`.
 `Bool` is actually defined exactly as we would define one of our own types:
 
 ```haskell
+-- After the `data` keyword comes the name of the type. This is how we would refer to it in a type
+-- signature.
 data Bool = True | False
+-- ^ These are the valid ways of constructing a `Bool`, either with `True` or `False`.
+-- Constructors are always, like types, written with an initial uppercase letter.
 ```
 
 It can be either `True` or `False` and working with it is fairly instructive in terms of how one can
