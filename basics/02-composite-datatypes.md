@@ -156,7 +156,8 @@ newtype CopyPattern = CopyPattern String
   deriving (Eq, Show)
 
 filteredCopy :: Source -> Destination -> CopyPattern -> IO ()
-filteredCopy source destination copyPattern = ...
+filteredCopy (Source source) (Destinationdestination) (CopyPattern copyPattern) = ...
+-- ^ Note how we are deconstructing these wrappers just like with other forms of data definitions
 ```
 
 When we use `filteredCopy` now we will have to wrap our strings:
