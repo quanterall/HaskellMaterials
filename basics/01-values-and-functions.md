@@ -709,15 +709,19 @@ solution upperBound divisors =
 ### Exercises (Pipelines using partial application)
 
 1. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in it,
-   multiplies them all by two and returns the sum[1]. Create a version that uses a named argument
-   and one that does not.
+   multiplies them all by two and returns the sum[1]. Define versions that use:
+   - a named argument; with `&`
+   - an unnamed argument; with `>>>`
 
 2. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in the
    beginning of the list[2], multiplies them all by two, sums them up and returns whether or not the
-   sum is even. Create a version that uses a named argument and one that does not.
+   sum is even. Define versions that use:
+   - a named argument; with `&`
+   - an unnamed argument; with `>>>`
 
 3. Define a function using a pipeline that takes a list of strings, takes all the strings beginning
-   with "#", then discards all leading "#" or " " from the resulting strings.
+   with "#", then discards all leading "#" or " " from the resulting strings. Take note of what kind
+   of structure you are working with and what we need to do to work with the structures inside.
 
 #### Exercise notes (Pipelines using partial application)
 
@@ -727,6 +731,8 @@ solution upperBound divisors =
 2. See examples and previous notes for inspiration and help with this
 3. [dropWhile](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:dropWhile)
 4. [isPrefixOf](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Data-List.html#v:isPrefixOf)
+5. [any](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:any)
+6. [elem](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:elem)
 
 ## A note on functions, their parameter order and partial application
 
