@@ -109,8 +109,10 @@ only the amount added depends on the boolean and we have special syntax for bool
 ### Exercises (Bool)
 
 1. Create a function that takes two parameters of the type `Int` as well as a `Bool` and returns
-   one if the `Bool` is `True` and the other if it's `False`. Define one version that does this with
-   `if`, one that does it with `case` and one that matches in the top-level.
+   one if the `Bool` is `True` and the other if it's `False`. Define versions using:
+   - `case`
+   - `if`
+   - Top-level pattern-matching
 
 ## Interlude: `deriving (Eq, Show)`
 
