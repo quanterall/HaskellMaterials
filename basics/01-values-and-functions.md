@@ -548,20 +548,16 @@ as an operator like `-` would behave differently depending on which side you are
    reaches one that does not meet that criteria. `takeWhile`[2] can be useful for this. Use partial
    application both for `takeWhile`[2] and the predicate you pass to it.
 
-6. Define a function that takes the last 3 elements of a `[Int]`. Use notes as inspiration.
-
-7. Define a function that checks whether or not all `Int`s in a a list are even. Use notes to figure
+6. Define a function that checks whether or not all `Int`s in a a list are even. Use notes to figure
    out how and use partial application for your definition.
 
 #### Exercise notes (Partial application)
 
-0. [`map`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:map)
-1. [`filter`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:filter)
-2. [`takeWhile`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:takeWhile)
-3. [`take`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:take)
-4. [`reverse`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:reverse)
-5. [`all`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:all)
-6. [`even`](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:even)
+0. [map](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:map)
+1. [filter](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:filter)
+2. [takeWhile](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:takeWhile)
+3. [all](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:all)
+4. [even](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:even)
 
 ## Pipelines using partial application
 
@@ -708,18 +704,20 @@ solution upperBound divisors =
 
 ### Exercises (Pipelines using partial application)
 
-1. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in it,
+1. Define a function that takes the last 3 elements of a `[Int]`. Use notes as inspiration.
+
+2. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in it,
    multiplies them all by two and returns the sum[1]. Define versions that use:
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
 
-2. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in the
+3. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in the
    beginning of the list[2], multiplies them all by two, sums them up and returns whether or not the
    sum is even. Define versions that use:
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
 
-3. Define a function using a pipeline that takes a list of strings, takes all the strings beginning
+4. Define a function using a pipeline that takes a list of strings, takes all the strings beginning
    with "#", then discards all leading "#" or " " from the resulting strings. Take note of what kind
    of structure you are working with and what we need to do to work with the structures inside.
 
@@ -733,6 +731,8 @@ solution upperBound divisors =
 4. [isPrefixOf](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Data-List.html#v:isPrefixOf)
 5. [any](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:any)
 6. [elem](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:elem)
+7. [take](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:take)
+8. [reverse](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:reverse)
 
 ## A note on functions, their parameter order and partial application
 
