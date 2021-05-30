@@ -717,7 +717,7 @@ solution upperBound divisors =
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
 
-4. Define a function using a pipeline that takes a list of strings, takes all the strings beginning
+4. Define a function using a pipeline that takes a list of strings, takes all the strings that begin
    with "#", then discards all leading "#" or " " from the resulting strings. Take note of what kind
    of structure you are working with and what we need to do to work with the structures inside.
 
