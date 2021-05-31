@@ -464,7 +464,17 @@ type.
    do not have a spouse name to take from the relationship status?
 
 4. Return to the HTTP request type we defined in the "Record types" exercise and more accurately
-   model the "method" field[0].
+   model the "method" field[0]. For the purposes of this exercise, let's say that the following
+   methods exist and they expect the following payloads:
+   - GET: Nothing
+   - HEAD: Nothing
+   - POST: String
+   - PUT: String
+   - DELETE: Nothing
+   - CONNECT: Nothing
+   - OPTIONS: Nothing
+   - TRACE: Nothing
+   - PATCH: String
 
 5. Define a `TradeOrder` type that can be either a `SellOrder` or a `BuyOrder`, both taking a
    `TickerSymbol` (a `newtype` around a `String`) and an `Int`. Define a function that takes a
