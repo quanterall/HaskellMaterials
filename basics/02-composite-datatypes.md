@@ -564,7 +564,7 @@ Q> rickard = UserProfile {
      }
    }
 Q> profileToString rickard
-"rickard (33y, active, Married to: Ivana on 2015-06-04) is interested in: Programming, Problem
+"rickard (33y, active, Married to: Ivana on 2016-06-04) is interested in: Programming, Problem
 Solving, Teaching"
 ```
 
@@ -598,11 +598,11 @@ Q> rickard = UserProfile {
      interests = ["Programming", "Problem Solving", "Teaching"],
      relationshipStatus = MarriedTo MarriageInfo {
        spouse = SpouseName "Ivana",
-       date = Time.fromGregorian 2015 06 04
+       date = Time.fromGregorian 2016 06 04
      }
    }
 Q> profileToString rickard
-"rickard (33y, active, Married to: Ivana on 2015-06-04) is interested in: Programming, Problem
+"rickard (33y, active, Married to: Ivana on 2016-06-04) is interested in: Programming, Problem
 Solving, Teaching"
 ```
 
@@ -616,11 +616,11 @@ Q> ivana = UserProfile {
      interests = ["Web Design", "Cats", "Beer"],
      relationshipStatus = MarriedTo MarriageInfo {
        spouse = SpouseProfile rickard,
-       date = Time.fromGregorian 2015 06 04
+       date = Time.fromGregorian 2016 06 04
      }
    }
 Q> profileToString ivana
-"ivana (31y, active, Married to: rickard on 2015-06-04) is interested in: Web Design, Cats, Beer"
+"ivana (31y, active, Married to: rickard on 2016-06-04) is interested in: Web Design, Cats, Beer"
 ```
 
 Since we are now using the `SpouseProfile` constructor for `spouse` we can pass our previously
