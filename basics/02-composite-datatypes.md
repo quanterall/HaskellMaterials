@@ -468,13 +468,13 @@ type.
    methods exist and they expect the following payloads:
    - GET: Nothing
    - HEAD: Nothing
-   - POST: String
-   - PUT: String
+   - POST: String or Nothing
+   - PUT: String or Nothing
    - DELETE: Nothing
    - CONNECT: Nothing
    - OPTIONS: Nothing
    - TRACE: Nothing
-   - PATCH: String
+   - PATCH: String or Nothing
 
 5. Define a `TradeOrder` type that can be either a `SellOrder` or a `BuyOrder`, both taking a
    `TickerSymbol` (a `newtype` around a `String`) and an `Int`. Define a function that takes a
