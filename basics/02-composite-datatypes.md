@@ -560,7 +560,7 @@ Q> rickard = UserProfile {
      interests = ["Programming", "Problem Solving", "Teaching"],
      relationshipStatus = MarriedTo MarriageInfo {
        spouse = "Ivana",
-       date = Time.fromGregorian 2015 06 04
+       date = Time.fromGregorian 2016 06 04
      }
    }
 Q> profileToString rickard
