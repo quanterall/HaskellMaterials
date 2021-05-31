@@ -424,6 +424,9 @@ data DivisionResult
   | DivisionByZero
   deriving (Show)
 
+-- Note that we are using something called "top-level pattern matching" here: We have two clauses
+-- for our `safeDivide` function; one if the divisor is the number `0` where we will always return
+-- `DivisionByZero` and one case for all other divisors where we do the actual calculation.
 safeDivide :: Int -> Int -> DivisionResult
 safeDivide _x 0 = DivisionByZero
 safeDivide x divisor =
