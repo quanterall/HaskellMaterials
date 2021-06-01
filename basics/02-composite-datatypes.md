@@ -650,13 +650,14 @@ have "generic" datatypes.
 The most basic generic datatype is a type that can hold anything and that has only one constructor:
 
 ```haskell
-data Holder a = Holding a
+data Holder a = Holder a
   deriving (Eq, Show)
 ```
 
 Note how we now have a type variable on the left side of `=` which means that when we refer to the
 type it will take a type name. If we were holding a `Int`, for example, the type is `Holder Int`.
-The corresponding constructor call (or pattern match) is `Holding value`.
+The corresponding constructor call (or pattern match) is `Holder value`, where in the specific case
+of `Holder Int` we would have `value :: Int`.
 
 This basic type doesn't have much going for it in terms of functionality, but it's useful to show
 how we express type variables in data types. Fortunately for us we only need to extend the record
