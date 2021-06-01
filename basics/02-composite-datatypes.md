@@ -634,7 +634,11 @@ For another example of modelling (part of) a domain with types, see
 
 ### Exercises (Combining records and unions)
 
-1. Modify the `EngagedTo` constructor in `RelationshipStatus` to also take a `Spouse` and then
+1. Modify the `profileToString` function to take into account that our `spouse` name in
+   `MarriageInfo` is now a `Spouse`; this means we have to look closer at the data with the
+   `Spouse` type in mind to get a string value out of it.
+
+2. Modify the `EngagedTo` constructor in `RelationshipStatus` to also take a `Spouse` and then
    modify the latest version of `profileToString` accordingly.
 
 ## Generic datatypes
