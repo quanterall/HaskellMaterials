@@ -643,7 +643,11 @@ For another example of modelling (part of) a domain with types, see
 
 ## Generic datatypes
 
-The most basic generic datatype is a type that can hold anything:
+With datatypes, we usually want structures that can hold arbitrary values of other types, meaning we
+want to create general types that are useful with any type you can give them. For this purpose we
+have "generic" datatypes.
+
+The most basic generic datatype is a type that can hold anything and that has only one constructor:
 
 ```haskell
 data Holder a = Holding a
