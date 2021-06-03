@@ -772,6 +772,14 @@ resourceLoadStatusToMaybe (Loaded resource) = Just resource
 3. Reimplement the previous function for getting a telephone number string from a `User`, but use
    the `maybe` function[0]. If the `User` has no telephone number, return `"N/A"`.
 
+4. Define a function `mapMaybe :: (a -> b) -> Maybe a -> Maybe b`. Consider what the only things you
+   can reasonably do in the cases of `Just x` and `Nothing` are.
+
+5. Define a function `foldMaybe :: b -> (a -> b) -> Maybe a -> b`. If the `Maybe` has a value, apply
+   the function to it. If it doesn't, return the `b` that you take in as an argument.
+
+6. Define a function `bindMaybe :: (a -> Maybe b) -> Maybe a -> Maybe b`.
+
 ##### Exercise notes (Maybe)
 
 0. [maybe](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:maybe)
