@@ -257,7 +257,7 @@ We can see this in action in this snippet where we turn a profile into a present
 profileToString :: UserProfile -> String
 profileToString profile =
   let ageString = show $ age profile
-      activeString = if active profile then "active" else "not Active"
+      activeString = if active profile then "active" else "not active"
       interestsString = intercalate ", " (interests profile)
    in mconcat
         [ username profile,
@@ -293,7 +293,7 @@ profileToString'
       interests = interests
     } =
   let ageString = show age
-      activeString = if active then "active" else "not Active"
+      activeString = if active then "active" else "not active"
       interestsString = intercalate ", " interests
    in mconcat
         [ username,
@@ -317,7 +317,7 @@ binding it to, we can use this nice shorthand:
 profileToString :: UserProfile -> String
 profileToString UserProfile {username, age, active, interests} =
   let ageString = show age
-      activeString = if active then "active" else "not Active"
+      activeString = if active then "active" else "not active"
       interestsString = intercalate ", " interests
    in mconcat
         [ username,
@@ -523,7 +523,7 @@ data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
 profileToString :: UserProfile -> String
 profileToString profile =
   let ageString = show $ age profile
-      activeString = if active profile then "active" else "not Active"
+      activeString = if active profile then "active" else "not active"
       interestsString = intercalate ", " (interests profile)
       relationshipStatusString = case relationshipStatus profile of
         MarriedTo MarriageInfo {spouse, date} ->
