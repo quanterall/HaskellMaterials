@@ -223,14 +223,14 @@ Q> :type interests
 interests :: UserProfile -> [String]
 Q> rickard = UserProfile {
      username = "rickard",
-     age = 33,
+     age = 34,
      active = True,
      interests = ["Programming", "Problem Solving", "Teaching"]
    }
 Q> rickard
 UserProfile
     { username = "rickard"
-    , age = 33
+    , age = 34
     , active = True
     , interests =
         [ "Programming"
@@ -241,7 +241,7 @@ UserProfile
 Q> username rickard
 "rickard"
 Q> age rickard
-33
+34
 Q> active rickard
 True
 Q> interests rickard
@@ -278,7 +278,7 @@ Running this on our previously defined profile we get:
 
 ```haskell
 Q> profileToString rickard
-"rickard (33y, active) is interested in: Programming, Problem Solving, Teaching"
+"rickard (34y, active) is interested in: Programming, Problem Solving, Teaching"
 ```
 
 We could also pattern match on our `UserProfile` type:
@@ -338,7 +338,7 @@ languages and also applies when we construct records:
 let userProfile =
       -- Note how we don't have to pass all of these without `=`
       UserProfile {username = "rickard", age, active, interests}
-    age = 33
+    age = 34
     active = True
     interests = ["Programming" , "Problem Solving" , "Teaching"]
 ```
@@ -555,7 +555,7 @@ If we now construct our `rickard` profile with this in mind we get the following
 ```haskell
 Q> rickard = UserProfile {
      username = "rickard",
-     age = 33,
+     age = 34,
      active = True,
      interests = ["Programming", "Problem Solving", "Teaching"],
      relationshipStatus = MarriedTo MarriageInfo {
@@ -564,7 +564,7 @@ Q> rickard = UserProfile {
      }
    }
 Q> profileToString rickard
-"rickard (33y, active, Married to: Ivana on 2016-06-04) is interested in: Programming, Problem
+"rickard (34y, active, Married to: Ivana on 2016-06-04) is interested in: Programming, Problem
 Solving, Teaching"
 ```
 
@@ -593,7 +593,7 @@ This will give us the same capability as before, because we still support spouse
 ```haskell
 Q> rickard = UserProfile {
      username = "rickard",
-     age = 33,
+     age = 34,
      active = True,
      interests = ["Programming", "Problem Solving", "Teaching"],
      relationshipStatus = MarriedTo MarriageInfo {
@@ -602,7 +602,7 @@ Q> rickard = UserProfile {
      }
    }
 Q> profileToString rickard
-"rickard (33y, active, Married to: Ivana on 2016-06-04) is interested in: Programming, Problem
+"rickard (34y, active, Married to: Ivana on 2016-06-04) is interested in: Programming, Problem
 Solving, Teaching"
 ```
 
