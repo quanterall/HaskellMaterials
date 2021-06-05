@@ -829,14 +829,22 @@ descriptive in certain contexts.
 2. Define a function that takes a `ResourceLoadResult` and turns it into a
    `Either ResourceLoadError Resource`.
 
-3. Define a function that takes a `ResourceLoadResult`, uses your previous function for turning it
-   into an `Either ResourceLoadError Resource` and then pipes the result into `either` to return a
-   `String`.
+3. Define a function `foldEither :: (l -> a) -> (r -> a) -> Either l r -> a`. If the `Either` is a
+   `Right` apply the second argument to the value it contains. If it's `Left`, apply the first
+   argument to that contained value.
+
+4. Define a function that takes a `ResourceLoadResult`, uses your previous function for turning it
+   into an `Either ResourceLoadError Resource` and then pipes the result into `foldEither` to return
+   a `String`.
+
+5. Define a function `mapEither :: (r -> a) -> Either l r -> Either l a`. Consider what we will have
+   to do if we have a `Left`.
+
+6. Define a function `bindEither :: (r -> Either l a) -> Either l r -> Either l a`.
 
 ##### Exercise notes (Either)
 
 0. [`DivisionResult`](./01-values-and-functions.md#case-expressions)
-1. [either](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:either)
 
 ### Tuples
 
