@@ -963,7 +963,7 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
    `foldr` and one that recursively goes through the list with pattern matching.
 
 7. Define a function `firstMatchOr :: (a -> Bool) -> a -> [a] -> a` that uses the `firstMatch`
-   function together with `maybe` to provide a default value unless we find a matching element.
+   function together with `foldMaybe` to provide a default value unless we find a matching element.
 
 ##### Exercise notes (Lists)
 
