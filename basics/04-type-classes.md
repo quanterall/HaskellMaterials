@@ -26,8 +26,27 @@ ultimately is an extended (and seemingly much more powerful) version of type cla
 A type class can be described as a constraint on a type variable, which is how you'll see them in
 source code for the most part. The definition of a type class is a definition of what capabilities
 the type should have in order to be an instance of that type class. What that means in a practical
-sense is that it should have definitions for a set of functions determined in the definition. These
-have to have the same types as the declarations in the type class.
+sense is that it should have definitions for a set of functions determined in the declaration of the
+type class itself. These have to have the same types as the declarations in the type class:
+
+```haskell
+class Hashable a where -- <- This `a` here is a type variable representing any type
+  hash :: a -> HashData
+
+instance Hashable String where -- <- Note how we are saying `a` is `String` in this instance
+  hash = hashString -- <- Implemented elsewhere, produces `HashData`
+
+createFileData :: (Hashable a) => String -> a -> FileData
+createFileData fileName value = FileData {fileName, hash = hash value}
+```
+
+In the above example we define a type class for what it means to be able to hash something, then an
+instance of this class for the type `String`. We then have a function that requires the generic type
+that is passed to it to be hashable, which means we could pass `String` to it, but nothing else (
+unless we implemented `Hashable` for those types). The only reason we can use the `hash` function in
+`createFileData` is because we've said that the generic type passed in is `Hashable`. This makes it
+so that we have to effectively specify our behavior requirements on these generic values in the type
+signature.
 
 When we use a type class in a type signature to constrain a type variable `a` we are saying "This is
 generic over any type `a` that has an instance of this type class".
