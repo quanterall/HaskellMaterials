@@ -180,12 +180,18 @@ containerLength :: f a -> Int
 ```
 
 We can read this as "any type `f` that takes another type `a`". `f` here is "higher-kinded", because
-its kind is `* -> *`, meaning it takes a type in order to return a type.
+its kind is `* -> *`, meaning it takes a type in order to return a type. Haskell understands that we
+are referring to a type that takes another type implicitly, which is part of what sets it apart from
+other languages with generics. We are unable to talk about generic container types in OCaml, Rust
+and indeed most other languages. Scala has support for higher-kinded polymorphism (talking
+generically about these higher-kinded types, types that take other types) and there are a few less
+well-known languages that do as well.
 
-There is an issue with our `containerLength` type signature, however; we are assuming all containers
-have lengths. Haskell wouldn't allow any implementation of this function that didn't ignore the
-container passed in and returned a number we chose, because we haven't said anything about what the
-container actually supports.
+So we can now talk about these higher-kinded types in a generic fashion; `containerLength` applies
+to any type that takes other types. There is an issue with our type signature, however; we are
+assuming all passed in types `f` have lengths. Haskell wouldn't allow any implementation of this
+function that didn't ignore the container passed in and returned a number we chose, because we
+haven't said anything about what behaviors the type `f` supports/has.
 
 To fix this, we will have to use a constraint on `f`:
 
