@@ -229,8 +229,9 @@ The `containerLength` function is written with the help of `foldr`, which is a m
 has to implement for a type that they want to make `Foldable`. While this leads to work done
 specifically to make a type `Foldable`, it also means that we get an implementation that works
 especially for the type in question. It also means that during implementation it (usually) becomes
-very clear whether or not the concept will even work, though this depends on how well defined the
-type class is and whether or not its shape fits well into the type system.
+very clear whether or not the concept will even work as we implement the needed functionality,
+though this depends on how well defined the type class is and whether or not its shape fits well
+into the type system.
 
 ## Important and common type classes
 
