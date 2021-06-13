@@ -30,10 +30,12 @@ sense is that it should have definitions for a set of functions determined in th
 type class itself. These have to have the same types as the declarations in the type class:
 
 ```haskell
-class Hashable a where -- <- This `a` here is a type variable representing any type
+-- This `a` here is a type variable representing any type; the type the instance applies to.
+class Hashable a where
   hash :: a -> HashData
 
-instance Hashable String where -- <- Note how we are saying `a` is `String` in this instance
+-- Note how we are saying `a` is `String` in this instance.
+instance Hashable String where 
   hash = hashString -- <- Implemented elsewhere, produces `HashData`
 
 data FileData = FileData
