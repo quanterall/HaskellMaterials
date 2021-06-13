@@ -36,8 +36,13 @@ class Hashable a where -- <- This `a` here is a type variable representing any t
 instance Hashable String where -- <- Note how we are saying `a` is `String` in this instance
   hash = hashString -- <- Implemented elsewhere, produces `HashData`
 
+data FileData = FileData
+  { fileName :: String,
+    fileHash :: HashData
+  }
+
 createFileData :: (Hashable a) => String -> a -> FileData
-createFileData fileName value = FileData {fileName, hash = hash value}
+createFileData fileName value = FileData {fileName, fileHash = hash value}
 ```
 
 In the above example we define a type class for what it means to be able to hash something, then an
