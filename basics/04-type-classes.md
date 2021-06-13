@@ -61,7 +61,8 @@ generic over any type `a` that has an instance of this type class".
 ## Generics / Type variables
 
 In order to productively talk about type classes we ought to show how employing them in a type
-signature will change the nature of the function.
+signature will change the nature of the function, so let's take a few steps back to the simplest
+generic function you can implement and how it works in Haskell.
 
 ### identity
 
