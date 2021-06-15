@@ -21,7 +21,8 @@
 
 Type classes can be found in few languages. Haskell and Scala are the primary examples of where, but
 a version of them can be found in Rust's "traits". C++20 also has the "concepts" feature, which
-ultimately is an extended (and seemingly much more powerful) version of type classes / traits.
+ultimately is (or was supposed to be?) an extended (and seemingly much more powerful) version of
+type classes / traits.
 
 A type class can be described as a constraint on a type variable, which is how you'll see them in
 source code for the most part. The definition of a type class is a definition of what capabilities
