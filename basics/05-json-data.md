@@ -27,19 +27,13 @@ Decoding is done via the `parseJSON` function in the `FromJSON` type class:
 ```haskell
 class FromJSON a where
   JSON.parseJSON :: JSON.Value -> Data.Aeson.Types.Parser a
-  default JSON.parseJSON :: (GHC.Generics.Generic a,
-                             JSON.GFromJSON JSON.Zero (GHC.Generics.Rep a)) =>
-                             JSON.Value ->
-                             Data.Aeson.Types.Parser a
-  JSON.parseJSONList :: JSON.Value -> Data.Aeson.Types.Parser [a]
 ```
 
-We will try to tackle the `Generic` bit here in an extension to this or another text. The `parseJSON`
-function that we need to implement in order to have JSON decoding for our type is taking a `Value`,
-which is a JSON type that represents any kind of JSON value. This means that we have to essentially
-specify how to take a parsed JSON value and create our type from it.
+The `parseJSON` function that we need to implement in order to have JSON decoding for our type is
+taking a `Value`, which is a JSON type that represents any kind of JSON value. This means that we
+have to essentially specify how to take a parsed JSON value and create our type from it.
 
-The `Parser` type is essentially just a result type that represents success or failure.
+The `Parser` type is just a result type that represents success or failure.
 
 ### Defining a `FromJSON` instance
 
@@ -200,7 +194,8 @@ Running the above program will result in the following:
 
 ```bash
 > stack run
-"{\"lastReportTime\":\"2021-05-05T08:11:15.1040662Z\",\"temperature\":42,\"sensorId\":42,\"timestamp\":\"2021-05-05T08:11:15.1040662Z\",\"notifications\":[\"Notification example\"]}"
+"{\"lastReportTime\":\"2021-05-05T08:11:15.1040662Z\",\"temperature\":42,\"sensorId\":42,
+\"timestamp\":\"2021-05-05T08:11:15.1040662Z\",\"notifications\":[\"Notification example\"]}"
 Able to decode:
 TemperatureReading
     { _sensorId = SensorId 42
