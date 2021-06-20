@@ -477,11 +477,14 @@ type.
    - PATCH: String or Nothing
 
 5. Define a `TradeOrder` type that can be either a `SellOrder` or a `BuyOrder`, both taking a
-   `TickerSymbol` (a `newtype` around a `String`) and an `Int`. Define a function that takes a
-   `TradeOrder` and a `[TradeOrder]` and returns whether or not we matched a sell/trade to an
-   existing opposite trade/sell in the list of orders. If there is a match, return the matching
-   entry as well as the list of trade orders **without** the matched order[1]. If there isn't a
-   match, indicate this in the return value.
+   `TickerSymbol` (a `newtype` around a `String`) and an `Int`. Define a function
+   `oppositeOrderType` that takes a `TradeOrder` and returns a `SellOrder` if a `BuyOrder` has been
+   passed to it and vice versa.
+
+6. Define a function `matchOrder` that takes a `TradeOrder` and a `[TradeOrder]` and returns
+   whether or not we matched a sell/trade to an existing opposite trade/sell in the list of orders.
+   If there is a match, return the matching entry as well as the list of trade orders **without**
+   the matched order[1]. If there is no match, indicate this in the return value.
 
 #### Exercise notes (Union types)
 
