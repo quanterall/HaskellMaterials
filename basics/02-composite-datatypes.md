@@ -478,8 +478,8 @@ type.
 
 5. Define a `TradeOrder` type that can be either a `SellOrder` or a `BuyOrder`, both taking a
    `TickerSymbol` (a `newtype` around a `String`) and an `Int`. Define a function
-   `oppositeOrderType` that takes a `TradeOrder` and returns a `SellOrder` if a `BuyOrder` has been
-   passed to it and vice versa.
+   `correspondingOrderType` that takes a `TradeOrder` and returns a `SellOrder` if a `BuyOrder`
+   has been passed to it and vice versa.
 
 6. Define a function `matchOrder` that takes a `TradeOrder` and a `[TradeOrder]` and returns
    whether or not we matched a sell/trade to an existing opposite trade/sell in the list of orders.
