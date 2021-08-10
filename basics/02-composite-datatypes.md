@@ -212,7 +212,8 @@ data UserProfile = UserProfile
 The constructor name can be different than the type name, but this is comparatively rare.
 
 One thing to note about record definitions in Haskell is that each field will have an associated
-function that takes the type and returns the field:
+function that takes the type and returns the field. Let's use the `:type` command in our interactive
+session to find out the type of each of these generated functions:
 
 ```haskell
 Q> :type username
