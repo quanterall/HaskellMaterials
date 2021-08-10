@@ -150,6 +150,8 @@ The solution is fairly simple:
 ```haskell
 --       type    constructor
 newtype Source = Source String
+-- ^ This constructor, `Source`, takes one argument, a `String`.
+-- When that argument is supplied to it, we get a value of type `Source`.
   deriving (Eq, Show)
 
 --       type         constructor
