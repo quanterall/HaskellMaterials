@@ -138,14 +138,14 @@ filteredCopy :: String -> String -> String -> IO ()
 filteredCopy source destination copyPattern = ...
 ```
 
-The `IO ()` for the purposes of this example means that we are doing something effectful and there
-is no useful return value.
+(**Note**: The `IO ()` for the purposes of this example means that we are doing something effectful
+and there is no useful return value. We will go over this in the next chapter.)
 
-What happens if we by mistake use this function with `filteredCopy destination source copyPattern`
-or any other incorrect order for the parameters? The type system doesn't know anything about what
-these strings represent.
+Since the arguments to this function are all strings, what happens if we by mistake use this
+function with `filteredCopy destination source copyPattern` or any other incorrect order for the
+parameters? The type system doesn't know anything about what these strings represent.
 
-The solution is fairly simple:
+The solution to this issue is fairly simple:
 
 ```haskell
 --       type    constructor
