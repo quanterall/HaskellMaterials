@@ -259,6 +259,7 @@ profileToString profile =
   let ageString = show $ age profile
       activeString = if active profile then "active" else "not active"
       interestsString = intercalate ", " (interests profile)
+   -- `mconcat` here concatenates a list of strings into a string
    in mconcat
         [ username profile,
           " (",
