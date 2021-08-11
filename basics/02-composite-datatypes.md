@@ -364,15 +364,14 @@ should see this work without issue when using them.
 2. Define a data type that represents a product that has a name, a price and a taxation rate
    (`Double`). Define a function taking this type that calculates the total price of a product.
 
-3. Define a HTTP request datatype that has a `url`, a list of query parameters[0] and a HTTP
-   method[1] and a body.
+3. Define a HTTP request datatype that has a `url`, a list of query parameters (a query parameter
+   has a key and a value), a HTTP method[0] and a body.
 
 4. Add `newtype`s to the definition you made for exercise 3 where you think they are appropriate.
 
 #### Exercise notes (Record types)
 
-0. You may want to define a type for what a query parameter is.
-1. This is fine as a string for now.
+0. This is fine as a string for now.
 
 ## Union types
 
