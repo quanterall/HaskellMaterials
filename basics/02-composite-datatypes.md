@@ -661,7 +661,7 @@ For another example of modelling (part of) a domain with types, see
 
 ## Generic datatypes
 
-With datatypes, we usually want structures that can hold arbitrary values of other types, meaning we
+With datatypes we usually want structures that can hold arbitrary values of other types, meaning we
 want to create general types that are useful with any type you can give them. For this purpose we
 have "generic" datatypes.
 
@@ -706,18 +706,32 @@ will go through several popular and representative definitions below.
 
 1. Define a value of type `Holder Int` as well as a value of type `Holder String`.
 
-2. Define a function `mapHolder :: (a -> b) -> Holder a -> Holder b` that applies the passed in
+2. Define a function `createHolder :: a -> Holder a`. Knowing what you know about partial
+   application, what is the most concise and direct definition you can come up with?
+
+3. Define a function `foldHolder :: (a -> b) -> Holder a -> b`. What is the most natural way to
+   implement this function?
+
+4. Define a function `mapHolder :: (a -> b) -> Holder a -> Holder b` that applies the passed in
    function to the value inside the `Holder` and wraps it up again. After implementing it, try
    creating different concrete types like `Holder Int` and passing matching arguments to the
    function you wrote. As an example, try passing `length` and a `Holder [Int]` to the function and
    see what comes out.
 
-3. Define a function `foldHolder :: (a -> b) -> Holder a -> b`. What is the most natural way to
-   implement this function?
+5. Define a function `applyHolder :: Holder (a -> b) -> Holder a -> Holder b`. Note how a `Holder`
+   is completely flexible in what it will hold.
 
-4. Add a constructor to the `Holder` type that has no arguments and is named `NoValue`. What can we
-   return in our `mapHolder` function in the case where the `Holder` is `NoValue`? Likewise, what do
-   we need to do in order to make `foldHolder` compile again?
+6. Define a function `bindHolder :: (a -> Holder b) -> Holder a -> Holder b`.
+
+7. Add a constructor to the `Holder` type that has no arguments and is named `NoValue`.  Modify the
+   type signature of `foldHolder` to be as follows:
+
+     `foldHolder :: (a -> b) -> b -> Holder a -> b`
+
+   Why did we need to add a second argument of type `b` here?
+
+   Don't modify the other functions' type signatures, but rather consider what we can return in
+   this new case for each of them.
 
 ## Commonly used composite datatypes
 
