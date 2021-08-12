@@ -163,7 +163,7 @@ newtype CopyPattern = CopyPattern String
   deriving (Eq, Show)
 
 filteredCopy :: Source -> Destination -> CopyPattern -> IO ()
-filteredCopy (Source source) (Destinationdestination) (CopyPattern copyPattern) = ...
+filteredCopy (Source source) (Destination destination) (CopyPattern copyPattern) = ...
 -- ^ Note how we can deconstruct these wrappers just like with other forms of data definitions. This
 -- is a very useful thing to do when we effectively want to be working with the strings that these
 -- types contain. It means that while we cannot blindly pass strings **to** this function, we still
@@ -273,6 +273,7 @@ profileToString profile =
           interestsString
         ]
 
+-- | Inserts a given string between every entry in the list of strings
 intercalate :: String -> [String] -> String
 intercalate between strings =
   mconcat $ List.intersperse between strings
@@ -308,6 +309,11 @@ profileToString'
           ") is interested in: ",
           interestsString
         ]
+
+-- | Inserts a given string between every entry in the list of strings
+intercalate :: String -> [String] -> String
+intercalate between strings =
+  mconcat $ List.intersperse between strings
 ```
 
 We can see that we've now bound the values we care about in our function definition "head" and so
@@ -332,6 +338,11 @@ profileToString UserProfile {username, age, active, interests} =
           ") is interested in: ",
           interestsString
         ]
+
+-- | Inserts a given string between every entry in the list of strings
+intercalate :: String -> [String] -> String
+intercalate between strings =
+  mconcat $ List.intersperse between strings
 ```
 
 If we omit the `=` in our bindings Haskell will assume we are binding the fields into a name equal
@@ -551,6 +562,7 @@ profileToString profile =
           interestsString
         ]
 
+-- | Inserts a given string between every entry in the list of strings
 intercalate :: String -> [String] -> String
 intercalate between strings =
   mconcat $ List.intersperse between strings
