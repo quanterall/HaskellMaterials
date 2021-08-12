@@ -874,7 +874,9 @@ descriptive in certain contexts.
 5. Define a function `mapEither :: (r -> a) -> Either l r -> Either l a`. Consider what we will have
    to do if we have a `Left`.
 
-6. Define a function `bindEither :: (r -> Either l a) -> Either l r -> Either l a`.
+6. Define a function `applyEither :: (Either l (r -> a)) -> Either l r -> Either l a`.
+
+7. Define a function `bindEither :: (r -> Either l a) -> Either l r -> Either l a`.
 
 ##### Exercise notes (Either)
 
