@@ -810,7 +810,9 @@ resourceLoadStatusToMaybe (Loaded resource) = Just resource
 5. Define a function `mapMaybe :: (a -> b) -> Maybe a -> Maybe b`. Consider what the only things you
    can reasonably do in the cases of `Just x` and `Nothing` are.
 
-6. Define a function `bindMaybe :: (a -> Maybe b) -> Maybe a -> Maybe b`.
+6. Define a function `applyMaybe :: Maybe (a -> b) -> Maybe a -> Maybe b`.
+
+7. Define a function `bindMaybe :: (a -> Maybe b) -> Maybe a -> Maybe b`.
 
 ##### Exercise notes (Maybe)
 
