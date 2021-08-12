@@ -750,8 +750,8 @@ data Maybe a
   | Just a
 ```
 
-Note that we now have a type parameter on the left side of the `=` and that one of our constructors
-takes this `a`.
+If the above looks vaguely familiar, it's because it is what our `Holder a` type turned into when we
+added the `NoValue` constructor. `Just a` here is the `Holder a` case and `Nothing` is `NoValue`.
 
 `Maybe` is useful generally speaking wherever you would have the type `null | SomeType`, which means
 that we generally would like to use it for success/failure when we don't have any interesting error
