@@ -532,7 +532,7 @@ type.
 
 As we saw in the previous section it's trivial to combine records and unions; our `MarriageInfo` type
 is already embedded in the `MarriedTo` constructor. So let's take that one step further and enrich
-our `UserProfile` data type:
+our `UserProfile` data type by adding our `RelationshipStatus` to `UserProfile`:
 
 ```haskell
 import qualified Data.List as List
