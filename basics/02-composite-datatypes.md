@@ -824,9 +824,9 @@ case is because of how `Either` works in a monadic context. When returning `Left
 an error. It's also because `Left` is not right, meaning it's "wrong".
 
 ```haskell
-data Either e a
-  = Left e
-  | Right a
+data Either l r
+  = Left l
+  | Right r
 ```
 
 `Either` is useful when we want something that can either succeed or fail but we also want to bundle
