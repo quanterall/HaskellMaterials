@@ -464,7 +464,7 @@ type.
 
 ### Exercises (Union types)
 
-1. Define a function that takes a default `Float` value as well as a `DivisionResult`[0] and if
+1. Define a function that takes a default `Float` value as well as a `DivisionResult` and if
    the division result is a division by zero, returns the default. Otherwise it returns the result.
    Create a solution with top-level pattern matching as well as one with `case`.
 
