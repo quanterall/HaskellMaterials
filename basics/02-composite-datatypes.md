@@ -619,6 +619,8 @@ site. However, if we instead make the `spouse` field take a type that allows us 
 **or** a userprofile, we can express this possibility clearly:
 
 ```haskell
+-- Our `MarriageInfo` record now takes a `Spouse` type, which itself is a more
+-- expressive type allowing for either a string or a user profile
 data MarriageInfo = MarriageInfo {spouse :: Spouse, date :: Day}
   deriving (Eq, Show)
 
