@@ -464,16 +464,38 @@ type.
 
 ### Exercises (Union types)
 
-1. Return to the `DivisionResult` data type and `safeDivide` function that we defined in chapter 1
-   and create a function that takes a default `Float` value as well as a `DivisionResult` and if
+1. Define a function that takes a default `Float` value as well as a `DivisionResult`[0] and if
    the division result is a division by zero, returns the default. Otherwise it returns the result.
    Create a solution with top-level pattern matching as well as one with `case`.
 
-2. Define a function `spouseName` that takes a `RelationshipStatus` and returns a `String`. Choose
-   either top-level pattern matching or using `case`. What do we do when a case does not have a
-   spouse?
+   Remember that a `DivisionResult` looks as follows:
 
-3. Add a data type that more accurately reflects the having or not of a spouse and modify the
+   ```haskell
+   data DivisionResult
+     = DivideSuccess Float
+     | DivisionByZero
+     deriving (Show)
+   ```
+
+2. Define a function `spouseName` that takes a `RelationshipStatus` and returns a `String`. Choose
+   either top-level pattern matching or using `case`. What do we have to do when a case does not
+   have a spouse?
+
+   Remember that `RelationshipStatus` looks as follows:
+
+   ```haskell
+   data RelationshipStatus
+     = MarriedTo MarriageInfo
+     | EngagedTo UserProfile
+     | ItsComplicated
+     | Single
+     deriving (Eq, Show)
+   
+   data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
+     deriving (Eq, Show)
+   ```
+
+3. Define a data type that more accurately reflects the having or not of a spouse and modify the
    function you defined in exercise 2 to return this data type. What happened to the cases where we
    do not have a spouse name to take from the relationship status?
 
