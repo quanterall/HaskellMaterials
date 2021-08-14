@@ -13,6 +13,7 @@
     - [Guards](#guards)
     - [Multi-way `if`](#multi-way-if)
     - [`case` expressions](#case-expressions)
+    - [Top-level pattern matching](#top-level-pattern-matching)
     - [Exercises (Asking questions about values)](#exercises-asking-questions-about-values)
       - [Exercise notes (Asking questions about values)](#exercise-notes-asking-questions-about-values)
   - [Interlude: Function application with `$`](#interlude-function-application-with-)
@@ -349,122 +350,39 @@ What we have above is a generalized `if` that supports many branches with arbitr
 called a "multi-way `if`" and is enabled by the `MultiWayIf` extension, which we've enabled by
 default in our templates.
 
-While we need to be aware that this does require an extension, it's still useful to learn and use
-this as a standard part of the language. Why? Because it's very flexible and solves the issue of
-having to introduce another, more roundabout way of being able to use guards:
-
-```haskell
-import Prelude
-
--- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound upperBound value =
-  case () of
-    () | value < lowerBound -> lowerBound
-    () | value > upperBound -> upperBound
-    () | otherwise -> value
-```
-
-Because `case` expressions allow us to use guards we can introduce this `case` expression context
-where we don't actually pattern match on anything but still use the guards. This is obviously not
-ideal and when we see this it's much better to just use multi-way `if`.
-
-`case` expressions and their cousin, top-level pattern matching, are ideal for when we want to match
-on the structure of a given value, either with literal values exactly or want to pull apart some
-structure via their constructors and field names:
-
-```haskell
-import Prelude
-
-data DivisionResult
-  = DivideSuccess Float
-  | DivisionByZero
-  deriving (Show)
-
-safeDivide :: Int -> Int -> DivisionResult
-safeDivide _x 0 = DivisionByZero
-safeDivide x divisor =
-  let xAsFloat = fromIntegral x
-      divisorAsFloat = fromIntegral divisor
-   in DivideSuccess (xAsFloat / divisorAsFloat)
-```
-
-We will go deeper into how to use `data` in the [next chapter](./02-composite-datatypes.md) but for
-now all we need to know is that `safeDivide` can either return a `DivisionByZero` result or a
-`DivideSuccess` result that also carries a float with it.
-
-If we execute this function we can see the following:
-
-```haskell
-Q> safeDivide 5 0
-DivisionByZero
-Q> safeDivide 5 2
-DivideSuccess 2.5
-```
-
 ### `case` expressions
 
-We can use `case` to immediately ask questions about this structure:
+`case` expressions allow us to ask questions about the structure of values:
 
 ```haskell
-import Prelude
-
-usingSafeDivide :: Int -> Int -> String
-usingSafeDivide x divisor =
-  -- Note how we use `case` here to deconstruct the result
-  case safeDivide x divisor of
-    DivideSuccess result ->
-      -- `show` takes a "showable" value and turns it into a `String`
-      -- `<>` here is a way to concatenate two strings together
-      "Your result was: " <> show result
-    DivisionByZero ->
-      "You tried to divide by zero"
-
-data DivisionResult
-  = DivideSuccess Float
-  | DivisionByZero
-  deriving (Show)
-
--- Note that we are using something called "top-level pattern matching" here: We have two clauses
--- for our `safeDivide` function; one if the divisor is the number `0` where we will always return
--- `DivisionByZero` and one case for all other divisors where we do the actual calculation.
-safeDivide :: Int -> Int -> DivisionResult
-safeDivide _x 0 = DivisionByZero
-safeDivide x divisor =
-  let xAsFloat = fromIntegral x
-      divisorAsFloat = fromIntegral divisor
-   in DivideSuccess (xAsFloat / divisorAsFloat)
+addFileExtension :: String -> String
+addFileExtension filename = case filename of
+  "README" -> "README.md"
+  "LICENSE" -> "LICENSE.txt"
+  other -> other
 ```
 
-And when we run our `usingSafeDivide` function:
+In the above example we can see that we are looking at the literal value of the filename that is
+passed to the function and if it matches the two literal values that are stated we execute a
+specific expression for each case. Like guards, these are tried in order, so being as specific as
+you can and keeping the more general cases last is recommended.
+
+### Top-level pattern matching
+
+There is a more direct way to write this particular case expression, using something known as
+"top-level pattern matching":
 
 ```haskell
-Q> usingSafeDivide 5 0
-"You tried to divide by zero"
-Q> usingSafeDivide 5 2
-"Your result was: 2.5"
+addFileExtension' :: String -> String
+addFileExtension' "README" = "README.md"
+addFileExtension' "LICENSE" = "LICENSE.txt"
+addFileExtension' filename = filename
 ```
 
-You may have noticed that I have referred to `case` as an expression; this is not a mistake. If we
-change the above code example to use the following we can see that indeed, `case` is an expression
-like everything else:
-
-```haskell
-putStrLn $ case safeDivide x divisor of
-  DivideSuccess result ->
-    "Your result was: " <> show result
-  DivisionByZero ->
-    "You tried to divide by zero"
-```
-
-Here we are saying that `putStrLn` will take whatever our `case` expression returns, meaning it in
-this case always will have to return a `String`. What this means is that `case` expressions have to
-return values of the same type in all branches and there is no "empty case" where we return `void`
-or the like.
-
-As we saw in the previous example we can execute actions in our case branches. That example, where
-we printed a string in each branch of the `case`, worked because we were constructing an
-action of type `IO ()` in each branch when we executed `putStrLn ...`.
+Top-level pattern matching means that we can pattern match just like we would in a case expression
+but do it with our function argument bindings. In this example we are saying, much like in the
+previous example, that if the filename is README or LICENSE we want to execute specific logic for
+those, but we also have a general case the comes last so that every input value is handled.
 
 ### Exercises (Asking questions about values)
 
@@ -475,14 +393,12 @@ action of type `IO ()` in each branch when we executed `putStrLn ...`.
    with function guards as well as `if`.
 
 3. Define a function that subtracts an integer from another, but if the result is less than zero,
-   instead return `0`. Use the function you defined in exercise 1.
+   instead return `0`.
 
 4. Define a function that takes an `Int` and if it's smaller than zero returns `0`, if it's bigger
-   than 255 returns `255`. Use the functions you defined in exercises 1 and 2[0].
+   than 255 returns `255`.
 
 #### Exercise notes (Asking questions about values)
-
-0. You don't need `if` for this one.
 
 ## Interlude: Function application with `$`
 
