@@ -13,7 +13,6 @@
     - [Guards](#guards)
     - [Exercises (Asking questions about values)](#exercises-asking-questions-about-values)
       - [Exercise notes (Asking questions about values)](#exercise-notes-asking-questions-about-values)
-  - [Interlude: Function application with `$`](#interlude-function-application-with-)
   - [Partial application](#partial-application)
     - [Exercises (Partial application)](#exercises-partial-application)
       - [Exercise notes (Partial application)](#exercise-notes-partial-application)
@@ -338,35 +337,6 @@ clause.
    than 255 returns `255`.
 
 #### Exercise notes (Asking questions about values)
-
-## Interlude: Function application with `$`
-
-Sometimes you'll want to apply a function and you'll need to parenthesize the expression in order
-to do it:
-
-```haskell
-safeDivide :: Int -> Int -> DivisionResult
-safeDivide _x 0 = DivisionByZero
-safeDivide x divisor =
-  let xAsFloat = fromIntegral x
-      divisorAsFloat = fromIntegral divisor
-   -- We want to apply the `DivideSuccess` constructor here to the result of the
-   -- division, not just `xAsFloat`, so we parenthesize the calculation.
-   in DivideSuccess (xAsFloat / divisorAsFloat)
-```
-
-The above can be written using the `$` operator, which applies the function on the left to the
-expression on the right:
-
-```haskell
-safeDivide :: Int -> Int -> DivisionResult
-safeDivide _x 0 = DivisionByZero
-safeDivide x divisor =
-  let xAsFloat = fromIntegral x
-      divisorAsFloat = fromIntegral divisor
-   -- With `$` we no longer need to parenthesize the expression.
-   in DivideSuccess $ xAsFloat / divisorAsFloat
-```
 
 ## Partial application
 
