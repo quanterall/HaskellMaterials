@@ -11,9 +11,6 @@
   - [Asking questions about values](#asking-questions-about-values)
     - [`if` expressions](#if-expressions)
     - [Guards](#guards)
-    - [Multi-way `if`](#multi-way-if)
-    - [`case` expressions](#case-expressions)
-    - [Top-level pattern matching](#top-level-pattern-matching)
     - [Exercises (Asking questions about values)](#exercises-asking-questions-about-values)
       - [Exercise notes (Asking questions about values)](#exercise-notes-asking-questions-about-values)
   - [Interlude: Function application with `$`](#interlude-function-application-with-)
@@ -325,64 +322,6 @@ evaluates to `True` the expression to the right of `=` is what will be returned.
 
 The word `otherwise` is an always matching case and we can use this case as an "for all other cases"
 clause.
-
-### Multi-way `if`
-
-The same example can be shown with a "multi-way" `if`, where we also use guards:
-
-```haskell
-import Prelude
-
--- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound upperBound value =
-  if
-      | value < lowerBound -> lowerBound
-      | value > upperBound -> upperBound
-      | otherwise -> value
-```
-
-The above example shares a lot of structure with our other example. Again, the first example is
-likely the most natural choice for our given problem, but that way only works when we immediately
-ask questions about our input arguments and want to branch differently for the cases entirely.
-
-What we have above is a generalized `if` that supports many branches with arbitrary guards. It's
-called a "multi-way `if`" and is enabled by the `MultiWayIf` extension, which we've enabled by
-default in our templates.
-
-### `case` expressions
-
-`case` expressions allow us to ask questions about the structure of values:
-
-```haskell
-addFileExtension :: String -> String
-addFileExtension filename = case filename of
-  "README" -> "README.md"
-  "LICENSE" -> "LICENSE.txt"
-  other -> other
-```
-
-In the above example we can see that we are looking at the literal value of the filename that is
-passed to the function and if it matches the two literal values that are stated we execute a
-specific expression for each case. Like guards, these are tried in order, so being as specific as
-you can and keeping the more general cases last is recommended.
-
-### Top-level pattern matching
-
-There is a more direct way to write this particular case expression, using something known as
-"top-level pattern matching":
-
-```haskell
-addFileExtension' :: String -> String
-addFileExtension' "README" = "README.md"
-addFileExtension' "LICENSE" = "LICENSE.txt"
-addFileExtension' filename = filename
-```
-
-Top-level pattern matching means that we can pattern match just like we would in a case expression
-but do it with our function argument bindings. In this example we are saying, much like in the
-previous example, that if the filename is README or LICENSE we want to execute specific logic for
-those, but we also have a general case the comes last so that every input value is handled.
 
 ### Exercises (Asking questions about values)
 
