@@ -21,6 +21,7 @@
     - [Exercises (Pipelines using partial application)](#exercises-pipelines-using-partial-application)
       - [Exercise notes (Pipelines using partial application)](#exercise-notes-pipelines-using-partial-application)
   - [A note on functions, their parameter order and partial application](#a-note-on-functions-their-parameter-order-and-partial-application)
+    - [Don't worry about mis-designing this](#dont-worry-about-mis-designing-this)
 
 ## Running examples
 
@@ -594,121 +595,38 @@ solution upperBound divisors =
 
 ## A note on functions, their parameter order and partial application
 
-It could feel natural to make `clamp` from our previous example take the parameters in a slightly
-different order. The original:
+Because we have partial application it's very common to design our APIs in such a way where the
+"subject" of a function comes last. When we design with partial application in mind we can get
+functions where the arguments act almost like configuration and we create specialized versions of
+these on-demand just by partially applying them.
+
+If we take our `clamp` function from before as an example:
 
 ```haskell
--- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
+-- Limits a value to be within the range `lowerBound <= value <= upperBound`
 clamp :: Int -> Int -> Int -> Int
 clamp lowerBound upperBound value
   | value < lowerBound = lowerBound
   | value > upperBound = upperBound
   | otherwise = value
+
+clampAllToByteRange :: [Int] -> [Int]
+clampAllToByteRange = List.map (clamp 0 255)
+
+clampAllToHundreds :: [Int] -> [Int]
+clampAllToHundreds = List.map (clamp (-100) 100)
 ```
 
-If one were to take the parameters as follows it might match the expression in the documentation
-more clearly:
+Because `List.map` takes the list it is working with as the last argument we can partially apply
+`List.map` and because `clamp` does the same with the value it is clamping we can partially apply
+that as well. This leads to very easy code-reuse for different concerns.
 
-```haskell
--- | Limits a given integer to be within the range @lowerBound <= value <= upperBound@.
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound value upperBound
-  | value < lowerBound = lowerBound
-  | value > upperBound = upperBound
-  | otherwise = value
-```
+### Don't worry about mis-designing this
 
-There is a downside to doing this, however: We will not be able to partially apply the function to
-very great effect:
+If you do happen to mis-design an API with regards to partial application you will definitely feel
+it. Seeing the issue is trivial and in most cases you'll just swap the order to more effectively
+make use of partial application. In the absolute worst case you'll simply not use the function with
+partial application and that's fine too.
 
-```haskell
--- Takes an upper bound but what does it actually accomplish?
-takesUpperBound :: Int -> Int
-takesUpperBound = clamp 0 255
-
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound value upperBound
-  | value < lowerBound = lowerBound
-  | value > upperBound = upperBound
-  | otherwise = value
-```
-
-As we can see, the partially applied (`clamp lowerBound value`) function will now take an upper
-bound and return a result. Depending on your use case this can be unintuitive design. If we instead
-take the value to clamp as the last argument we get a useful way to construct new functions:
-
-```haskell
-clampsToByteValues :: Int -> Int
-clampsToByteValues = clamp 0 255
-
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound upperBound value
-  | value < lowerBound = lowerBound
-  | value > upperBound = upperBound
-  | otherwise = value
-```
-
-In the above example we've partially applied `clamp` to `0` and `255` and what we get out of it is
-a function that takes a value and correctly returns the value if it is in that range or either of
-the boundaries if it is outside.
-
-If we are using this function in a pipeline of functions, it is a lot more intuitive:
-
-```haskell
-import Data.Function ((&))
-import qualified System.Environment as Environment
-import Prelude
-
-runMain :: IO ()
-runMain = do
-  arguments <- Environment.getArgs
-  case arguments of
-    [xString, divisorString] ->
-      let x = read xString
-          divisor = read divisorString
-          -- This pipeline is basically saying to take the divisor we have, clamp it to within the
-          -- range `1 <= value <= 255` then safely divide `x` by the result.
-          divisionResult =
-            divisor
-              & clamp 1 255
-              & safeDivide x
-       in putStrLn $ case divisionResult of
-            DivideSuccess result ->
-              "Your result was: " <> show result
-            DivisionByZero ->
-              "You tried to divide by zero"
-    _otherwise ->
-      putStrLn "Need a number and a divisor to divide it by"
-
-data DivisionResult
-  = DivideSuccess Float
-  | DivisionByZero
-  deriving (Show)
-
-safeDivide :: Int -> Int -> DivisionResult
-safeDivide _x 0 = DivisionByZero
-safeDivide x divisor =
-  let xAsFloat = fromIntegral x
-      divisorAsFloat = fromIntegral divisor
-   in DivideSuccess (xAsFloat / divisorAsFloat)
-
-clamp :: Int -> Int -> Int -> Int
-clamp lowerBound upperBound value
-  | value < lowerBound = lowerBound
-  | value > upperBound = upperBound
-  | otherwise = value
-```
-
-Running this we can see that we've effectively removed the issue of unsafe division by clamping the
-divisor to a minimum of `1`:
-
-```bash
-$ stack run -- 5 0
-Your result was: 5.0
-$ stack run -- 5 2
-Your result was: 2.5
-```
-
-Using `safeDivide` even in the presence of clamping here isn't necessarily the point, but rather
-that we get more natural function composition if we design our argument order to deliberately allow
-for this type of partial application.
+It is absolutely worth thinking about this when designing your APIs, but at the end of the day it's
+not important enough for you to do somersaults in the code base to get it to where it should be.
