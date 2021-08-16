@@ -465,10 +465,10 @@ Elixir, and might be more readable to some. It works by taking whatever value we
 side of it and passing it to the function on the right. Like F# and Elm the value is passed as the
 last argument to the function on the right, as opposed to Elixir where it is passed as the first.
 
-While we aren't changing the meaning of our program based on which way we compose our functions, one
-should consider whether or not it makes sense for the intended reader of the code to read it
-left-to-right like we usually do with English and how most of our language constructs work, over the
-alternative with `.` where we instead have to read the flow of things from right-to-left.
+While we aren't changing the meaning of our program based on which way we compose our functions, We
+should always prefer to read our code left-to-right and up-to-down (because this is the already
+established reading direction in the rest of the language), meaning we should use `>>>` and
+`&`.
 
 ### A "Project Euler" example
 
