@@ -563,18 +563,19 @@ solution upperBound divisors =
 
 ### Exercises (Pipelines using partial application)
 
-1. Define a function that takes the last 3 elements of a `[Int]`. Use notes as inspiration.
-
-2. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in it,
+1. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in it,
    multiplies them all by two and returns the sum[1]. Define versions that use:
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
 
-3. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in the
+2. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in the
    beginning of the list[2], multiplies them all by two, sums them up and returns whether or not the
    sum is even. Define versions that use:
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
+
+3. Define a function that takes the last 3 elements of a `[Int]` and gets the average of them. Use
+   notes as inspiration.
 
 4. Define a function using a pipeline that takes a list of strings, takes all the strings that begin
    with "#", then discards all leading "#" or " " from the resulting strings. Take note of what kind
