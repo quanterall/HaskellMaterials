@@ -13,6 +13,7 @@
     - [Guards](#guards)
     - [Exercises (Asking questions about values)](#exercises-asking-questions-about-values)
       - [Exercise notes (Asking questions about values)](#exercise-notes-asking-questions-about-values)
+  - [`$` for function application](#-for-function-application)
   - [Partial application](#partial-application)
     - [Exercises (Partial application)](#exercises-partial-application)
       - [Exercise notes (Partial application)](#exercise-notes-partial-application)
@@ -338,6 +339,23 @@ clause.
    than 255 returns `255`.
 
 #### Exercise notes (Asking questions about values)
+
+## `$` for function application
+
+Sometimes you will see a dollar sign operator (`$`) in code. This is actually a utility operator
+meant for function application:
+
+```haskell
+f :: Int -> String
+f x = show (deriveFlorbFactorFromMerkleNumber (castToMerkleNumber x))
+
+f' :: Int -> String
+f' x = show $ deriveFlorbFactorFromMerkleNumber $ castToMerkleNumber x
+```
+
+As you can see from the above snippet, using `$` allows us to just say "Apply the function on the
+left to the expression on the right". `$` binds tightly to the right, so the parenthesis we see
+above is what will be by default, hence we have no need for parenthesis like this when we use `$`.
 
 ## Partial application
 
