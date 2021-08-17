@@ -354,8 +354,8 @@ f' x = show $ deriveFlorbFactorFromMerkleNumber $ castToMerkleNumber x
 ```
 
 As you can see from the above snippet, using `$` allows us to just say "Apply the function on the
-left to the expression on the right". `$` binds tightly to the right, so the parenthesis we see
-above is what will be by default, hence we have no need for parenthesis like this when we use `$`.
+left to the expression on the right". `$` binds tightly to the right, so the parentheses we see
+above is what will be by default, hence we have no need for parentheses like this when we use `$`.
 
 ## Partial application
 
