@@ -421,9 +421,9 @@ as an operator like `-` would behave differently depending on which side you are
 4. Define a function that returns all of the `Int`s in a list over `0`, use partial application for
    both the check and `filter`[1].
 
-5. Define a function that takes all the first numbers of a list of `Int`s below 10, stopping when it
-   reaches one that does not meet that criteria. `takeWhile`[2] can be useful for this. Use partial
-   application both for `takeWhile`[2] and the predicate you pass to it.
+5. Define a function that takes numbers from a list of `Int`s, stopping when it reaches a number
+   that is above 10. `takeWhile`[2] can be useful for this. Use partial application both for
+   `takeWhile`[2] and the predicate you pass to it.
 
 6. Define a function that checks whether or not all `Int`s in a a list are even. Use notes to figure
    out how and use partial application for your definition.
