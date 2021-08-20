@@ -336,7 +336,7 @@ clause.
    instead return `0`.
 
 4. Define a function that takes an `Int` and if it's smaller than zero returns `0`, if it's bigger
-   than 255 returns `255`.
+   than 255 returns `255`. Otherwise it returns the integer itself.
 
 #### Exercise notes (Asking questions about values)
 
