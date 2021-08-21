@@ -964,11 +964,7 @@ is connecting to a `[]`, which marks the end of the list:
 
 ```haskell
 Q> 1 : 2 : 3 : 4 : []
-[ 1
-, 2
-, 3
-, 4
-]
+[ 1, 2, 3, 4 ]
 ```
 
 Defined another way we have the following:
@@ -977,6 +973,8 @@ Defined another way we have the following:
 data List a
   = EmptyList -- This is commonly called `Nil`
   | Prepend a (List a) -- This is commonly called `Cons`
+  -- ^ `a` here is commonly called the "head" of the list, and the list it is connected to is
+  -- commonly called the "tail".
 ```
 
 Lists are useful any time you need to have zero or more of something. It's important to note that
@@ -1026,7 +1024,7 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
    tail of the list. Consider what to return if the list is empty.
 
 3. Define an `average` function that takes a `[Int]` and returns `Maybe Float` where the return
-   value is the average value.
+   value is the average value. When and why might we need to return `Nothing`?
 
 4. Define a function `maybeMaximumInt :: [Int] -> Maybe Int` function that takes a list of integers
    and finds the maximum integer of the list using the function `foldr`[1]. Figure out what to pass
