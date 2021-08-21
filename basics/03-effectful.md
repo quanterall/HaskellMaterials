@@ -149,8 +149,8 @@ import Prelude
 
 main :: IO ()
 main = do
-  -- If this function returned `IO String`, for example, Haskell would say we were discarding a
-  -- return value and warn us about it.
+  -- If this function returned `IO String`, we would get a type error saying that we were
+  -- expecting `IO ()` but got `IO String`, since our return value in `main` is `IO ()`.
   Directory.createDirectory "new-directory"
 ```
 
