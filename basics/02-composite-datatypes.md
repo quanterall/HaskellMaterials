@@ -1102,6 +1102,11 @@ indeed see a crash happen.
 Let's take a look at what happens when we remove our strictness annotation:
 
 ```haskell
+data Tuple = Tuple Int String
+  deriving (Eq, Show)
+```
+
+```haskell
 Q> tuple = Tuple crash "hello"
 Q> stringFromTuple tuple
 "hello"
