@@ -1027,24 +1027,28 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
    value is the average value. When and why might we need to return `Nothing`?
 
 4. Define a function `maybeMaximumInt :: [Int] -> Maybe Int` function that takes a list of integers
-   and finds the maximum integer of the list using the function `foldr`[1]. Figure out what to pass
-   as the "empty list" argument.
+   and finds the maximum integer of the list.
 
 5. Define a function `maximumInt :: Int -> [Int] -> Int` function that takes a default value and a
    list of integers, then either returns the default value or the found maximum value. Use the
    function you defined in exercise 4 together with `maybe`.
 
 6. Define a function `firstMatch :: (a -> Bool) -> [a] -> Maybe a` that returns the first element in
-   a list that matches a given predicate, or `Nothing` otherwise. Try to create a version that uses
-   `foldr` and one that recursively goes through the list with pattern matching.
+   a list that matches a given predicate, or `Nothing` otherwise.
 
 7. Define a function `firstMatchOr :: (a -> Bool) -> a -> [a] -> a` that uses the `firstMatch`
    function together with `foldMaybe` to provide a default value unless we find a matching element.
 
+8. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
+
+9[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+
+10[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
+
 ##### Exercise notes (Lists)
 
 0. [sum](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:sum)
-1. [foldr](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:foldr)
+1. These exercises can be skipped in the interest of time.
 
 ## Strictness annotations
 
