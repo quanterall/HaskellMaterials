@@ -1123,7 +1123,7 @@ we want this piece of data to be fully evaluated when the structure itself is ev
 case where the default behavior would not evaluate it.
 
 Since this behavior applies to all expressions in Haskell (we only evaluate what is needed), what
-does that mean for the actual execution of a program. In short, it means that every expression you
+does that mean for the actual execution of a program? In short, it means that every expression you
 define is actually really just a recipe/formula for whatever value it should be producing,
 represented as a function. If that function is never called, neither the expressions in it nor the
 value it should be returning will materialize at all.
