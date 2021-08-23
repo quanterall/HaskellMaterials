@@ -381,9 +381,10 @@ a field and we have a field with the same name as our value, Haskell again assum
 set the corresponding field to that value. Passing a field that doesn't exist in the type is still
 an error, so this is completely safe.
 
-This behavior with the shorthand deconstruction and construction is available through a language
-extension called `NamedFieldPuns`, that we by default enable in our Quanterall templates, so you
-should see this work without issue when using them.
+(**Note**: This behavior with the shorthand deconstruction and construction is available through a
+language extension called `NamedFieldPuns`, that we by default enable in our Quanterall templates,
+so you should see this work without issue when using them in projects you created via `stack new
+project-name quanterall/{basic,application,web-postgres}`.)
 
 ### Exercises (Record types)
 
