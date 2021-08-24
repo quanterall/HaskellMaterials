@@ -269,7 +269,7 @@ Q> interests rickard
 ]
 ```
 
-We can see this in action in this snippet where we turn a profile into a presentation string:
+We can see this in action in this snippet where we turn a profile into a string:
 
 ```haskell
 profileToString :: UserProfile -> String
