@@ -111,19 +111,16 @@ only the amount added depends on the boolean and we have special syntax for bool
 1. Create a function `and` that takes two `Bool`s and returns `True` if both are true, `False`
    otherwise. Define versions using:
    - `case` (`case (firstBool, secondBool)` will allow you to match on both at the same time)
-   - `if`
    - Top-level pattern-matching
 
 2. Create a function `or` that takes two `Bool`s and returns `True` if either is true, `False`
    otherwise. Define versions using:
    - `case` (`case (firstBool, secondBool)` will allow you to match on both at the same time)
-   - `if`
    - Top-level pattern-matching
 
 3. Create a function `exclusiveOr` that takes two `Bool`s and returns true if exactly one of them
    is true. Define versions using:
    - `case` (`case (firstBool, secondBool)` will allow you to match on both at the same time)
-   - `if`
    - Top-level pattern-matching
 
 4. Create a function that takes two parameters of the type `Int` as well as a `Bool` and returns
