@@ -410,6 +410,10 @@ We define a union type with the `data` keyword followed by the type name and `=`
 **constructors** of the type with `|` between them:
 
 ```haskell
+-- This requires you to add `time` as a dependency in `package.yaml`
+import Data.Time (Day)
+import Prelude
+
 data RelationshipStatus
   = MarriedTo MarriageInfo -- This could also be `MarriedTo String Day`
   | EngagedTo UserProfile
@@ -500,6 +504,10 @@ type.
    Remember that `RelationshipStatus` looks as follows:
 
    ```haskell
+   -- This requires you to add `time` as a dependency in `package.yaml`
+   import Data.Time (Day)
+   import Prelude
+
    data RelationshipStatus
      = MarriedTo MarriageInfo
      | EngagedTo UserProfile
