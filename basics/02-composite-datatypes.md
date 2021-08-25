@@ -723,8 +723,8 @@ data Holder a = Holder a
 
 Note how we now have a type variable on the left side of `=` which means that when we refer to the
 type it will take a type name. If we were holding a `Int`, for example, the type is `Holder Int`.
-The corresponding constructor call (or pattern match) is `Holder value`, where in the specific case
-of `Holder Int` we would have `value :: Int`.
+The corresponding constructor call (or pattern match) is `Holder value`, where `value` is of type
+`Int`.
 
 This basic type doesn't have much going for it in terms of functionality, but it's useful to show
 how we express type variables in data types. Fortunately for us we only need to extend the record
