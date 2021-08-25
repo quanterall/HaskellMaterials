@@ -554,9 +554,9 @@ type.
 
 ## Combining records and unions
 
-As we saw in the previous section it's trivial to combine records and unions; our `MarriageInfo` type
-is already embedded in the `MarriedTo` constructor. So let's take that one step further and enrich
-our `UserProfile` data type by adding our `RelationshipStatus` to `UserProfile`:
+As we saw in the previous section it's trivial to combine records and unions; our `MarriageInfo`
+type is already embedded in the `MarriedTo` constructor. So let's take that one step further and
+enrich our `UserProfile` data type by adding our `RelationshipStatus` to `UserProfile`:
 
 ```haskell
 import qualified Data.List as List
@@ -584,20 +584,21 @@ data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
   deriving (Eq, Show)
 
 profileToString :: UserProfile -> String
-profileToString profile =
-  let ageString = show $ age profile
-      activeString = if active profile then "active" else "not active"
-      interestsString = intercalate ", " (interests profile)
-      relationshipStatusString = case relationshipStatus profile of
+profileToString UserProfile {age, active, interests, relationshipStatus, username} =
+  let ageString = show age
+      activeString = if active then "active" else "not active"
+      interestsString = intercalate ", " interests
+      relationshipStatusString = case relationshipStatus of
         MarriedTo MarriageInfo {spouse, date} ->
           let dateString = Time.showGregorian date
            in -- `unwords` takes a `[String]` and joins them into a string with spaces inbetween
               unwords ["Married to:", spouse, "on", dateString]
-        EngagedTo UserProfile {username} -> unwords ["Engaged to:", username]
+        EngagedTo UserProfile {username = spouseUsername} ->
+          unwords ["Engaged to:", spouseUsername]
         ItsComplicated -> "It's complicated"
         Single -> "Single"
    in mconcat
-        [ username profile,
+        [ username,
           " (",
           ageString,
           "y, ",
