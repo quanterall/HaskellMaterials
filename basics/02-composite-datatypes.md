@@ -701,12 +701,78 @@ For another example of modelling (part of) a domain with types, see
 
 ### Exercises (Combining records and unions)
 
-1. Modify the `profileToString` function to take into account that our `spouse` name in
+1. Modify the `profileToString` function[0] to take into account that our `spouse` name in
    `MarriageInfo` is now a `Spouse`; this means we have to look closer at the data with the
    `Spouse` type in mind to get a string value out of it.
 
 2. Modify the `EngagedTo` constructor in `RelationshipStatus` to also take a `Spouse` and then
    modify the latest version of `profileToString` accordingly.
+
+#### Exercise notes (Combining records and unions)
+
+0. The code for `profileToString` and its associated types:
+
+```haskell
+import qualified Data.List as List
+import Data.Time (Day)
+import qualified Data.Time as Time
+import Prelude
+
+data UserProfile = UserProfile
+  { username :: String,
+    age :: Int,
+    active :: Bool,
+    interests :: [String],
+    relationshipStatus :: RelationshipStatus
+  }
+  deriving (Eq, Show)
+
+data RelationshipStatus
+  = MarriedTo MarriageInfo
+  | EngagedTo UserProfile
+  | ItsComplicated
+  | Single
+  deriving (Eq, Show)
+
+data MarriageInfo = MarriageInfo {spouse :: Spouse, date :: Day}
+  deriving (Eq, Show)
+
+data Spouse
+  = SpouseProfile UserProfile
+  | SpouseName String
+  deriving (Eq, Show)
+
+profileToString :: UserProfile -> String
+profileToString UserProfile {age, active, interests, relationshipStatus, username} =
+  let ageString = show age
+      activeString = if active then "active" else "not active"
+      interestsString = intercalate ", " interests
+      relationshipStatusString = case relationshipStatus of
+        MarriedTo MarriageInfo {spouse, date} ->
+          let dateString = Time.showGregorian date
+           in -- `unwords` takes a `[String]` and joins them into a string with spaces inbetween
+              unwords ["Married to:", spouse, "on", dateString]
+        EngagedTo UserProfile {username = spouseUsername} ->
+          unwords ["Engaged to:", spouseUsername]
+        ItsComplicated -> "It's complicated"
+        Single -> "Single"
+   in mconcat
+        [ username,
+          " (",
+          ageString,
+          "y, ",
+          activeString,
+          ", ",
+          relationshipStatusString,
+          ") is interested in: ",
+          interestsString
+        ]
+
+-- | Inserts a given string between every entry in the list of strings
+intercalate :: String -> [String] -> String
+intercalate between strings =
+  mconcat $ List.intersperse between strings
+```
 
 ## Generic datatypes
 
