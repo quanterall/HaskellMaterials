@@ -17,6 +17,7 @@
       - [Exercise notes (Union types)](#exercise-notes-union-types)
   - [Combining records and unions](#combining-records-and-unions)
     - [Exercises (Combining records and unions)](#exercises-combining-records-and-unions)
+      - [Exercise notes (Combining records and unions)](#exercise-notes-combining-records-and-unions)
   - [Generic datatypes](#generic-datatypes)
     - [Exercises (Generic datatypes)](#exercises-generic-datatypes)
   - [Commonly used composite datatypes](#commonly-used-composite-datatypes)
