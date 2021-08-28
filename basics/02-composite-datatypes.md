@@ -777,9 +777,12 @@ intercalate between strings =
 
 ## Generic datatypes
 
-With datatypes we usually want structures that can hold arbitrary values of other types, meaning we
-want to create general types that are useful with any type you can give them. For this purpose we
-have "generic" datatypes.
+With datatypes we usually want structures that can hold other types and where it doesn't make sense
+to specialize these beforehand. If we have a map from `Int` to `String` and another from `Char` to
+`Int` we don't want to define a separate data type for each of these. Instead we want to have a
+general `Map` structure where we can say that one usage of it has keys of type `Int` and values of
+type `String`, as well as another usage has `Char` and `Int` instead. For this purpose we have
+"generic" datatypes.
 
 The most basic generic datatype is a type that can hold anything and that has only one constructor:
 
