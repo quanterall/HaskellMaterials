@@ -811,7 +811,7 @@ data HttpResponse a = HttpResponse
   }
 ```
 
-We can see here that our HTTP Response is generic over different type of body types. This means we
+We can see here that our HTTP Response is generic over different types of body types. This means we
 can construct it with different types and still get the expected structure for the rest of the
 response. Since only the body will differ here we are free to say that it could be a JSON value,
 bytestring or maybe UTF8 text. Much like our `Holder` example this would mean that when we refer to
