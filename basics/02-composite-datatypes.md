@@ -809,21 +809,72 @@ data HttpResponse a = HttpResponse
     headers :: [HttpHeader],
     body :: a
   }
+  deriving (Eq, Show)
+
+data HttpStatus
+  = Ok Int
+  | ClientError Int
+  | ServerError Int
+  deriving (Eq, Show)
+
+data HttpHeader = HttpHeader
+  { headerName :: String,
+    headerValue :: String 
+  }
+  deriving (Eq, Show)
 ```
 
-We can see here that our HTTP Response is generic over different types of body types. This means we
-can construct it with different types and still get the expected structure for the rest of the
-response. Since only the body will differ here we are free to say that it could be a JSON value,
-bytestring or maybe UTF8 text. Much like our `Holder` example this would mean that when we refer to
-the type we would have, for example, `HttpResponse JSONValue`, `HttpResponse ByteString` or
-`HttpResponse UTF8Text`.
+We can see here that `HttpResponse` is generic over different types of body types. This means we can
+construct it with different types and still get the expected structure for the rest of the response.
+Since only the body will differ here we are free to say that it could be a JSON value, bytestring or
+maybe UTF8 text. Much like our `Holder` example this would mean that when we refer to the type we
+would have, for example, `HttpResponse String`, `HttpResponse JSONValue`, `HttpResponse ByteString`
+or `HttpResponse UTF8Text`.
+
+If we had these different applications of  `HttpResponse`, they would look as follows:
+
+```haskell
+-- `HttpResponse String`
+HttpResponse
+  { status :: HttpStatus,
+    headers :: [HttpHeader],
+    body :: String
+  }
+
+-- `HttpResponse JSONValue`
+HttpResponse
+  { status :: HttpStatus,
+    headers :: [HttpHeader],
+    body :: JSONValue
+  }
+
+-- `HttpResponse ByteString`
+HttpResponse
+  { status :: HttpStatus,
+    headers :: [HttpHeader],
+    body :: ByteString
+  }
+
+-- `HttpResponse UTF8Text`
+HttpResponse
+  { status :: HttpStatus,
+    headers :: [HttpHeader],
+    body :: UTF8Text
+  }
+```
 
 With unions we predictably have the same format for generic unions as we do for basic ones and we
 will go through several popular and representative definitions below.
 
 ### Exercises (Generic datatypes)
 
-1. Define a value of type `Holder Int` as well as a value of type `Holder String`.
+1. Define a value of type `Holder Int` as well as a value of type `Holder String`. Remember that the
+   definition of `Holder` looks as follows:
+
+   ```haskell
+   data Holder a = Holder a
+     deriving (Eq, Show)
+   ```
 
 2. Define a function `createHolder :: a -> Holder a`. Knowing what you know about partial
    application, what is the most concise and direct definition you can come up with?
