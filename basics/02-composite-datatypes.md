@@ -863,8 +863,28 @@ HttpResponse
   }
 ```
 
-With unions we predictably have the same format for generic unions as we do for basic ones and we
-will go through several popular and representative definitions below.
+With unions we predictably have the same format for generic unions as we do for basic ones:
+
+```haskell
+data SomeAmountOf a
+  = None
+  | One a
+  | CoupleOf a a
+  | BunchOf a a [a]
+  deriving (Eq, Show)
+
+none :: SomeAmountOf Int
+none = None
+
+one :: SomeAmountOf Int
+one = One 42
+
+coupleOf :: SomeAmountOf Int
+coupleOf = CoupleOf 42 1337
+
+bunchOf :: SomeAmountOf Int
+bunchOf = BunchOf 42 1337 [1, 2, 3]
+```
 
 ### Exercises (Generic datatypes)
 
