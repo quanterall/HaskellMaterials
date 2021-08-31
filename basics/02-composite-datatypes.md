@@ -1055,9 +1055,7 @@ of our own can be very descriptive.
 2. Define a function that takes a `ResourceLoadResult` and turns it into a
    `Either ResourceLoadError Resource`.
 
-3. Define a function `foldEither :: (l -> a) -> (r -> a) -> Either l r -> a`. If the `Either` is a
-   `Right` apply the second argument to the value it contains. If it's `Left`, apply the first
-   argument to that contained value.
+3. Define a function `foldEither :: (l -> a) -> (r -> a) -> Either l r -> a`.
 
 4. Define a function that takes a `ResourceLoadResult`, uses your previous function for turning it
    into an `Either ResourceLoadError Resource` and then pipes the result into `foldEither` to return
