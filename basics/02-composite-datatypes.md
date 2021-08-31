@@ -1043,8 +1043,10 @@ data ResourceLoadError
   deriving (Eq, Show)
 ```
 
-The above definition holds the same information as a `Either ErrorData Resource`, but can be more
-descriptive in certain contexts.
+The above definition holds the same information as a `Either ResourceLoadError Resource`, but can be
+more descriptive in certain contexts. Again, it's important to conisder whether or not we want the
+functions that work with `Either` available to us or not. If we don't need them, a specialized type
+of our own can be very descriptive.
 
 #### Exercises (Either)
 
