@@ -597,7 +597,9 @@ solution upperBound divisors =
 
 4. Define a function using a pipeline that takes a list of strings, takes all the strings that begin
    with "#", then discards all leading "#" or " " from the resulting strings. Take note of what kind
-   of structure you are working with and what we need to do to work with the structures inside.
+   of structure you are working with and what we need to do to work with the structures inside. You
+   may need to start out with an anonymous function[9] somewhere in order to see how you could go
+   from that to a partially applied function.
 
 #### Exercise notes (Pipelines using partial application)
 
@@ -611,6 +613,7 @@ solution upperBound divisors =
 6. [elem](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:elem)
 7. [take](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:take)
 8. [reverse](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:reverse)
+9. Lambdas are written like this: `\argumentOne argumentTwo -> bodyOfFunction`
 
 ## A note on functions, their parameter order and partial application
 
