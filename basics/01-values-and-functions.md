@@ -15,6 +15,8 @@
       - [Exercise notes (Asking questions about values)](#exercise-notes-asking-questions-about-values)
   - [`$` for function application](#-for-function-application)
   - [Partial application](#partial-application)
+    - [Interlude: Lambdas / Anonymous functions](#interlude-lambdas--anonymous-functions)
+    - [Common design patterns with partial application](#common-design-patterns-with-partial-application)
     - [Exercises (Partial application)](#exercises-partial-application)
       - [Exercise notes (Partial application)](#exercise-notes-partial-application)
   - [Pipelines using partial application](#pipelines-using-partial-application)
@@ -377,7 +379,17 @@ Passing only one arguments to `addInts` in the example above results in a functi
 more argument instead of the original two.
 
 It's quite common to use this fact by putting important arguments in the last parameter position of
-a function in order to let people use this pattern:
+a function in order to let people use this pattern.
+
+### Interlude: Lambdas / Anonymous functions
+
+In the code snippet above we are using what is called an "anonymous function". This is a function
+defined in-place and passed to another function. These are also commonly called "lambdas". A lambda
+is written beginning with `\` (because it is supposed to resemble λ, an actual lambda), followed by
+the arguments that the function takes. After the arguments we have an arrow and what follows is the
+expression of the function, i.e. what usually comes after `=` in a normal function definition.
+
+### Common design patterns with partial application
 
 ```haskell
 import qualified Data.List as List
@@ -386,12 +398,19 @@ import Prelude
 -- | Adds 42 to every item in a list
 add42ToAll :: [Int] -> [Int]
 add42ToAll = List.map (\x -> x + 42)
+
+add42ToAll' :: [Int] -> [Int]
+add42ToAll' list = List.map (\x -> x + 42) list
 ```
 
-In the above example, `List.map` takes the list it is working with as the last argument, meaning we
-can just partially apply it and still get the function we expect; a function that expects a list of
-integer values that we then add `42` to, returning the resulting list. Since we are not passing the
-list argument to `List.map` here we get exactly that function signature.
+In this example we are creating a lambda that takes one argument and adds 42 to it. This is passed
+to a partially applied `List.map` that takes a list of `Int` as the second argument. When we don't
+give this argument, what we get back is exactly the type signature that `add42ToAll` has:
+`[Int] -> [Int]`. The second version makes this list argument visible. As a rule, when you have
+arguments both on the left side in the same order as you have them on the right side of a definition
+you can remove them on both sides. `list` appears here as the last argument both in the arguments
+and the implementation and so we can get rid of it, to talk only about the essence of the function;
+mapping over a list and adding 42 to each item in the list.
 
 We can also partially apply our `+`. The function that we are passing to `List.map` is expected to
 be of type `Int -> Int`, which is what we get when we write `(+ 42)`:
