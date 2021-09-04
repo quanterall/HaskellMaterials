@@ -49,7 +49,7 @@ to be passed to it in order to construct a concrete one.
 ### Interlude: IO is "higher-kinded"
 
 It can be helpful to draw a parallell to "higher-order functions", i.e. functions that take and/or
-return other functions. `IO` (and other types that themselves take type arguments) can be seen as
+return other functions. `IO` (and other types that take type arguments) can be seen as
 "higher-order types" that take type arguments in order to return concrete types.
 
 In reality, all types have kinds in Haskell, as we can observe in `ghci`:
