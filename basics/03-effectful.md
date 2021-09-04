@@ -6,6 +6,7 @@
     - [Interlude: IO is "higher-kinded"](#interlude-io-is-higher-kinded)
     - [Back to `IO ()`](#back-to-io-)
   - [IO a](#io-a)
+    - [do-notation](#do-notation)
     - [Exercises (`IO a`)](#exercises-io-a)
       - [Exercise notes (`IO a`)](#exercise-notes-io-a)
   - [What makes `IO` special?](#what-makes-io-special)
@@ -178,9 +179,16 @@ System.Environment.getEnv :: String -> IO String
 We can see here that we are passing the function a `String` and getting an `IO String` back. We are
 executing "in the IO monad", so this is something effectful that can do basically anything.
 
+### do-notation
+
+Haskell has special syntax/notation for using `IO` (and other monads). We get access to this
+notation by starting an expression with the `do` keyword. We will go into the specifics of what `do`
+here is actually doing in the next chapter, but suffice to say that you can consider this the way to
+write code in the `IO` monad for now.
+
 Technically speaking, when we have a **value** of type `IO a` we in actuality have an action that
-when executed will produce a value of type `a`. When we use `<-` in our code we are running that
-action and binding the **result**, the `a`, to the name on the left.
+when executed will produce a value of type `a`. When we use `<-` in our do-expressions we are
+running that action and binding the **result**, the `a`, to the name on the left.
 
 Let's look at an example with type signatures added just for extra clarity; these are not needed for
 the code to work:
