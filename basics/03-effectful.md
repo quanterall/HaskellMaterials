@@ -167,8 +167,8 @@ main = do
 ## IO a
 
 So what happens when we want to use functions that do effectful things but we also want to use
-their return values? Well, their function signatures are going to have `IO a` at the end, where `a`
-stands in for any type you might be interested in. An example:
+their return values? Their function signatures are going to have `IO a` at the end, where `a` stands
+in for whatever thing the function returns. An example:
 
 ```haskell
 -- Get the current value of an environment variable.
@@ -180,7 +180,7 @@ executing "in the IO monad", so this is something effectful that can do basicall
 
 Technically speaking, when we have a **value** of type `IO a` we in actuality have an action that
 when executed will produce a value of type `a`. When we use `<-` in our code we are running that
-action and binding the **result**, the `a` in this case, to the name on the left.
+action and binding the **result**, the `a`, to the name on the left.
 
 ```haskell
 import Prelude
