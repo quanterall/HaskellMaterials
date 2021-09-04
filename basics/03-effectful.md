@@ -182,16 +182,19 @@ Technically speaking, when we have a **value** of type `IO a` we in actuality ha
 when executed will produce a value of type `a`. When we use `<-` in our code we are running that
 action and binding the **result**, the `a`, to the name on the left.
 
+Let's look at an example with type signatures added just for extra clarity; these are not needed for
+the code to work:
+
 ```haskell
 import Prelude
 import qualified System.Environment as Environment
 
 main :: IO ()
 main = do
-  -- If we were to not bind the result of this call to a name we would get a warning about it
-  dockerFileName <- Environment.getEnv "DOCKERFILE" -- has the type `IO String`
-  dockerFileContents <- readFile dockerFileName -- `IO String` again
-  putStrLn dockerFileContents -- `IO ()`
+  dockerFileName :: String <- Environment.getEnv "DOCKERFILE" :: IO String
+
+  dockerFileContents :: String <- readFile dockerFileName :: IO String
+  putStrLn dockerFileContents :: IO ()
 ```
 
 It's perhaps helpful to draw the analogy to `await` in JavaScript, where we sometimes write our code
