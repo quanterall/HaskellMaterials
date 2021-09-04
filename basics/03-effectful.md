@@ -44,7 +44,8 @@ means that `IO ()` is `IO` applied to `()` which produces the type `IO ()`.
 
 Likewise we can also have `IO String` which is `IO` applied to `String`, which produces the type
 `IO String`. `IO` itself can be seen as a type constructor in the type system, that requires a type
-to be passed to it in order to construct a concrete one.
+to be passed to it in order to construct a concrete one. When types take other types we call them
+**"higher-kinded" types**.
 
 ### Interlude: IO is "higher-kinded"
 
@@ -57,6 +58,10 @@ In reality, all types have kinds in Haskell, as we can observe in `ghci`:
 ```haskell
 Q> :kind Int
 Int :: *
+Q> :kind Maybe
+Maybe :: * -> *
+Q> :kind Either
+Either :: * -> * -> *
 Q> :kind []
 [] :: * -> *
 Q> :kind IO
@@ -65,10 +70,6 @@ Q> :kind Map
 Map :: * -> * -> *
 Q> :kind Set
 Set :: * -> *
-Q> :kind Maybe
-Maybe :: * -> *
-Q> :kind Either
-Either :: * -> * -> *
 ```
 
 The common thread here is that for each type, the amount of asterisks we see are directly related to
