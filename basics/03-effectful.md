@@ -205,6 +205,20 @@ main = do
   putStrLn dockerFileContents :: IO ()
 ```
 
+Here is the same code without the type signatures:
+
+```haskell
+import Prelude
+import qualified System.Environment as Environment
+
+main :: IO ()
+main = do
+  dockerFileName <- Environment.getEnv "DOCKERFILE"
+
+  dockerFileContents <- readFile dockerFileName
+  putStrLn dockerFileContents
+```
+
 It's perhaps helpful to draw the analogy to `await` in JavaScript, where we sometimes write our code
 "in the `Promise` monad" and so we can do asynchronous things. We unpack these asynchronous values
 by using `await` (or `.then()` for people who aren't up-to-date) and when we refer to them in code
