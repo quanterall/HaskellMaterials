@@ -96,18 +96,18 @@ considered function applications in the type-level.
 To provide a complete picture, let's see the same with `Map` and `Either`:
 
 ```haskell
-Q> :kind Map
-Map :: * -> * -> *
-Q> :kind Map String
-Map String :: * -> *
-Q> :kind Map String Int
-Map String Int :: *
 Q> :kind Either
 Either :: * -> * -> *
 Q> :kind Either String
 Either String :: * -> *
 Q> :kind Either String (IO Int)
 Either String (IO Int) :: *
+Q> :kind Map
+Map :: * -> * -> *
+Q> :kind Map String
+Map String :: * -> *
+Q> :kind Map String Int
+Map String Int :: *
 ```
 
 ### Back to `IO ()`
