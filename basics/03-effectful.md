@@ -112,10 +112,19 @@ Map String Int :: *
 
 ### Back to `IO ()`
 
-So what is it about `IO ()` that makes it so common in libraries and APIs? `IO` means we have an
-essentially arbitrary action, and `()` is the type representing "No interesting return value", which
-means that the closest analog we can find in other languages is `void`. Functions that return `IO ()`
-are used because they cause something to happen and that's their main purpose.
+So what is it about `IO ()` that makes it so common in libraries and APIs? `()` is called "unit",
+stemming from the fact that it is a type that has only one constructor: `()`. A value of type unit
+can only be `()`:
+
+```haskell
+unit :: ()
+unit = ()
+```
+
+`IO` means we have an essentially arbitrary action, and `()` is the type representing "No
+interesting return value", which means that the closest analog we can find in other languages is
+`void`. Functions that return `IO ()` are used because they cause something to happen and that's
+their main purpose.
 
 Examples:
 
