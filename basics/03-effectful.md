@@ -220,9 +220,15 @@ main = do
 ```
 
 It's perhaps helpful to draw the analogy to `await` in JavaScript, where we sometimes write our code
-"in the `Promise` monad" and so we can do asynchronous things. We unpack these asynchronous values
-by using `await` (or `.then()` for people who aren't up-to-date) and when we refer to them in code
-the asynchronous nature does not matter in terms of the values they represent.
+"in the `Promise` monad" and so we can do asynchronous things. We unpack/evaluate these asynchronous
+values by using `await` (or `.then()` for people who aren't up-to-date) and when we refer to them in
+code the asynchronous nature does not matter in terms of the values they represent.
+
+In reality `IO` and `Promise` are fundamentally the same in concept. What we actually have in our
+program is a recipe or intent that, when evaluated or acted upon, will give us a value of some type.
+We can write our code in such a way where we are saying we will evaluate that recipe and get the
+value. In Haskell we use `<-` and in JavaScript we use `await`. The main difference here is that
+`<-` is also useful for other monads.
 
 ### Exercises (`IO a`)
 
