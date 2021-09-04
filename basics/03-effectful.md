@@ -204,7 +204,8 @@ the asynchronous nature does not matter in terms of the values they represent.
 
 ### Exercises (`IO a`)
 
-1. Define a function that takes a file path and returns the lines[0] in the file (`[String]`).
+1. Define a function that takes a file path and returns the lines[0] in the file (`[String]`). Use
+   `readFile` for reading the file.
 
 2. Define a function that takes a file path and returns the lines in the file that match a predicate
    that you pass to the function.
