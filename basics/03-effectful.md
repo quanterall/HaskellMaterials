@@ -200,8 +200,8 @@ import qualified System.Environment as Environment
 main :: IO ()
 main = do
   dockerFileName :: String <- Environment.getEnv "DOCKERFILE" :: IO String
-
   dockerFileContents :: String <- readFile dockerFileName :: IO String
+
   putStrLn dockerFileContents :: IO ()
 ```
 
@@ -214,8 +214,8 @@ import qualified System.Environment as Environment
 main :: IO ()
 main = do
   dockerFileName <- Environment.getEnv "DOCKERFILE"
-
   dockerFileContents <- readFile dockerFileName
+
   putStrLn dockerFileContents
 ```
 
