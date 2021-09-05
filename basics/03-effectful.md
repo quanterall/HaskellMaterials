@@ -231,6 +231,8 @@ We can write our code in such a way where we are saying we will evaluate that re
 value. In Haskell we use `<-` and in JavaScript/TypeScript we use `await`. The main difference here
 is that `<-` is also useful for other monads.
 
+For a concrete comparison of these two side by side, see [this file](../misc/typescript-await.md).
+
 ### Exercises (`IO a`)
 
 1. Define a function that takes a file path and returns the lines[0] in the file (`[String]`). Use
