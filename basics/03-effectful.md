@@ -484,6 +484,8 @@ import Network.HTTP.Client.TLS
 import Network.HTTP.Types
 import RIO
 
+-- This is not actually all of the JSON response from the endpoint, but rather just a few
+-- interesting parts of it.
 data IPGeoInfo = IPGeoInfo
   { ip :: String,
     country :: String,
