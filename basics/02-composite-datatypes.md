@@ -991,18 +991,20 @@ resourceLoadStatusToMaybe (Loaded resource) = Just resource
 2. Define a function that gets a telephone number string from a `User`. If the `User` has no
    telephone number, return `"N/A"`. Use pattern matching in the top-level to accomplish this.
 
-3. Define a function `foldMaybe :: b -> (a -> b) -> Maybe a -> b`. If the `Maybe` has a value, apply
+3. Define a function `pureMaybe :: a -> Maybe a`.
+
+4. Define a function `foldMaybe :: b -> (a -> b) -> Maybe a -> b`. If the `Maybe` has a value, apply
    the function to it. If it doesn't, return the `b` that you take in as an argument.
 
-4. Reimplement the previous function for getting a telephone number string from a `User`, but use
+5. Reimplement the previous function for getting a telephone number string from a `User`, but use
    the `foldMaybe` function. If the `User` has no telephone number, return `"N/A"`.
 
-5. Define a function `mapMaybe :: (a -> b) -> Maybe a -> Maybe b`. Consider what the only things you
+6. Define a function `mapMaybe :: (a -> b) -> Maybe a -> Maybe b`. Consider what the only things you
    can reasonably do in the cases of `Just x` and `Nothing` are.
 
-6. Define a function `applyMaybe :: Maybe (a -> b) -> Maybe a -> Maybe b`.
+7. Define a function `applyMaybe :: Maybe (a -> b) -> Maybe a -> Maybe b`.
 
-7. Define a function `bindMaybe :: (a -> Maybe b) -> Maybe a -> Maybe b`.
+8. Define a function `bindMaybe :: (a -> Maybe b) -> Maybe a -> Maybe b`.
 
 ##### Exercise notes (Maybe)
 
@@ -1052,12 +1054,14 @@ of our own can be very descriptive.
 
 1. Define a function `foldEither :: (l -> a) -> (r -> a) -> Either l r -> a`.
 
-2. Define a function `mapEither :: (r -> a) -> Either l r -> Either l a`. Consider what we will have
+2. Define a function `pureEither :: a -> Either l a`.
+
+3. Define a function `mapEither :: (r -> a) -> Either l r -> Either l a`. Consider what we will have
    to do if we have a `Left`.
 
-3. Define a function `applyEither :: (Either l (r -> a)) -> Either l r -> Either l a`.
+4. Define a function `applyEither :: (Either l (r -> a)) -> Either l r -> Either l a`.
 
-4. Define a function `bindEither :: (r -> Either l a) -> Either l r -> Either l a`.
+5. Define a function `bindEither :: (r -> Either l a) -> Either l r -> Either l a`.
 
 ##### Exercise notes (Either)
 
@@ -1176,11 +1180,13 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 7. Define a function `firstMatchOr :: (a -> Bool) -> a -> [a] -> a` that uses the `firstMatch`
    function together with `foldMaybe` to provide a default value unless we find a matching element.
 
-8. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
+8. Define a function `pureList :: a -> [a]`.
 
-9[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+9. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
 
-10[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
+10[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+
+11[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
 
 ##### Exercise notes (Lists)
 
