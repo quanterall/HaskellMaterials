@@ -11,6 +11,10 @@
       - [Exercise notes (`IO a`)](#exercise-notes-io-a)
   - [What makes `IO` special?](#what-makes-io-special)
   - [Should you avoid effectful things?](#should-you-avoid-effectful-things)
+  - [Making HTTP requests](#making-http-requests)
+    - [Dependencies](#dependencies)
+      - [Using `RIO`](#using-rio)
+    - [Making a basic `GET` request](#making-a-basic-get-request)
 
 Lots of texts, these materials included, will talk about things being "effectful". So what does that
 actually mean?
@@ -353,3 +357,72 @@ Should a function meant to validate a data type execute in `IO`? Probably not. C
 here and software is iterative; you will be able to see what can be made pure and thus less
 mysterious in time. Making functions pure is not a chore to be done to appease the Haskell gods, but
 is mostly a question of removing future questions in future debugging sessions.
+
+## Making HTTP requests
+
+It's quite common to want to make HTTP requests in an application, so we'll take a look at a library
+for doing just that. We'll be using the knowledge we've gotten so far and also see some new things.
+
+### Dependencies
+
+We will be using the following libraries:
+
+- http-client
+- http-client-tls
+- http-types
+- rio
+
+The first three are obviously related to making HTTP calls. We use this because it's a fairly basic
+but competent interface to the concept of making HTTP calls.
+
+`rio` is a standard library module that offers a lot of what we want when making an application out
+of the box. It pulls in a lot of standard types and functions that we want access to.
+
+Add these dependencies to the `dependencies` section in your `package.yaml` file and run
+`stack build`.
+
+#### Using `RIO`
+
+Replace `import Prelude` with `import RIO` and if you have a warning about `putStrLn` not being
+imported, feel free to import it with `import System.IO (putStrLn)`.
+
+### Making a basic `GET` request
+
+The following code snippet shows how to make a basic request to a site. If you save this to your
+editor and run it in the REPL (`stack repl`), you should see your IP printed to the REPL as a
+string.
+
+```haskell
+-- We want our call to return a lazy bytestring. For now this is only for internal reasons as that's
+-- the string type that we will have access to from the call.
+getIpString :: IO LByteString
+getIpString = do
+  -- We are using the global TLS/HTTPS manager for these examples. In later examples we will be
+  -- storing this in the application state instead.
+  manager <- getGlobalManager :: IO Manager
+
+  -- We parse a basic `Request` value from the base URL that we have.
+  request <- parseRequest "https://ifconfig.co/" :: IO Request
+  -- The site we are going to talk to returns info about the caller's IP address (and more)
+
+  -- We modify the request by using record update syntax. The record we want to change a key in
+  -- comes first, followed by curly braces and the field & value combination that we want. The
+  -- resulting record, bound here to `requestWithHeaders` is a new record with that field changed.
+  let requestWithHeaders = request {requestHeaders = [("User-Agent", "curl")]}
+  -- In this particular example we are telling the site that we're actually the CLI tool/library
+  -- `curl`, in order to get a nice plain, short response.
+
+  -- We make the request and get an `IO Response` back. This response will be created with a
+  -- "lazy bytestring" as the response body type.
+  response <- httpLbs requestWithHeaders manager :: IO (Response LByteString)
+
+  -- If we create a binding for `body` here it's easier to see what is going on. We get the body
+  -- from the response with the `responseBody` function and get the lazy bytestring. This is just a
+  -- value of type `LByteString` but we want to return `IO LByteString`. This means we need to put
+  -- this value in the `IO` context somehow. For this purpose we use the `pure` function:
+  -- `pure :: a -> IO a`
+  let body :: LByteString
+      body = responseBody response
+
+  pure body
+```
