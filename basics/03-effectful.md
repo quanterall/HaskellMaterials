@@ -15,6 +15,8 @@
     - [Dependencies](#dependencies)
       - [Using `RIO`](#using-rio)
     - [Making a basic `GET` request](#making-a-basic-get-request)
+    - [What if a HTTP request fails?](#what-if-a-http-request-fails)
+    - [Dealing with JSON responses](#dealing-with-json-responses)
 
 Lots of texts, these materials included, will talk about things being "effectful". So what does that
 actually mean?
@@ -371,12 +373,17 @@ We will be using the following libraries:
 - http-client-tls
 - http-types
 - rio
+- aeson
 
 The first three are obviously related to making HTTP calls. We use this because it's a fairly basic
 but competent interface to the concept of making HTTP calls.
 
 `rio` is a standard library module that offers a lot of what we want when making an application out
 of the box. It pulls in a lot of standard types and functions that we want access to.
+
+`aeson` is a library for dealing with JSON data. It's by far the most common library. We will be
+using it sparingly in these examples only to show that we can indeed couple our HTTP calls with
+JSON decoding.
 
 Add these dependencies to the `dependencies` section in your `package.yaml` file and run
 `stack build`.
@@ -393,6 +400,12 @@ editor and run it in the REPL (`stack repl`), you should see your IP printed to 
 string.
 
 ```haskell
+import Data.Aeson
+import Network.HTTP.Client
+import Network.HTTP.Client.TLS
+import Network.HTTP.Types
+import RIO
+
 -- We want our call to return a lazy bytestring. For now this is only for internal reasons as that's
 -- the string type that we will have access to from the call.
 getIpString :: IO LByteString
@@ -427,11 +440,19 @@ getIpString = do
   pure body
 ```
 
+### What if a HTTP request fails?
+
 What if we want to guard for failure somehow? HTTP can and will fail. Here is a version of
 `getIpString` that allows for the possibility of failing at the response level. Note how we reflect
 this possibility correctly in our return type:
 
 ```haskell
+import Data.Aeson
+import Network.HTTP.Client
+import Network.HTTP.Client.TLS
+import Network.HTTP.Types
+import RIO
+
 getIpStringMaybe :: IO (Maybe LByteString)
 getIpStringMaybe = do
   manager <- getGlobalManager :: IO Manager
@@ -448,4 +469,58 @@ getIpStringMaybe = do
   if statusIsSuccessful $ responseStatus response
     then pure $ Just (responseBody response)
     else pure Nothing
+```
+
+### Dealing with JSON responses
+
+Quite often the data that we request comes back in the form of JSON responses. We'll try to provide
+a basic example here with the expectation that we will delve into JSON a bit more deeply later in
+the course, as well as the "type class" feature it depends on:
+
+```haskell
+import Data.Aeson
+import Network.HTTP.Client
+import Network.HTTP.Client.TLS
+import Network.HTTP.Types
+import RIO
+
+data IPGeoInfo = IPGeoInfo
+  { ip :: String,
+    country :: String,
+    zip_code :: String,
+    city :: String,
+    latitude :: Float,
+    longitude :: Float
+  }
+  -- Note that we are deriving `Generic` here. This is a way of telling the Haskell compiler to
+  -- generate information about what the shape of a structure is so that it can be used to generate
+  -- more code.
+  deriving (Eq, Show, Generic)
+
+-- This code snippet only works because we derived `Generic` for `IPGeoInfo`. We are implementing
+-- the `FromJSON` type class with a default instance that uses the type information that Haskell
+-- figured out about our type. The JSON decoding will automatically be figured out based on that.
+instance FromJSON IPGeoInfo where
+  parseJSON = genericParseJSON defaultOptions
+
+getIpInfo :: IO (Either String IPGeoInfo)
+getIpInfo = do
+  manager <- getGlobalManager :: IO Manager
+  -- We are now requesting the `/json` path from the server in order to get a JSON response
+  request <- parseRequest "https://ifconfig.co/json" :: IO Request
+
+  let requestWithHeaders = request {requestHeaders = [("User-Agent", "curl")]}
+
+  response <- httpLbs requestWithHeaders manager :: IO (Response LByteString)
+  if statusIsSuccessful $ responseStatus response
+    then -- We are using `eitherDecode` here in case we are getting a successful response.
+    -- `eitherDecode` takes a bytestring and attempts to decode it with a given `FromJSON`
+    -- instance. Haskell knows that we are expecting a `IPGeoInfo` here, so it knows that it
+    -- should use the `FromJSON` instance defined for it. It will attempt to decode each field as
+    -- the correct type and if it succeeds, we will get a `Right` result.
+      pure $ eitherDecode $ responseBody response
+    else -- Since we are returning `Either String IPGeoInfo` we have to turn the error case here
+    -- into a `Left`. The string chosen here is not particularly descriptive, but this example is
+    -- really only for illustrative purposes.
+      pure $ Left "Status code is not 200"
 ```
