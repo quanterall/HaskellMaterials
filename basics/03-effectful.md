@@ -498,8 +498,10 @@ data IPGeoInfo = IPGeoInfo
   deriving (Eq, Show, Generic)
 
 -- This code snippet only works because we derived `Generic` for `IPGeoInfo`. We are implementing
--- the `FromJSON` type class with a default instance that uses the type information that Haskell
--- figured out about our type. The JSON decoding will automatically be figured out based on that.
+-- the `FromJSON` type class with an instance that uses the type information that Haskell figured
+-- out about our type. The JSON decoding will automatically be figured out based on that.
+-- We can view this as `Generic` being the blueprint for constructing our type and this code saying
+-- "Oh, I'll just use the blueprint that you've made sure exists".
 instance FromJSON IPGeoInfo where
   parseJSON = genericParseJSON defaultOptions
 
