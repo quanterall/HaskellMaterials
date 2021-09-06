@@ -426,3 +426,26 @@ getIpString = do
 
   pure body
 ```
+
+What if we want to guard for failure somehow? HTTP can and will fail. Here is a version of
+`getIpString` that allows for the possibility of failing at the response level. Note how we reflect
+this possibility correctly in our return type:
+
+```haskell
+getIpStringMaybe :: IO (Maybe LByteString)
+getIpStringMaybe = do
+  manager <- getGlobalManager :: IO Manager
+  request <- parseRequest "https://ifconfig.co/" :: IO Request
+
+  let requestWithHeaders = request {requestHeaders = [("User-Agent", "curl")]}
+
+  response <- httpLbs requestWithHeaders manager :: IO (Response LByteString)
+
+  -- Our expected return type here is `IO (Maybe LByteString)` and again we find ourselves holding
+  -- onto a value of type `LByteString` (`responseBody response`). We wrap our response body in a
+  -- `Just` and wrap that in `IO` if we have a successful response, otherwise we just inject
+  -- `Nothing` into `IO`.
+  if statusIsSuccessful $ responseStatus response
+    then pure $ Just (responseBody response)
+    else pure Nothing
+```
