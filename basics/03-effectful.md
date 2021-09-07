@@ -17,6 +17,7 @@
     - [Making a basic `GET` request](#making-a-basic-get-request)
     - [What if a HTTP request fails?](#what-if-a-http-request-fails)
     - [Dealing with JSON responses](#dealing-with-json-responses)
+    - [Exercises (Making HTTP requests)](#exercises-making-http-requests)
 
 Lots of texts, these materials included, will talk about things being "effectful". So what does that
 actually mean?
@@ -528,3 +529,32 @@ getIpInfo = do
     -- really only for illustrative purposes.
       pure $ Left "Status code is not 200"
 ```
+
+### Exercises (Making HTTP requests)
+
+1. Define a function that fetches the `README.md` file of the `fpco/typed-process` repository on
+   GitHub. Remember that raw file data can be fetched via the "Raw" links in GitHub.
+
+2. Define a function that fetches **any** `README.md` file from a GitHub repository if it exists. If
+   it doesn't, return `Nothing`.
+
+3. Create a function `getAsCurl :: Url -> IO (Either Status LByteString)` that automatically adds
+   the User-Agent "curl" to a request. Make `Url` a newtype.
+
+4. Define a function that uses the "repositories" API of GitHub to get all the contributors to a
+   repository. Have the function return a list of contributors with their login and number of
+   contributions. **Note**: You have to have a "User-Agent" header in calls to the GitHub API. You
+   can use your `getAsCurl` function to guarantee that you are sending the "curl" user agent.
+
+   You can see the documentation for the GitHub API
+   [here](https://docs.github.com/en/rest/reference/repos#list-repository-contributors).
+
+5. Define a function that gets all the public repositories of a user. You will need to create a type
+   that represents what a repository is. Remember that you only need to define the fields you care
+   about; you can leave all the others out.
+
+   See [this link](https://docs.github.com/en/rest/reference/repos#list-repositories-for-a-user) for
+   documentation on how to get the repositories of a user.
+
+   **Note**: Don't worry about pagination; if a user has too many repositories for them all to be
+   returned in one call, just consider this outside of the scope of this exercise.
