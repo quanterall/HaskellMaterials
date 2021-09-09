@@ -9,8 +9,6 @@
     - [do-notation](#do-notation)
     - [Exercises (`IO a`)](#exercises-io-a)
       - [Exercise notes (`IO a`)](#exercise-notes-io-a)
-  - [What makes `IO` special?](#what-makes-io-special)
-  - [Should you avoid effectful things?](#should-you-avoid-effectful-things)
   - [Making HTTP requests](#making-http-requests)
     - [Dependencies](#dependencies)
       - [Using `RIO`](#using-rio)
@@ -18,6 +16,8 @@
     - [What if a HTTP request fails?](#what-if-a-http-request-fails)
     - [Dealing with JSON responses](#dealing-with-json-responses)
     - [Exercises (Making HTTP requests)](#exercises-making-http-requests)
+  - [What makes `IO` special?](#what-makes-io-special)
+  - [Should you avoid effectful things?](#should-you-avoid-effectful-things)
 
 Lots of texts, these materials included, will talk about things being "effectful". So what does that
 actually mean?
@@ -320,47 +320,6 @@ For a concrete comparison of these two side by side, see [this file](../misc/typ
    Splits a given path on path separators, giving you the different components of the path.
    Requires the package `filepath`, add to `package.yaml` in the `dependencies` section.
 
-## What makes `IO` special?
-
-In reality, nothing. `IO` isn't really the bit that's special. Every program you've ever written in
-a language that didn't have this concept was always basically running in the `IO` monad, except we
-usually do not have access to the actions we execute **as values** and we generally don't talk
-about these actions in the type system of whatever language we're using. When you write
-`putStrLn "hello"` in Haskell, you are in fact creating a value. Passing that value around is
-trivial, so it can be used in other functions. Fundamentally speaking, however, `IO` as "a context
-in which we can do whatever we want" is not the part that should jump out at you as new territory.
-
-It's perhaps more interesting that in Haskell we are able to say that certain functions **can't** do
-these interesting things; they're only for computing values. This means that we can now definitively,
-in our APIs, say that a callback is not able to talk to the network, for example, or do its own
-logging.
-
-The following is an illustrative example:
-
-```haskell
-maybeReadEvent :: (ByteString -> Maybe Message) -> Socket -> IO (Maybe Message)
-maybeReadEvent messageDecoder socket = do
-  ...
-```
-
-Since our first argument doesn't have the return type `IO (Maybe Message)` the only thing it can do
-is either produce nothing from a given byte string, or produce a value of type `Message`. This is a
-sensible design choice for a decoding function, and one we can make explicit in our API. Attempting
-to do effectful things in this function will lead to using functions like `unsafePerformIO` and
-friends, making it clear that one is outside of the realm of reasonable usage.
-
-## Should you avoid effectful things?
-
-It's a bit of a meme that Haskell programmers avoid or dislike effectful things. This is overblown
-and in reality nothing useful ever gets done without at some point executing in `IO` or some context
-that wraps it. With that in mind, it's still the case that pure functions can be used everywhere,
-whereas the possible usage of impure functions will always depend on the context we're in.
-
-Should a function meant to validate a data type execute in `IO`? Probably not. Common sense prevails
-here and software is iterative; you will be able to see what can be made pure and thus less
-mysterious in time. Making functions pure is not a chore to be done to appease the Haskell gods, but
-is mostly a question of removing future questions in future debugging sessions.
-
 ## Making HTTP requests
 
 It's quite common to want to make HTTP requests in an application, so we'll take a look at a library
@@ -558,3 +517,44 @@ getIpInfo = do
 
    **Note**: Don't worry about pagination; if a user has too many repositories for them all to be
    returned in one call, just consider this outside of the scope of this exercise.
+
+## What makes `IO` special?
+
+In reality, nothing. `IO` isn't really the bit that's special. Every program you've ever written in
+a language that didn't have this concept was always basically running in the `IO` monad, except we
+usually do not have access to the actions we execute **as values** and we generally don't talk
+about these actions in the type system of whatever language we're using. When you write
+`putStrLn "hello"` in Haskell, you are in fact creating a value. Passing that value around is
+trivial, so it can be used in other functions. Fundamentally speaking, however, `IO` as "a context
+in which we can do whatever we want" is not the part that should jump out at you as new territory.
+
+It's perhaps more interesting that in Haskell we are able to say that certain functions **can't** do
+these interesting things; they're only for computing values. This means that we can now definitively,
+in our APIs, say that a callback is not able to talk to the network, for example, or do its own
+logging.
+
+The following is an illustrative example:
+
+```haskell
+maybeReadEvent :: (ByteString -> Maybe Message) -> Socket -> IO (Maybe Message)
+maybeReadEvent messageDecoder socket = do
+  ...
+```
+
+Since our first argument doesn't have the return type `IO (Maybe Message)` the only thing it can do
+is either produce nothing from a given byte string, or produce a value of type `Message`. This is a
+sensible design choice for a decoding function, and one we can make explicit in our API. Attempting
+to do effectful things in this function will lead to using functions like `unsafePerformIO` and
+friends, making it clear that one is outside of the realm of reasonable usage.
+
+## Should you avoid effectful things?
+
+It's a bit of a meme that Haskell programmers avoid or dislike effectful things. This is overblown
+and in reality nothing useful ever gets done without at some point executing in `IO` or some context
+that wraps it. With that in mind, it's still the case that pure functions can be used everywhere,
+whereas the possible usage of impure functions will always depend on the context we're in.
+
+Should a function meant to validate a data type execute in `IO`? Probably not. Common sense prevails
+here and software is iterative; you will be able to see what can be made pure and thus less
+mysterious in time. Making functions pure is not a chore to be done to appease the Haskell gods, but
+is mostly a question of removing future questions in future debugging sessions.
