@@ -9,6 +9,7 @@
     - [do-notation](#do-notation)
     - [Exercises (`IO a`)](#exercises-io-a)
       - [Exercise notes (`IO a`)](#exercise-notes-io-a)
+  - [Basic error handling](#basic-error-handling)
   - [Making HTTP requests](#making-http-requests)
     - [Dependencies](#dependencies)
       - [Using `RIO`](#using-rio)
@@ -319,6 +320,38 @@ For a concrete comparison of these two side by side, see [this file](../misc/typ
 12. [`splitPath`](https://www.stackage.org/haddock/lts-17.12/filepath-1.4.2.1/System-FilePath-Posix.html#v:splitPath).
    Splits a given path on path separators, giving you the different components of the path.
    Requires the package `filepath`, add to `package.yaml` in the `dependencies` section.
+
+## Basic error handling
+
+If you've had the misfortune of running your exercise solutions on files that don't exist, or have
+had other typical file system errors pop up, you'll have noted that Haskell has exceptions. Indeed
+it's deducible from the types of many of the functions we've used that they will have to throw
+exceptions on failure:
+
+```haskell
+-- This would have to be some kind of `Maybe String` or `Either errorType String`, we can't have a
+-- `String` if it failed.
+readFile :: FilePath -> IO String
+
+-- Same issue; though we could use `[]` to signify error, but that's almost equally bad.
+listDirectory :: FilePath -> IO [String]
+
+-- Does this return a result if we don't have permissions to access the given path?
+doesFileExist :: FilePath -> IO Bool
+```
+
+In order to take care of exceptions we can use `catch`:
+
+```haskell
+maybeReadAllLines :: FilePath -> IO (Maybe [String])
+maybeReadAllLines filename = do
+  -- Note here that we have to give a type signature to the `_e` parameter; Haskell uses this to
+  -- determine what to catch.
+  fileContent <- (Just <$> readFile filename) `catch` (\(_e :: IOException) -> pure Nothing)
+  -- `fmap` here is `mapMaybe` that we implemented in the previous chapter
+  -- `pure` is a function that allows us to take a value and wrap it in `IO`
+  fileContent & fmap lines & pure
+```
 
 ## Making HTTP requests
 
