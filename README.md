@@ -263,8 +263,8 @@ as well as emphasize different parts of them.
 As is usually the case with these things, people have helped make things possible and with improving
 things:
 
-Ivana Andersson - For helping by reading the chapters and going through exercises, pointing out how
-they could be improved.
+Ivana Andersson, Bogdan Bogdanov, Pavlin Nedelchev & Ivan Volkov - For helping by reading the
+chapters and going through exercises, pointing out how they could be improved.
 
 Radiana Koleva - For giving general advice on structure.
 
