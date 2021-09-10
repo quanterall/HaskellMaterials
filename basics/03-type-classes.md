@@ -256,6 +256,11 @@ class Num a where
   {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
 ```
 
+These are the operations constraining our generic types with `Num` gets us. The `MINIMAL` part means
+that in order to satisfy the `Num` constraint we need to provide at least the listed functions, and
+the `|` part means that we can define `negate` **or** `(-)` and it'll use a default version for
+the other if we don't specify it.
+
 #### Exercises (Num)
 
 1. Define a function that takes a `[a]` and returns the sum of all elements. The return value type
@@ -263,11 +268,6 @@ class Num a where
 
 2. Reimplement the rectangle area function you defined in chapter 1, but for any type `a` that has
    a `Num` instance.
-
-These are the operations constraining our generic types with `Num` gets us. The `MINIMAL` part means
-that in order to satisfy the `Num` constraint we need to provide at least the listed functions, and
-the `|` part means that we can define `negate` **or** `(-)` and it'll use a default version for
-the other if we don't specify it.
 
 ### Eq
 
