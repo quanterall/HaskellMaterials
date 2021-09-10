@@ -347,9 +347,7 @@ maybeReadAllLines :: FilePath -> IO (Maybe [String])
 maybeReadAllLines filename = do
   -- Note here that we have to give a type signature to the `_e` parameter; Haskell uses this to
   -- determine what to catch.
-  fileContent <- (Just <$> readFile filename) `catch` (\(_e :: IOException) -> pure Nothing)
-  -- `fmap` here is `mapMaybe` that we implemented in the previous chapter
-  -- `pure` is a function that allows us to take a value and wrap it in `IO`
+  fileContent <- fmap Just (readFile filename) `catch` (\(_e :: IOException) -> pure Nothing)
   fileContent & fmap lines & pure
 ```
 
