@@ -5,6 +5,7 @@
     - [identity](#identity)
     - [Constraints are **transitive**](#constraints-are-transitive)
   - [Container types & type variables](#container-types--type-variables)
+  - [Higher-kinded types](#higher-kinded-types)
   - [Important and common type classes](#important-and-common-type-classes)
     - [Num](#num)
       - [Exercises (Num)](#exercises-num)
@@ -237,6 +238,71 @@ especially for the type in question. It also means that during implementation it
 very clear whether or not the concept will even work as we implement the needed functionality,
 though this depends on how well defined the type class is and whether or not its shape fits well
 into the type system.
+
+## Higher-kinded types
+
+It can be helpful to draw a parallell to "higher-order functions", i.e. functions that take and/or
+return other functions. Types that take type arguments can be seen as "higher-order types" that take
+type arguments in order to return concrete types.
+
+In reality, all types have kinds in Haskell, as we can observe in `ghci`:
+
+```haskell
+Q> :kind Int
+Int :: *
+Q> :kind Maybe
+Maybe :: * -> *
+Q> :kind Either
+Either :: * -> * -> *
+Q> :kind []
+[] :: * -> *
+Q> :kind IO
+IO :: * -> *
+Q> :kind Map
+Map :: * -> * -> *
+Q> :kind Set
+Set :: * -> *
+```
+
+The common thread here is that for each type, the amount of asterisks we see are directly related to
+how many type arguments the types take. `Int` has zero type arguments and just referring to `Int` is
+itself enough to have a concrete type.
+
+In contrast, `IO`, `[]`, `Set` and `Maybe` take one type argument, so if we say only `[]`, `Set` and
+`Maybe` we can see that they still take more arguments to create concrete types. We can still do the
+following, however:
+
+```haskell
+Q> :kind IO Int
+IO Int :: *
+Q> :kind [Int]
+[Int] :: *
+Q> :kind Maybe String
+Maybe String :: *
+Q> :kind Set Float
+Set Float :: *
+```
+
+Since we've now passed type arguments to these type constructors we're now back to one asterisk,
+meaning we have concrete types. With this in mind it's not hard to see why type constructors can be
+considered function applications in the type-level.
+
+To provide a complete picture, let's see the same with `Map` and `Either`:
+
+```haskell
+Q> :kind Either
+Either :: * -> * -> *
+Q> :kind Either String
+Either String :: * -> *
+Q> :kind Either String (IO Int)
+Either String (IO Int) :: *
+Q> :kind Map
+Map :: * -> * -> *
+Q> :kind Map String
+Map String :: * -> *
+Q> :kind Map String Int
+Map String Int :: *
+```
 
 ## Important and common type classes
 

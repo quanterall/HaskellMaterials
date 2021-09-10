@@ -3,8 +3,6 @@
 - ["Effectful"](#effectful)
   - [IO](#io)
   - [IO ()](#io-)
-    - [Interlude: IO is "higher-kinded"](#interlude-io-is-higher-kinded)
-    - [Back to `IO ()`](#back-to-io-)
   - [IO a](#io-a)
     - [do-notation](#do-notation)
     - [Exercises (`IO a`)](#exercises-io-a)
@@ -54,72 +52,8 @@ means that `IO ()` is `IO` applied to `()` which produces the type `IO ()`.
 Likewise we can also have `IO String` which is `IO` applied to `String`, which produces the type
 `IO String`. `IO` itself can be seen as a type constructor in the type system, that requires a type
 to be passed to it in order to construct a concrete one. When types take other types we call them
-**"higher-kinded" types**.
-
-### Interlude: IO is "higher-kinded"
-
-It can be helpful to draw a parallell to "higher-order functions", i.e. functions that take and/or
-return other functions. `IO` (and other types that take type arguments) can be seen as
-"higher-order types" that take type arguments in order to return concrete types.
-
-In reality, all types have kinds in Haskell, as we can observe in `ghci`:
-
-```haskell
-Q> :kind Int
-Int :: *
-Q> :kind Maybe
-Maybe :: * -> *
-Q> :kind Either
-Either :: * -> * -> *
-Q> :kind []
-[] :: * -> *
-Q> :kind IO
-IO :: * -> *
-Q> :kind Map
-Map :: * -> * -> *
-Q> :kind Set
-Set :: * -> *
-```
-
-The common thread here is that for each type, the amount of asterisks we see are directly related to
-how many type arguments the types take. `Int` has zero type arguments and just referring to `Int` is
-itself enough to have a concrete type.
-
-In contrast, `[]`, `Set` and `Maybe` take one type argument, so if we say only `[]`, `Set` and
-`Maybe` we can see that they still take more arguments to create concrete types. We can still do the
-following, however:
-
-```haskell
-Q> :kind [Int]
-[Int] :: *
-Q> :kind Maybe String
-Maybe String :: *
-Q> :kind Set Float
-Set Float :: *
-```
-
-Since we've now passed type arguments to these type constructors we're now back to one asterisk,
-meaning we have concrete types. With this in mind it's not hard to see why type constructors can be
-considered function applications in the type-level.
-
-To provide a complete picture, let's see the same with `Map` and `Either`:
-
-```haskell
-Q> :kind Either
-Either :: * -> * -> *
-Q> :kind Either String
-Either String :: * -> *
-Q> :kind Either String (IO Int)
-Either String (IO Int) :: *
-Q> :kind Map
-Map :: * -> * -> *
-Q> :kind Map String
-Map String :: * -> *
-Q> :kind Map String Int
-Map String Int :: *
-```
-
-### Back to `IO ()`
+**"higher-kinded" types**. If this seems new, go back to the
+[section on higher-kinded types](./03-type-classes.md#higher-kinded-types).
 
 So what is it about `IO ()` that makes it so common in libraries and APIs? `()` is called "unit",
 stemming from the fact that it is a type that has only one constructor: `()`. A value of type unit
