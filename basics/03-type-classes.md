@@ -10,6 +10,7 @@
     - [Num](#num)
       - [Exercises (Num)](#exercises-num)
     - [Eq](#eq)
+      - [Exercises (Eq)](#exercises-eq)
     - [Ord](#ord)
       - [Exercises (Ord)](#exercises-ord)
     - [Semigroup](#semigroup)
@@ -346,6 +347,10 @@ class Eq a where
   (/=) :: a -> a -> Bool
   {-# MINIMAL (==) | (/=) #-}
 ```
+
+#### Exercises (Eq)
+
+1. Define a function `isInList :: a -> [a] -> Bool`. Do not use `elem`.
 
 ### Ord
 
