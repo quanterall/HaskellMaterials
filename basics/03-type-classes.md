@@ -354,10 +354,14 @@ In order to implement these solutions you may have to add constraints to them.
 
 1. Define a function `isInList :: a -> [a] -> Bool`. Do not use `elem`.
 
-2. Define a function `allNotEqual :: a -> [a] -> [a]` that gets all the elements in the list that
+2. Define a function `removeElement :: a -> [a] -> RemovalResult` that finds the first occurrence of
+   `a` in the list, returning both the element and the list without it if it can find it. If not, it
+   signals this in the return type and returns the list as-is.
+
+3. Define a function `allNotEqual :: a -> [a] -> [a]` that gets all the elements in the list that
    are not equal to the first parameter.
 
-3. Define a function `mapNotEqual :: a -> (a -> b) -> [a] -> [b]` that maps a function over all
+4. Define a function `mapNotEqual :: a -> (a -> b) -> [a] -> [b]` that maps a function over all
    elements in a list that are not equal to the first parameter given to the function.
 
 ### Ord
