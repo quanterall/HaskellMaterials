@@ -399,7 +399,14 @@ existence of `Eq`.
 
 #### Exercises (Ord)
 
-1. Implement `clamp` from chapter 1 but for a type `a`. Add type class constraints as necessary.
+In order to implement these solutions you may have to add constraints to them.
+
+1. Implement `clamp` from chapter 1 but for a type `a`. It takes a lower bound, an upper bound and
+   an `a`. If `a` is lower than the lower bound, the lower bound is returned. If it's greater than
+   the upper bound, we return the upper bound. Otherwise we return `a`.
+
+2. Define a function `allBetween :: a -> a -> [a] -> [a]` that returns all `a`s in the list that are
+   between the first and second argument.
 
 ### Semigroup
 
