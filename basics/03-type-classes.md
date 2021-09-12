@@ -354,8 +354,11 @@ In order to implement these solutions you may have to add constraints to them.
 
 1. Define a function `isInList :: a -> [a] -> Bool`. Do not use `elem`.
 
-2. Define a function `mapNotEqual :: a -> (a -> b) -> [a] -> [b]` that takes an element, a function
-   to execute and then executes the function on all elements that do not match the given element.
+2. Define a function `allNotEqual :: a -> [a] -> [a]` that gets all the elements in the list that
+   are not equal to the first parameter.
+
+3. Define a function `mapNotEqual :: a -> (a -> b) -> [a] -> [b]` that maps a function over all
+   elements in a list that are not equal to the first parameter given to the function.
 
 ### Ord
 
