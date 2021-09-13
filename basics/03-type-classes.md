@@ -7,12 +7,12 @@
   - [Container types & type variables](#container-types--type-variables)
   - [Higher-kinded types](#higher-kinded-types)
   - [Important and common type classes](#important-and-common-type-classes)
-    - [Num](#num)
-      - [Exercises (Num)](#exercises-num)
     - [Eq](#eq)
       - [Exercises (Eq)](#exercises-eq)
     - [Ord](#ord)
       - [Exercises (Ord)](#exercises-ord)
+    - [Num](#num)
+      - [Exercises (Num)](#exercises-num)
     - [Semigroup](#semigroup)
     - [Monoid](#monoid)
     - [Functor](#functor)
@@ -307,35 +307,6 @@ Map String Int :: *
 
 ## Important and common type classes
 
-### Num
-
-We saw parts of `Num`, which adds numeric operators:
-
-```haskell
-class Num a where
-  (+) :: a -> a -> a
-  (-) :: a -> a -> a
-  (*) :: a -> a -> a
-  negate :: a -> a
-  abs :: a -> a
-  signum :: a -> a
-  fromInteger :: Integer -> a
-  {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
-```
-
-These are the operations constraining our generic types with `Num` gets us. The `MINIMAL` part means
-that in order to satisfy the `Num` constraint we need to provide at least the listed functions, and
-the `|` part means that we can define `negate` **or** `(-)` and it'll use a default version for
-the other if we don't specify it.
-
-#### Exercises (Num)
-
-1. Define a function that takes a `[a]` and returns the sum of all elements. The return value type
-   should be `a` as well. Otherwise, feel free to implement it any way you choose.
-
-2. Reimplement the rectangle area function you defined in chapter 1, but for any type `a` that has
-   a `Num` instance.
-
 ### Eq
 
 `Eq` gives equality comparison. When we define it we can specify the "equals" operator **or** the
@@ -347,6 +318,29 @@ class Eq a where
   (/=) :: a -> a -> Bool
   {-# MINIMAL (==) | (/=) #-}
 ```
+
+If we were to implement an instance of this class for `Bool` as an example, it would be as follows:
+
+```haskell
+instance Eq Bool where
+  True == True = True
+  False == False = True
+  _ == _ = False
+```
+
+In some cases we require another instance to be present for a generic variable in a type in order to
+create an instance, like for `[a]`:
+
+```haskell
+instance (Eq a) => Eq [a] where
+  [] == [] = True
+  (a:as) == (a':as') a == 'a && as == as'
+```
+
+In the above example we are saying that a condition for this instance is that the `a` in the list
+itself has an `Eq` instance. This means we can't compare two lists for equality unless the things
+inside are also comparable for equality, which makes perfect sense. If we didn't have this condition
+spelled out we would be unable to call `a == 'a` in the instance.
 
 #### Exercises (Eq)
 
@@ -431,6 +425,35 @@ In order to implement these solutions you may have to add constraints to them.
 
 2. Define a function `allBetween :: a -> a -> [a] -> [a]` that returns all `a`s in the list that are
    between the first and second argument.
+
+### Num
+
+We saw parts of `Num`, which adds numeric operators:
+
+```haskell
+class Num a where
+  (+) :: a -> a -> a
+  (-) :: a -> a -> a
+  (*) :: a -> a -> a
+  negate :: a -> a
+  abs :: a -> a
+  signum :: a -> a
+  fromInteger :: Integer -> a
+  {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
+```
+
+These are the operations constraining our generic types with `Num` gets us. The `MINIMAL` part means
+that in order to satisfy the `Num` constraint we need to provide at least the listed functions, and
+the `|` part means that we can define `negate` **or** `(-)` and it'll use a default version for
+the other if we don't specify it.
+
+#### Exercises (Num)
+
+1. Define a function that takes a `[a]` and returns the sum of all elements. The return value type
+   should be `a` as well. Otherwise, feel free to implement it any way you choose.
+
+2. Reimplement the rectangle area function you defined in chapter 1, but for any type `a` that has
+   a `Num` instance.
 
 ### Semigroup
 
