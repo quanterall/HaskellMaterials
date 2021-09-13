@@ -372,6 +372,14 @@ In order to implement these solutions you may have to add constraints to them.
      | NotAtAllAValue
    ```
 
+6. Define an `Eq` instance manually for the following datatype:
+
+   ```haskell
+   data SuccessOrFailure f s
+     = Success s
+     | Failure f
+   ```
+
 ### Ord
 
 `Ord` is about orderings; in short it gives us comparators like "less than", "greater than" and so
