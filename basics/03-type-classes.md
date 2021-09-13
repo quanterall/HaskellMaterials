@@ -364,6 +364,14 @@ In order to implement these solutions you may have to add constraints to them.
 4. Define a function `mapNotEqual :: a -> (a -> b) -> [a] -> [b]` that maps a function over all
    elements in a list that are not equal to the first parameter given to the function.
 
+5. Define an `Eq` instance manually for the following datatype:
+
+   ```haskell
+   data PotentiallyAValue a
+     = DefinitelyAValue a
+     | NotAtAllAValue
+   ```
+
 ### Ord
 
 `Ord` is about orderings; in short it gives us comparators like "less than", "greater than" and so
