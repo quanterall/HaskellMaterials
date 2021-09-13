@@ -366,19 +366,27 @@ In order to implement these solutions you may have to add constraints to them.
 
 5. Define an `Eq` instance manually for the following datatype:
 
-   ```haskell
-   data PotentiallyAValue a
-     = DefinitelyAValue a
-     | NotAtAllAValue
-   ```
+```haskell
+data ResourceResult
+  = Loaded String Int
+  | LoadFailure String
+```
 
 6. Define an `Eq` instance manually for the following datatype:
 
-   ```haskell
-   data SuccessOrFailure f s
-     = Success s
-     | Failure f
-   ```
+```haskell
+data PotentiallyAValue a
+  = DefinitelyAValue a
+  | NotAValue
+```
+
+7. Define an `Eq` instance manually for the following datatype:
+
+```haskell
+data SuccessOrFailure f s
+  = Success s
+  | Failure f
+```
 
 ### Ord
 
