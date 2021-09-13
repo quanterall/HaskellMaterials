@@ -491,12 +491,12 @@ type.
 
    Remember that a `DivisionResult` looks as follows:
 
-   ```haskell
-   data DivisionResult
-     = DivideSuccess Float
-     | DivisionByZero
-     deriving (Show)
-   ```
+```haskell
+data DivisionResult
+  = DivideSuccess Float
+  | DivisionByZero
+  deriving (Show)
+```
 
 2. Define a function `spouseName` that takes a `RelationshipStatus` and returns a `String`. Choose
    either top-level pattern matching or using `case`. What do we have to do when a case does not
@@ -504,21 +504,21 @@ type.
 
    Remember that `RelationshipStatus` looks as follows:
 
-   ```haskell
-   -- This requires you to add `time` as a dependency in `package.yaml`
-   import Data.Time (Day)
-   import Prelude
+```haskell
+-- This requires you to add `time` as a dependency in `package.yaml`
+import Data.Time (Day)
+import Prelude
 
-   data RelationshipStatus
-     = MarriedTo MarriageInfo
-     | EngagedTo UserProfile
-     | ItsComplicated
-     | Single
-     deriving (Eq, Show)
-   
-   data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
-     deriving (Eq, Show)
-   ```
+data RelationshipStatus
+  = MarriedTo MarriageInfo
+  | EngagedTo UserProfile
+  | ItsComplicated
+  | Single
+  deriving (Eq, Show)
+
+data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
+  deriving (Eq, Show)
+```
 
 3. Define a data type that more accurately reflects the having or not of a spouse and modify the
    function you defined in exercise 2 to return this data type. What happened to the cases where we
@@ -891,10 +891,10 @@ bunchOf = BunchOf 42 1337 [1, 2, 3]
 1. Define a value of type `Holder Int` as well as a value of type `Holder String`. Remember that the
    definition of `Holder` looks as follows:
 
-   ```haskell
-   data Holder a = Holder a
-     deriving (Eq, Show)
-   ```
+```haskell
+data Holder a = Holder a
+  deriving (Eq, Show)
+```
 
 2. Define a function `createHolder :: a -> Holder a`. Knowing what you know about partial
    application, what is the most concise and direct definition you can come up with?
