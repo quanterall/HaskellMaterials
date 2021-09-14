@@ -399,8 +399,8 @@ getIpStringMaybe = do
 ### Dealing with JSON responses
 
 Quite often the data that we request comes back in the form of JSON responses. We'll try to provide
-a basic example here with the expectation that we will delve into JSON a bit more deeply later in
-the course, as well as the "type class" feature it depends on:
+a basic example here with the expectation that we will delve into JSON a bit more deeply in later
+chapters:
 
 ```haskell
 import Data.Aeson
