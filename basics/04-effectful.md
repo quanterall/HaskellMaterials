@@ -414,8 +414,8 @@ import RIO
 data IPGeoInfo = IPGeoInfo
   { ip :: String,
     country :: String,
-    zip_code :: String,
-    city :: String,
+    zip_code :: Maybe String,
+    city :: Maybe String,
     latitude :: Float,
     longitude :: Float
   }
