@@ -285,6 +285,50 @@ maybeReadAllLines filename = do
   fileContent & fmap lines & pure
 ```
 
+If we want to turn an `IOException` into an `Either` automatically, we can use
+[`tryIO`](https://www.stackage.org/haddock/lts-18.10/unliftio-0.2.20/UnliftIO-Exception.html#v:tryIO)
+from the [unliftIO package](https://www.stackage.org/lts-18.10/package/unliftio-0.2.20):
+
+```haskell
+maybeReadAllLines' :: FilePath -> IO (Either IOException [String])
+maybeReadAllLines' filename = do
+  tryIO $ lines <$> readFile filename
+```
+
+This can also be used in order to inspect the `IOException` after catching it, so we can possibly
+return a much more descriptive and specific error:
+
+```haskell
+import GHC.IO.Exception (IOErrorType (..), IOException)
+import Prelude
+import System.IO.Error (ioeGetErrorType, isDoesNotExistError, isPermissionError)
+
+data FileReadError
+  = FileNotFound FilePath
+  | PermissionsError FilePath
+  | HardwareFaultError
+  | UnknownFileReadError IOException
+  deriving (Eq, Show)
+
+maybeReadAllLines'' :: FilePath -> IO (Either FileReadError [String])
+maybeReadAllLines'' filename = do
+  result <- tryIO $ lines <$> readFile filename
+
+  pure $ case result of
+    Right lines' -> Right lines'
+    Left e
+      | isDoesNotExistError e ->
+        Left $ FileNotFound filename
+      | isPermissionError e ->
+        Left $ PermissionsError filename
+      | ioeGetErrorType e == HardwareFault ->
+        Left HardwareFaultError
+    -- The rest of the errors aren't covered; we likely want to handle "unknown"
+    -- errors in a special way
+    Left e ->
+      Left $ UnknownFileReadError e
+```
+
 ## Making HTTP requests
 
 It's quite common to want to make HTTP requests in an application, so we'll take a look at a library
