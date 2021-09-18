@@ -25,6 +25,14 @@ One way to view it is that an effectful thing can return different values at dif
 when given the same parameters, or cause something to happen externally, perhaps as the main purpose
 of running the function.
 
+## Note on chapter order
+
+This chapter can essentially be worked through without reading [Type Classes](./03-type-classes.md),
+but it is wise to read and understand the concepts of `Functor`, `Applicative` and `Monad` and how
+they allow us to work generally with higher-kinded types. If one were to complete the exercises here
+without doing that, it would be wise to return after these concepts are internalized to see how they
+change the resulting code.
+
 ## IO
 
 `IO` means that the function executing this has the capability to do effectful things. You can view
