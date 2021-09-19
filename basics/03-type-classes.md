@@ -561,7 +561,6 @@ for any `f` that implements `Functor`:
 
 ```haskell
 import qualified System.Environment as Environment
--- `Data.Text` has a function `toUpper`: `Text -> Text`
 import Data.Text (Text, toUpper, pack)
 import Prelude
 
