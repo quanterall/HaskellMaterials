@@ -622,6 +622,18 @@ class Functor f => Applicative (f :: * -> *) where
   {-# MINIMAL pure, ((<*>) | liftA2) #-}
 ```
 
+If we continue our side-by-side comparison of different ways to apply functions, we can note that
+`<*>` here has a lot in common with our previous examples:
+
+```haskell
+($)   ::                      (a -> b) ->   a ->   b
+(<$>) :: (Functor f) =>       (a -> b) -> f a -> f b
+(<*>) :: (Applicative f) => f (a -> b) -> f a -> f b
+```
+
+With this lined up, we can see that the "apply" operator (`<*>`) is a lot like `<$>` but is for when
+the function we apply is already lifted into the context we want to apply it in.
+
 ### Monad
 
 `Monad` builds on top of `Applicative`, which means it also has the capabilities of `Functor` as
