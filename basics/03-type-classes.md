@@ -594,6 +594,19 @@ instructive to try to implement a `Functor` instance for `Either` that tries to 
 in order to see why it cannot work. It also happens to be a central part of the behavior of
 `Functor` (and `Monad` by extension) and works out quite well.
 
+#### The `fmap` operator
+
+`fmap` has an operator version, `<$>`, that is quite commonly used. It has a neat correspondence to
+the function application operator, `$`, hence the reason they resemble each other:
+
+```haskell
+($)   ::                (a -> b) ->   a ->   b
+(<$>) :: (Functor f) => (a -> b) -> f a -> f b
+```
+
+With the above illustration, I hope it becomes clearer that `fmap`/`<$>` is an operator that lifts
+function application into another context, here illustrated as `f`.
+
 ### Applicative
 
 `Applicative` assumes `Functor` and in short provides us with a way to wrap a value in our type `f`
