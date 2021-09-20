@@ -649,6 +649,24 @@ class Applicative m => Monad (m :: * -> *) where
   {-# MINIMAL (>>=) #-}
 ```
 
+#### Side-by-side again
+
+If we continue our side-by-side comparison of different ways to apply functions, we see that `>>=`,
+also called "bind" differs slightly from the others:
+
+```haskell
+($)   ::                      (a -> b) ->   a        ->   b
+(<$>) :: (Functor f) =>       (a -> b) -> f a        -> f b
+(<*>) :: (Applicative f) => f (a -> b) -> f a        -> f b
+(>>=) :: (Monad f) =>       f a        -> (a -> f b) -> f b
+```
+
+This is in part because the ordering has changed here; we take the function to apply as the second
+argument, as well as the shape of the function itself. We can view this type signature as saying
+that we take a value in the context `f` and pass it through a function that takes the `a` inside and
+creates a new value of type `b`, again in the context `f`. This allows us to thread a value through
+a monadic function, which is much of the basis of `Monad` being so useful.
+
 #### `do`-notation
 
 The `>>=` operator is called `bind` and is what we are implicitly using when we use `<-` in
