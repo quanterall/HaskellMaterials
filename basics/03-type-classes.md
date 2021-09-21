@@ -661,11 +661,29 @@ also called "bind" differs slightly from the others:
 (>>=) :: (Monad f) =>       f a        -> (a -> f b) -> f b
 ```
 
-This is in part because the ordering has changed here; we take the function to apply as the second
-argument, as well as the shape of the function itself. We can view this type signature as saying
+This is in part because the ordering has changed here (we take the function to apply as the second
+argument), as well as the shape of the function itself. We can view this type signature as saying
 that we take a value in the context `f` and pass it through a function that takes the `a` inside and
 creates a new value of type `b`, again in the context `f`. This allows us to thread a value through
-a monadic function, which is much of the basis of `Monad` being so useful.
+a monadic function, which is the basis of `Monad` being so useful.
+
+What this means in practice:
+
+```haskell
+main =
+  Environment.getEnv "VARIABLE_NAME" >>=
+    \environmentValue -> putStrLn environmentValue
+```
+
+or just:
+
+```haskell
+main =
+  Environment.getEnv "VARIABLE_NAME" >>= putStrLn
+```
+
+In the above examples we first get a `IO String` from `getEnv` (so our context here is `IO`) and
+then we use `>>=` to pass the `String` to `putStrLn`.
 
 #### `do`-notation
 
