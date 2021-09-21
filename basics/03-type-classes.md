@@ -688,7 +688,7 @@ then we use `>>=` to pass the `String` to `putStrLn`.
 #### `do`-notation
 
 Haskell has special syntax support for dealing with these contexts we call monads: `do`-notation.
-In our example above we are calling `getEnv` to get an environmentValue and then subsequently
+In our example above we are calling `getEnv` to get an environment value and then subsequently
 outputting that value on the screen with `putStrLn`. In order to support a imperative-like interface
 to these concepts Haskell includes this alternative (and very popular) syntax:
 
