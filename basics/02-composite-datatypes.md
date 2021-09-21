@@ -1180,13 +1180,16 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 7. Define a function `firstMatchOr :: (a -> Bool) -> a -> [a] -> a` that uses the `firstMatch`
    function together with `foldMaybe` to provide a default value unless we find a matching element.
 
-8. Define a function `pureList :: a -> [a]`.
+8. Define a function `filterList :: (a -> Bool) -> [a] -> [a]` that takes a predicate and a list,
+   and returns all the elements matching the predicate.
 
-9. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
+9. Define a function `pureList :: a -> [a]`.
 
-10[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+10. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
 
-11[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
+11[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+
+12[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
 
 ##### Exercise notes (Lists)
 
