@@ -687,31 +687,61 @@ then we use `>>=` to pass the `String` to `putStrLn`.
 
 #### `do`-notation
 
-The `>>=` operator is called `bind` and is what we are implicitly using when we use `<-` in
-`do`-notation:
+Haskell has special syntax support for dealing with these contexts we call monads: `do`-notation.
+In our example above we are calling `getEnv` to get an environmentValue and then subsequently
+outputting that value on the screen with `putStrLn`. In order to support a imperative-like interface
+to these concepts Haskell includes this alternative (and very popular) syntax:
 
 ```haskell
 main = do
-  environmentValue <- Environment.getEnv "VARIABLE_NAME"
+  environmentValue <- Environment.getEnv "VARIABLE_NAME" :: IO String
   putStrLn environmentValue
 ```
 
-Written using `>>=` this would instead become:
+When we use `<-` here we are saying that the value on the left will be bound to the value inside of
+the monadic function on the right. Since `getEnv` returns a `IO String` this means we bind the value
+and `environmentValue` for the rest of the function contains the `String`.
+
+It should be noted that this notation works for all monads, so it's not limited to `IO`. If we have
+a series of functions that all return `Maybe`, we can write them using `do`-notation and get the
+same kind of implicit control flow that we would with `IO`:
 
 ```haskell
-main =
-  Environment.getEnv "VARIABLE_NAME" >>=
-    \environmentValue -> putStrLn environmentValue
-```
+newtype UserId = UserId Text
+  deriving (Eq, Show, Ord)
 
-It's quite common to write shorter monadic expressions in this form, though I would likely recommend
-using `do`-notation as a default.
+type UserMap = Map UserId User
+
+data User = User
+  { username :: Text,
+    age :: Maybe Int,
+    spouse :: Maybe User
+  }
+  deriving (Eq, Show)
+
+maybeGetSpouseAge :: UserId -> UserMap -> Maybe Int
+maybeGetSpouseAge userId userMap = do
+  -- If `Map.lookup` returns `Nothing` here, we will short-circuit and the whole
+  -- function will return `Nothing`.
+  user <- Map.lookup userId userMap
+
+  -- If the user was found, we will get the possible spouse of the user. If this
+  -- step returns `Nothing` we will (predictably) short-circuit and return
+  -- `Nothing` from the function.
+  userSpouse <- spouse user
+
+  -- Otherwise we will return the (possibly available) age of the spouse.
+  age userSpouse
+```
 
 What this means in practice is that we get the same notation for everything that is a monad. This
 means that we can use `>>=`/`bind`/`<-`, `pure`, `fmap`/`<$>` and friends for a whole slew of things
 that implement this constraint; `STM` (software-transactional memory, pointers that have
 transactional behavior much like databases), `IO`, `Async` (asynchronous IO); the list is long. We
 get all this for free, as long as we understand what `Monad` expects and provides.
+
+**Note:** It's quite common to write shorter monadic expressions with `>>=`, though I would
+recommend using `do`-notation as a default.
 
 #### Monads and their "laws"
 
