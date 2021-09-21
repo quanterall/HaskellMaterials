@@ -1183,13 +1183,16 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 8. Define a function `filterList :: (a -> Bool) -> [a] -> [a]` that takes a predicate and a list,
    and returns all the elements matching the predicate.
 
-9. Define a function `pureList :: a -> [a]`.
+9. Define a function `takeFromList :: Int -> [a] -> [a]` that returns the first N elements from a
+   list, or as many as possible if N is greater than the length of the list.
 
-10. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
+10. Define a function `pureList :: a -> [a]`.
 
-11[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+11. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
 
-12[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
+12[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+
+13[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
 
 ##### Exercise notes (Lists)
 
