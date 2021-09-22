@@ -1191,13 +1191,16 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 11. Define a function `takeWhileFromList :: (a -> Bool) -> [a] -> [a]` that takes elements from the
     list until it finds one that does not match the predicate passed to the function.
 
-12. Define a function `pureList :: a -> [a]`.
+12. Define a function `takeUntilFromList :: (a -> Bool) -> [a] -> [a]` that takes elements from the
+    list until it finds one that matches the predicate passed to the function.
 
-13. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
+13. Define a function `pureList :: a -> [a]`.
 
-14[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+14. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
 
-15[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
+15[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+
+16[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
 
 ##### Exercise notes (Lists)
 
