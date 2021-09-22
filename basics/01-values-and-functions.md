@@ -605,8 +605,8 @@ solution upperBound divisors =
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
 
-2. Define a function using a pipeline that takes a list of `Int`, gets all the even numbers in the
-   beginning of the list[2], multiplies them all by two, sums them up and returns whether or not the
+2. Define a function using a pipeline that takes a list of `Int`, takes numbers until it finds one
+   that is not even[2], multiplies them all by two, sums them up and returns whether or not the
    sum is even. Define versions that use:
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
@@ -625,7 +625,7 @@ solution upperBound divisors =
 0. Remember that `&` is defined in `Data.Function` and `>>>` is defined in `Control.Category`. These
    can be imported with `import Data.Function ((&))` and `import Control.Category ((>>>))`.
 1. [sum](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:sum)
-2. See examples and previous notes for inspiration and help with this
+2. [takeWhile](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:takeWhile)
 3. [dropWhile](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:dropWhile)
 4. [isPrefixOf](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Data-List.html#v:isPrefixOf)
 5. [any](https://www.stackage.org/haddock/lts-17.12/base-4.14.1.0/Prelude.html#v:any)

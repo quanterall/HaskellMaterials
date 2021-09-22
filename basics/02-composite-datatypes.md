@@ -1186,10 +1186,10 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 9. Define a function `lengthOfList :: [a] -> Int` that returns the length of a list.
 
 10. Define a function `takeFromList :: Int -> [a] -> [a]` that returns the first N elements from a
-   list, or as many as possible if N is greater than the length of the list.
+    list, or as many as possible if N is greater than the length of the list.
 
 11. Define a function `takeWhileFromList :: (a -> Bool) -> [a] -> [a]` that takes elements from the
-    list as long as they match the predicate passed to the function.
+    list until it finds one that does not match the predicate passed to the function.
 
 12. Define a function `pureList :: a -> [a]`.
 
