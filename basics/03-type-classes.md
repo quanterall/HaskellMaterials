@@ -26,9 +26,11 @@ a version of them can be found in Rust's "traits". C++20 also has the "concepts"
 ultimately is (or was supposed to be?) an extended (and seemingly much more powerful) version of
 type classes / traits.
 
-A type class defines a set of functions that one can implement for a type. It enables us to write
-functions that rely on some commonly shared behavior and then using those functions for many
-different types, which all have their own implementations of the shared behavior.
+A type class defines a set of functions that one can implement for a type. A function can then
+specify that while it is generic, it requires an instance for a given type class in order to be
+called. It enables us to write functions that rely on some commonly shared behavior and then using
+those functions for many different types, which all have their own implementations of the shared
+behavior.
 
 A type class can be described as a constraint on a type variable, which is how you'll see them in
 source code for the most part. The definition of a type class is a definition of what capabilities
