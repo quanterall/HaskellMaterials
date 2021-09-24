@@ -1,6 +1,7 @@
 # "Effectful"
 
 - ["Effectful"](#effectful)
+  - [Note on chapter order](#note-on-chapter-order)
   - [IO](#io)
   - [IO ()](#io-)
   - [IO a](#io-a)
