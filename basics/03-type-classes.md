@@ -4,8 +4,7 @@
   - [Generics / Type variables](#generics--type-variables)
     - [identity](#identity)
     - [Constraints are **transitive**](#constraints-are-transitive)
-  - [Container types & type variables](#container-types--type-variables)
-  - [Higher-kinded types](#higher-kinded-types)
+  - [Container types, type variables & higher-kinded types](#container-types-type-variables--higher-kinded-types)
   - [Important and common type classes](#important-and-common-type-classes)
     - [Eq](#eq)
       - [Exercises (Eq)](#exercises-eq)
@@ -16,8 +15,10 @@
     - [Semigroup](#semigroup)
     - [Monoid](#monoid)
     - [Functor](#functor)
+      - [The `fmap` operator](#the-fmap-operator)
     - [Applicative](#applicative)
     - [Monad](#monad)
+      - [Side-by-side again](#side-by-side-again)
       - [`do`-notation](#do-notation)
       - [Monads and their "laws"](#monads-and-their-laws)
 
@@ -164,7 +165,7 @@ main = do
   print $ upperLevelFunction' (Sum 41) $ Sum 1 -- Sum 1379
 ```
 
-## Container types & type variables
+## Container types, type variables & higher-kinded types
 
 Let's look at some container type signatures to get a sense of how Haskell handles container types
 in type signatures.
@@ -190,59 +191,7 @@ containerLength :: f a -> Int
 
 We can read this as "any type `f` that takes another type `a`". `f` here is "higher-kinded", because
 its kind is `* -> *`, meaning it takes a type in order to return a type. Haskell understands that we
-are referring to a type that takes another type implicitly, which is part of what sets it apart from
-other languages with generics. We are unable to talk about generic container types in OCaml, Rust
-and indeed most other languages. Scala has support for higher-kinded polymorphism (talking
-generically about these higher-kinded types, types that take other types) and there are a few less
-well-known languages that do as well.
-
-So we can now talk about these higher-kinded types in a generic fashion; `containerLength` applies
-to any type that takes other types. There is an issue with our type signature, however; we are
-assuming all passed in types `f` have lengths. Haskell wouldn't allow any implementation of this
-function that didn't ignore the container passed in and returned a number we chose, because we
-haven't said anything about what behaviors the type `f` supports/has.
-
-To fix this, we will have to use a constraint on `f`:
-
-```haskell
--- Note how we don't have to constrain `a` because we're not actually doing anything with it.
-containerLength :: (Foldable f) => f a -> Int
-containerLength container =
-  foldr (\_item lengthSoFar -> 1 + lengthSoFar) 0 container
-```
-
-This function (and the standard library `length` that exists already) would now work for any type
-that is foldable, which is a lot of types, a couple of them illustrated here:
-
-```haskell
-import qualified Data.Set as Set
-import qualified Data.Map as Map
-import Prelude
-
-containerLength :: (Foldable f) => f a -> Int
-containerLength container =
-  foldr (\_item lengthSoFar -> 1 + lengthSoFar) 0 container
-
-main :: IO ()
-main = do
-  print $ containerLength [1, 2, 3, 4] -- `[Int]`, length 4
-  print $ containerLength (Just "one") -- `Maybe String`, length 1
-  print $ containerLength $ Set.fromList [1, 1, 2, 3, 4] -- `Set Int`, length 4, note the duplicate
-  let exampleMap =
-        Map.fromList [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
-  print $ containerLength exampleMap -- `Map String Int`, length 4
-```
-
-The `containerLength` function is written with the help of `foldr`, which is a member of the
-`Foldable` class. We are not using a general, "work-for-all-types" function, but one that someone
-has to implement for a type that they want to make `Foldable`. While this leads to work done
-specifically to make a type `Foldable`, it also means that we get an implementation that works
-especially for the type in question. It also means that during implementation it (usually) becomes
-very clear whether or not the concept will even work as we implement the needed functionality,
-though this depends on how well defined the type class is and whether or not its shape fits well
-into the type system.
-
-## Higher-kinded types
+are referring to a type that takes another type implicitly.
 
 It can be helpful to draw a parallell to "higher-order functions", i.e. functions that take and/or
 return other functions. Types that take type arguments can be seen as "higher-order types" that take
@@ -306,6 +255,52 @@ Map String :: * -> *
 Q> :kind Map String Int
 Map String Int :: *
 ```
+
+So we can now talk about these higher-kinded types in a generic fashion; `containerLength` applies
+to any type that takes other types. There is an issue with our type signature, however; we are
+assuming all passed in types `f` have lengths. Haskell wouldn't allow any implementation of this
+function that didn't ignore the container passed in and returned a number we chose, because we
+haven't said anything about what behaviors the type `f` supports/has.
+
+To fix this, we will have to use a constraint on `f`:
+
+```haskell
+-- Note how we don't have to constrain `a` because we're not actually doing anything with it.
+containerLength :: (Foldable f) => f a -> Int
+containerLength container =
+  foldr (\_item lengthSoFar -> 1 + lengthSoFar) 0 container
+```
+
+This function (and the standard library `length` that exists already) would now work for any type
+that is foldable, which is a lot of types, a couple of them illustrated here:
+
+```haskell
+import qualified Data.Set as Set
+import qualified Data.Map as Map
+import Prelude
+
+containerLength :: (Foldable f) => f a -> Int
+containerLength container =
+  foldr (\_item lengthSoFar -> 1 + lengthSoFar) 0 container
+
+main :: IO ()
+main = do
+  print $ containerLength [1, 2, 3, 4] -- `[Int]`, length 4
+  print $ containerLength (Just "one") -- `Maybe String`, length 1
+  print $ containerLength $ Set.fromList [1, 1, 2, 3, 4] -- `Set Int`, length 4, note the duplicate
+  let exampleMap =
+        Map.fromList [("one", 1), ("two", 2), ("three", 3), ("four", 4)]
+  print $ containerLength exampleMap -- `Map String Int`, length 4
+```
+
+The `containerLength` function is written with the help of `foldr`, which is a member of the
+`Foldable` class. We are not using a general, "work-for-all-types" function, but one that someone
+has to implement for a type that they want to make `Foldable`. While this leads to work done
+specifically to make a type `Foldable`, it also means that we get an implementation that works
+especially for the type in question. It also means that during implementation it (usually) becomes
+very clear whether or not the concept will even work as we implement the needed functionality,
+though this depends on how well defined the type class is and whether or not its shape fits well
+into the type system.
 
 ## Important and common type classes
 
