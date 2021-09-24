@@ -445,8 +445,7 @@ the other if we don't specify it.
 
 #### Exercises (Num)
 
-1. Define a function that takes a `[a]` and returns the sum of all elements. The return value type
-   should be `a` as well. Otherwise, feel free to implement it any way you choose.
+1. Define a function `sumList :: (Num a) => [a] -> a`.
 
 2. Reimplement the rectangle area function you defined in chapter 1, but for any type `a` that has
    a `Num` instance.
