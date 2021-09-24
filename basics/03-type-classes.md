@@ -341,19 +341,17 @@ spelled out we would be unable to call `a == 'a` in the instance.
 
 #### Exercises (Eq)
 
-In order to implement these solutions you may have to add constraints to them.
+1. Define a function `isInList :: (Eq a) => a -> [a] -> Bool`. Do not use `elem`.
 
-1. Define a function `isInList :: a -> [a] -> Bool`. Do not use `elem`.
+2. Define a function `removeElement :: (Eq a) => a -> [a] -> RemovalResult` that finds the first
+   occurrence of `a` in the list, returning both the element and the list without it if it can find
+   it. If not, it signals this in the return type and returns the list as-is.
 
-2. Define a function `removeElement :: a -> [a] -> RemovalResult` that finds the first occurrence of
-   `a` in the list, returning both the element and the list without it if it can find it. If not, it
-   signals this in the return type and returns the list as-is.
+3. Define a function `allNotEqual :: (Eq a) => a -> [a] -> [a]` that gets all the elements in the
+   list that are not equal to the first parameter.
 
-3. Define a function `allNotEqual :: a -> [a] -> [a]` that gets all the elements in the list that
-   are not equal to the first parameter.
-
-4. Define a function `mapNotEqual :: a -> (a -> b) -> [a] -> [b]` that maps a function over all
-   elements in a list that are not equal to the first parameter given to the function.
+4. Define a function `mapNotEqual :: (Eq a) => a -> (a -> b) -> [a] -> [b]` that maps a function
+   over all elements in a list that are not equal to the first parameter given to the function.
 
 5. Define an `Eq` instance manually for the following datatype:
 
@@ -414,14 +412,15 @@ existence of `Eq`.
 
 #### Exercises (Ord)
 
-In order to implement these solutions you may have to add constraints to them.
+1. Implement `clamp :: (Ord a) => a -> a -> a -> a`. It takes a lower bound, an upper bound and an
+   `a`. If `a` is lower than the lower bound, the lower bound is returned. If it's greater than the
+   upper bound, we return the upper bound. Otherwise we return `a`.
 
-1. Implement `clamp` from chapter 1 but for a type `a`. It takes a lower bound, an upper bound and
-   an `a`. If `a` is lower than the lower bound, the lower bound is returned. If it's greater than
-   the upper bound, we return the upper bound. Otherwise we return `a`.
+2. Define a function `allBetween :: (Ord a) => a -> a -> [a] -> [a]` that returns all `a`s in the
+   list that are between the first and second argument.
 
-2. Define a function `allBetween :: a -> a -> [a] -> [a]` that returns all `a`s in the list that are
-   between the first and second argument.
+3. Define a function `maximumInList :: (Ord a) => [a] -> Maybe a` that gets the biggest element in
+   a list, if any elements exist.
 
 ### Num
 
