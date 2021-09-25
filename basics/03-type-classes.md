@@ -46,6 +46,9 @@ class Hashable a where
 
 -- Note how we are saying `a` is `String` in this instance.
 instance Hashable String where 
+  -- Here all we need to provide is a `hash` function. We can write it here just
+  -- like any other definition, which means we can also say it's equal to one
+  -- we've written elsewhere.
   hash = hashString -- <- Implemented elsewhere, produces `HashData`
 
 data FileData = FileData
