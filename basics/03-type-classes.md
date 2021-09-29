@@ -334,7 +334,7 @@ create an instance, like for `[a]`:
 ```haskell
 instance (Eq a) => Eq [a] where
   [] == [] = True
-  (a:as) == (a':as') a == 'a && as == as'
+  (a:as) == (a':as') = a == 'a && as == as'
 ```
 
 In the above example we are saying that a condition for this instance is that the `a` in the list
