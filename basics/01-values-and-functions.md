@@ -262,17 +262,59 @@ Q> subtractRoundedFloat 5 5.4
 
 1. Define a function that returns whether or not an `Int` is zero.
 
+```haskell
+Q> isZero 1
+False
+Q> isZero 0
+True
+```
+
 2. Define a function that returns whether or not a `Float` is greater than zero.
 
+```haskell
+Q> isGreaterThanZero 1.2
+True
+Q> isGreaterThanZero 0.0
+False
+```
+
 3. Define a function that adds 1/10th of a Double to itself.
+
+```haskell
+Q> addOneTenth 1.0
+1.1
+Q> addOneTenth 0.1
+0.11000000000000001
+```
 
 4. Define a function that takes 2 `Float`s `length'` & `width` and returns the area of the rectangle
    they make up.
 
+```haskell
+Q> rectangleArea 2.5 3
+7.5
+Q> rectangleArea 2 2
+4.0
+```
+
 5. Define a function that takes a radius of type `Float` and returns the area of a circle[0].
+
+```haskell
+Q> circleArea 3.5
+38.484512
+Q> circleArea 2.1
+13.854422
+```
 
 6. Define a function `calculateBMI` that takes a `Float` representing weight in kilograms and an
    `Int` representing height in centimeters and returns the person's BMI.
+
+```haskell
+Q> bmi 185 90
+26.3
+Q> bmi 165 60
+22.0
+```
 
 #### Exercise notes (Functions)
 
@@ -331,14 +373,48 @@ clause.
 1. Define a function that takes two `Int`s and returns the biggest of the two. Implement it both
    with function guards as well as `if`.
 
+```haskell
+Q> biggest 2 1
+2
+Q> biggest 1 2
+2
+Q> biggest 1 (-2)
+1
+```
+
 2. Define a function that takes two `Int`s and returns the smallest of the two. Implement it both
    with function guards as well as `if`.
+
+```haskell
+Q> smallest 2 1
+1
+Q> smallest 1 2
+1
+Q> smallest 1 (-2)
+-2
+```
 
 3. Define a function that subtracts an integer from another, but if the result is less than zero,
    instead return `0`.
 
+```haskell
+Q> subtractPositive 3 1
+2
+Q> subtractPositive 1 3
+0
+```
+
 4. Define a function that takes an `Int` and if it's smaller than zero returns `0`, if it's bigger
    than 255 returns `255`. Otherwise it returns the integer itself.
+
+```haskell
+Q> clampByteValue 365
+255
+Q> clampByteValue (-255)
+0
+Q> clampByteValue 128
+128
+```
 
 #### Exercise notes (Asking questions about values)
 
@@ -432,20 +508,70 @@ as an operator like `-` would behave differently depending on which side you are
 
 1. Define a function that takes a list of `Int`s and multiplies each with `2`. Remember `map`[0].
 
+```haskell
+Q> multiplyAllByTwo [1, 2, 3]
+[2, 4, 6]
+Q> multiplyAllByTwo []
+[]
+```
+
 2. Define a function that takes a list of `Int`s and squares each. Remember `map`[0].
 
-3. `filter`[1] over a list of `Int` takes a function of type `Int -> Bool`. Construct a function
-   that checks whether or not the number is `0` without naming it.
+```haskell
+Q> squareAll [1, 2, 3]
+[1, 4, 9]
+Q> squareAll []
+[]
+Q> squareAll [-1, -2, -3]
+[1, 4, 9]
+```
+
+3. `filter`[1] is a function that takes all elements that match a predicate from a list. This
+   predicate is always a function that takes an element in the list and returns a boolean value.
+   Define a function that takes all elements that are equal to `0` from a list. Use partial
+   application both with `filter` and when constructing the predicate.
+
+```haskell
+Q> allZeros [0, 1, 0, 2, 0, 3]
+[0, 0, 0]
+Q> allZeros [1..9]
+[]
+```
 
 4. Define a function that returns all of the `Int`s in a list over `0`, use partial application for
-   both the check and `filter`[1].
+   both the predicate and `filter`.
+
+```haskell
+Q> numbersAboveZero [0, 1, 0, 2, 0, 3]
+[1, 2, 3]
+Q> numbersAboveZero [1..9]
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
 
 5. Define a function that takes numbers from a list of `Int`s, stopping when it reaches a number
    that is above 10. `takeWhile`[2] can be useful for this. Use partial application both for
    `takeWhile`[2] and the predicate you pass to it.
 
+```haskell
+Q> takeBelow10 [5..15]
+[5, 6, 7, 8, 9]
+Q> takeBelow10 [1..9]
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+Q> takeBelow10 []
+[]
+```
+
 6. Define a function that checks whether or not all `Int`s in a a list are even. Use notes to figure
    out how and use partial application for your definition.
+
+```haskell
+Q> areAllEven [2, 4..10]
+True
+Q> areAllEven [1..9]
+False
+Q> areAllEven []
+True
+```
 
 #### Exercise notes (Partial application)
 
@@ -605,20 +731,58 @@ solution upperBound divisors =
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
 
+```haskell
+Q> multipliedEvenSum [2, 4..10]
+60
+Q> multipliedEvenSum [1..9]
+40
+Q> multipliedEvenSum []
+0
+Q> multipliedEvenSum [1, 3..9]
+0
+```
+
 2. Define a function using a pipeline that takes a list of `Int`, takes numbers until it finds one
    that is not even[2], multiplies them all by two, sums them up and returns whether or not the
    sum is even. Define versions that use:
    - a named argument; with `&`
    - an unnamed argument; with `>>>`
 
+```haskell
+Q> isSumOfMultipliedLeadingEvensEven [2, 4..10]
+True
+Q> isSumOfMultipliedLeadingEvensEven [2, 4, 5, 6]
+True
+Q> isSumOfMultipliedLeadingEvensEven []
+True
+```
+
 3. Define a function that takes the last 3 elements of a `[Int]` and gets the average of them. Use
    notes as inspiration.
+
+```haskell
+Q> averageOfLast3 [2, 4..10]
+8.0
+Q> averageOfLast3 [2, 4, 5, 6]
+5.0
+Q> averageOfLast3 []
+0.0
+```
 
 4. Define a function using a pipeline that takes a list of strings, takes all the strings that begin
    with "#", then discards all leading "#" or " " from the resulting strings. Take note of what kind
    of structure you are working with and what we need to do to work with the structures inside. You
    may need to start out with an anonymous function[9] somewhere in order to see how you could go
    from that to a partially applied function.
+
+```haskell
+Q> headingNames ["# Functions", "## Pipelines using partial application", "Random text"]
+[ "Functions"
+, "Pipelines using partial application"
+]
+Q> headingNames []
+[]
+```
 
 #### Exercise notes (Pipelines using partial application)
 
