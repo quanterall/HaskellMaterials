@@ -1145,20 +1145,97 @@ resourceLoadStatusToMaybe (Loaded resource) = Just resource
 2. Define a function that gets a telephone number string from a `User`. If the `User` has no
    telephone number, return `"N/A"`. Use pattern matching in the top-level to accomplish this.
 
+<!-- markdownlint-disable MD013 -->
+```haskell
+Q> user = User {username = "gonz", email = "rickard.andersson@quanterall.com", fullName = Just "Rickard Andersson", phone = Just "555 363 22 34"}
+Q> showUserPhoneNumber user
+"555 363 22 34"
+Q> userWithoutPhone = user {phone = Nothing}
+Q> showUserPhoneNumber userWithoutPhone 
+"N/A"
+```
+<!-- markdownlint-enable MD013 -->
+
 3. Define a function `pureMaybe :: a -> Maybe a`.
+
+```haskell
+Q> pureMaybe 5
+Just 5
+Q> pureMaybe "hello"
+Just "hello"
+```
 
 4. Define a function `foldMaybe :: b -> (a -> b) -> Maybe a -> b`. If the `Maybe` has a value, apply
    the function to it. If it doesn't, return the `b` that you take in as an argument.
 
+```haskell
+Q> foldMaybe 1337 (+ 1) (Just 42)
+43
+Q> foldMaybe 1337 (+ 1) Nothing
+1337
+```
+
 5. Reimplement the previous function for getting a telephone number string from a `User`, but use
    the `foldMaybe` function. If the `User` has no telephone number, return `"N/A"`.
+
+<!-- markdownlint-disable MD013 -->
+```haskell
+Q> user = User {username = "gonz", email = "rickard.andersson@quanterall.com", fullName = Just "Rickard Andersson", phone = Just "555 363 22 34"}
+Q> showUserPhoneNumber user
+"555 363 22 34"
+Q> userWithoutPhone = user {phone = Nothing}
+Q> showUserPhoneNumber userWithoutPhone 
+"N/A"
+```
+<!-- markdownlint-enable MD013 -->
 
 6. Define a function `mapMaybe :: (a -> b) -> Maybe a -> Maybe b`. Consider what the only things you
    can reasonably do in the cases of `Just x` and `Nothing` are.
 
+```haskell
+Q> mapMaybe (+ 1) (Just 42) 
+Just 43
+Q> mapMaybe length (Just "hello")
+Just 5
+Q> mapMaybe (+ 1) Nothing 
+Nothing
+Q> mapMaybe length Nothing
+Nothing
+```
+
 7. Define a function `applyMaybe :: Maybe (a -> b) -> Maybe a -> Maybe b`.
 
+```haskell
+Q> applyMaybe (Just (+ 1)) (Just 42) 
+Just 43
+Q> applyMaybe (Just length) (Just "hello")
+Just 5
+Q> applyMaybe (+ 1) Nothing 
+Nothing
+Q> applyMaybe length Nothing
+Nothing
+Q> applyMaybe Nothing (Just 42) 
+Nothing
+Q> applyMaybe Nothing (Just "hello")
+Nothing
+```
+
 8. Define a function `bindMaybe :: (a -> Maybe b) -> Maybe a -> Maybe b`.
+
+```haskell
+Q> bindMaybe (\v -> Just $ v + 1) (Just 42)
+Holder 43
+Q> bindMaybe (\v -> Just $ length v) (Just "hello")
+Holder 5
+Q> bindMaybe (\v -> Nothing) (Just 42)
+Nothing
+Q> bindMaybe (\v -> Nothing) (Just "hello")
+Nothing
+Q> bindMaybe (\v -> Just $ v + 1) Nothing
+Nothing
+Q> bindMaybe (\v -> Just $ length v) Nothing
+Nothing
+```
 
 ##### Exercise notes (Maybe)
 
