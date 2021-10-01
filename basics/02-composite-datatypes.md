@@ -114,21 +114,60 @@ only the amount added depends on the boolean and we have special syntax for bool
    - `case` (`case (firstBool, secondBool)` will allow you to match on both at the same time)
    - Top-level pattern-matching
 
+```haskell
+Q> and True True
+True
+Q> and False True
+False
+Q> and True False
+False
+```
+
 2. Create a function `or` that takes two `Bool`s and returns `True` if either is true, `False`
    otherwise. Define versions using:
    - `case` (`case (firstBool, secondBool)` will allow you to match on both at the same time)
    - Top-level pattern-matching
+
+```haskell
+Q> or False True
+True
+Q> or True False
+True
+Q> or True True
+True
+Q> or False False
+False
+```
 
 3. Create a function `exclusiveOr` that takes two `Bool`s and returns true if exactly one of them
    is true. Define versions using:
    - `case` (`case (firstBool, secondBool)` will allow you to match on both at the same time)
    - Top-level pattern-matching
 
-4. Create a function that takes two parameters of the type `Int` as well as a `Bool` and returns
-   the first one if the `Bool` is `True` and the other if it's `False`. Define versions using:
+```haskell
+Q> exclusiveOr False True
+True
+Q> exclusiveOr True False
+True
+Q> exclusiveOr True True
+False
+Q> exclusiveOr False False
+False
+```
+
+4. Create a function `bool` that takes two parameters of the type `Int` as well as a `Bool` and
+   returns the first one if the `Bool` is `True` and the other if it's `False`.
+   Define versions using:
    - `case`
    - `if`
    - Top-level pattern-matching
+
+```haskell
+Q> bool 42 1337 True
+42
+Q> bool 42 1337 False
+1337
+```
 
 ## Interlude: `deriving (Eq, Show)`
 
