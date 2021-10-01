@@ -996,11 +996,25 @@ data Holder a = Holder a
   deriving (Eq, Show)
 ```
 
-2. Define a function `createHolder :: a -> Holder a`. Knowing what you know about partial
+2. Define a function `pureHolder :: a -> Holder a`. Knowing what you know about partial
    application, what is the most concise and direct definition you can come up with?
+
+```haskell
+Q> pureHolder 42
+Holder 42
+Q> pureHolder "hello"
+Holder "hello"
+```
 
 3. Define a function `foldHolder :: (a -> b) -> Holder a -> b`. What is the most natural way to
    implement this function?
+
+```haskell
+Q> foldHolder (+ 1) (Holder 42)
+43
+Q> foldHolder length (Holder "hello")
+5
+```
 
 4. Define a function `mapHolder :: (a -> b) -> Holder a -> Holder b` that applies the passed in
    function to the value inside the `Holder` and wraps it up again. After implementing it, try
@@ -1008,10 +1022,31 @@ data Holder a = Holder a
    function you wrote. As an example, try passing `length` and a `Holder [Int]` to the function and
    see what comes out.
 
+```haskell
+Q> mapHolder (+ 1) (Holder 42)
+Holder 43
+Q> mapHolder length (Holder "hello")
+Holder 5
+```
+
 5. Define a function `applyHolder :: Holder (a -> b) -> Holder a -> Holder b`. Note how a `Holder`
    is completely flexible in what it will hold.
 
+```haskell
+Q> applyHolder (Holder (+ 1)) (Holder 42)
+Holder 43
+Q> applyHolder (Holder length) (Holder "hello")
+Holder 5
+```
+
 6. Define a function `bindHolder :: (a -> Holder b) -> Holder a -> Holder b`.
+
+```haskell
+Q> bindHolder (\v -> Holder $ v + 1) (Holder 42)
+Holder 43
+Q> bindHolder (\v -> Holder $ length v) (Holder "hello")
+Holder 5
+```
 
 7. Add a constructor to the `Holder` type that has no arguments and is named `NoValue`.  Modify the
    type signature of `foldHolder` to be as follows:
@@ -1022,6 +1057,25 @@ data Holder a = Holder a
 
    Don't modify the other functions' type signatures, but rather consider what we can return in
    this new case for each of them.
+
+```haskell
+Q> foldHolder (+ 1) 1337 (Holder 42)
+43
+Q> foldHolder (+ 1) 1337 NoValue
+1337
+Q> mapHolder (+ 1) NoValue
+NoValue
+Q> mapHolder length NoValue
+NoValue
+Q> applyHolder NoValue (Holder 42)
+NoValue
+Q> applyHolder (Holder (+ 1)) NoValue
+NoValue
+Q> bindHolder (\v -> Holder $ v + 1) NoValue
+NoValue
+Q> bindHolder (\v -> NoValue) (Holder 42)
+NoValue
+```
 
 ## Commonly used composite datatypes
 
