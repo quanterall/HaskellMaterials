@@ -443,8 +443,26 @@ project-name quanterall/{basic,application,web-postgres}`.)
 1. Define a function that takes a `String` and returns a datatype that stores both the length of the
    string and the string itself.
 
+```haskell
+Q> stringAndLength "hello"
+StringAndLength
+    { lengthOfString = 5
+    , string = "hello"
+    }
+```
+
 2. Define a data type that represents a product that has a name, a price and a taxation rate
-   (`Double`). Define a function taking this type that calculates the total price of a product.
+   (`Double` between 0 and 1). Define a function taking this type that calculates the total price of
+   a product.
+
+```haskell
+Q> totalPrice Product {name = "Bio Cucumber", price = 5, taxationRate = 0.2}
+6.0
+Q> totalPrice Product {name = "Bio Cucumber", price = 5, taxationRate = 0.1}
+5.5
+Q> totalPrice Product {name = "Normal Cucumber", price = 1, taxationRate = 0.1}
+1.1
+```
 
 3. Define a HTTP request datatype that has a `url`, a list of query parameters (a query parameter
    has a key and a value), a HTTP method[0] and a body.
