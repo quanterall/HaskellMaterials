@@ -621,10 +621,31 @@ data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
    `correspondingOrderType` that takes a `TradeOrder` and returns a `SellOrder` if a `BuyOrder`
    has been passed to it and vice versa.
 
+```haskell
+Q> correspondingOrderType (BuyOrder (TickerSymbol "MSFT") 1000)
+SellOrder ( TickerSymbol "MSFT" ) 1000
+Q> correspondingOrderType (SellOrder (TickerSymbol "MSFT") 1000)
+BuyOrder ( TickerSymbol "MSFT" ) 1000
+```
+
 6. Define a function `matchOrder` that takes a `TradeOrder` and a `[TradeOrder]` and returns
    whether or not we matched a sell/trade to an existing opposite trade/sell in the list of orders.
    If there is a match, return the matching entry as well as the list of trade orders **without**
    the matched order[1]. If there is no match, indicate this in the return value.
+
+```haskell
+Q> orders = [BuyOrder (TickerSymbol "AAPL") 1050, SellOrder (TickerSymbol "MSFT") 1000]
+Q> matchOrder (BuyOrder (TickerSymbol "MSFT") 1000) orders
+MatchedOrder
+    ( SellOrder ( TickerSymbol "MSFT" ) 1000 )
+    [ BuyOrder ( TickerSymbol "AAPL" ) 1050 ]
+Q> matchOrder (SellOrder (TickerSymbol "MSFT") 1000) orders
+NoMatchedOrder
+Q> matchOrder (SellOrder (TickerSymbol "AAPL") 1050) orders
+MatchedOrder
+    ( BuyOrder ( TickerSymbol "AAPL" ) 1050 )
+    [ SellOrder ( TickerSymbol "MSFT" ) 1000 ]
+```
 
 #### Exercise notes (Union types)
 
