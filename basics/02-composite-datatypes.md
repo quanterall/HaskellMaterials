@@ -570,6 +570,13 @@ data DivisionResult
   deriving (Show)
 ```
 
+```haskell
+Q> divisionOrDefault 42 DivisionByZero 
+42.0
+Q> divisionOrDefault 42 (DivideSuccess 1337) 
+1337.0
+```
+
 2. Define a function `spouseName` that takes a `RelationshipStatus` and returns a `String`. Choose
    either top-level pattern matching or using `case`. What do we have to do when a case does not
    have a spouse?
