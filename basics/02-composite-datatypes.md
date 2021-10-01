@@ -237,14 +237,29 @@ it's much easier to spot this mistake and if a value is produced in one place in
 
 ### Exercises (Newtypes)
 
-1. Define a newtype that wraps `Float`, called `Meters`. Define a function that takes two `Meters`
-   and adds them together to return a new `Meters`.
+1. Define a newtype that wraps `Float`, called `Meters`. Define a function `addMeters`that takes two
+   `Meters` and adds them together to return a new `Meters`.
+
+```haskell
+Q> addMeters (Meters 2.5) (Meters 3.0)
+Meters 5.5
+```
 
 2. Define two newtypes wrapping `Float`, called `Meters` and `Kilometers`. Define a function that
    takes `Meters` and correctly converts them into `Kilometers`.
 
+```haskell
+Q> metersToKilometers (Meters 1050.0)
+Kilometers 1.05
+```
+
 3. Define a newtype wrapping `String` that is called `Username`, then a function that takes a
    `Username` and returns its length.
+
+```haskell
+Q> usernameLength (Username "pesho")
+5
+```
 
 ## Record types
 
