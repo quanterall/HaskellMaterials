@@ -1431,13 +1431,15 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 14. Define a function `dropUntilFromList :: (a -> Bool) -> [a] -> [a]` that drops elements from the
     list until it finds one that matches the predicate passed to the function.
 
-15. Define a function `pureList :: a -> [a]`.
+15. Define a function `foldRight :: b -> (a -> b -> b) -> [a] -> b`.
 
-16. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
+16. Define a function `pureList :: a -> [a]`.
 
-17[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+17. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
 
-18[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
+18[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
+
+19[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
 
 ##### Exercise notes (Lists)
 
