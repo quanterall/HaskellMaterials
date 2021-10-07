@@ -1430,24 +1430,50 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
    `Nothing`.
 
 ```haskell
+Q> divideBySumOfRestOfList [1, 2, 3]
+Just 0.2
+Q> divideByTail [1,2,3,4]
+Just 0.11111111
+Q> divideBySumOfRestOfList [1]
+Nothing
+Q> divideBySumOfRestOfList []
+Nothing
 ```
 
 2. Define a function that takes a `[a]` and returns a `Maybe [a]` where the returned list is the
    tail of the list. Consider what to return if the list is empty.
 
 ```haskell
+Q> maybeTail [1, 2, 3]
+Just [2, 3]
+Q> maybeTail []
+Nothing
+Q> maybeTail [1]
+Just []
 ```
 
 3. Define an `average` function that takes a `[Int]` and returns `Maybe Float` where the return
    value is the average value. When and why might we need to return `Nothing`?
 
 ```haskell
+Q> average [1, 2, 3]
+Just 2.0
+Q> average [1, 1, 3]
+Just 1.6666666
+Q> average []
+Nothing
 ```
 
 4. Define a function `maybeMaximumInt :: [Int] -> Maybe Int` function that takes a list of integers
    and finds the maximum integer of the list.
 
 ```haskell
+Q> maybeMaximumInt [1, 3, 2]
+Just 3
+Q> maybeMaximumInt []
+Nothing
+Q> maybeMaximumInt [1, 3, 2, -5, 42, 8, 9, 15]
+Just 42
 ```
 
 5. Define a function `maximumInt :: Int -> [Int] -> Int` function that takes a default value and a
@@ -1455,89 +1481,162 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
    function you defined in exercise 4 together with `maybe`.
 
 ```haskell
+Q> maximumInt 42 [1, 2, 3]
+3
+Q> maximumInt 42 []
+42
 ```
 
 6. Define a function `firstMatch :: (a -> Bool) -> [a] -> Maybe a` that returns the first element in
    a list that matches a given predicate, or `Nothing` otherwise.
 
 ```haskell
+Q> firstMatch (== 3) [1, 2, 3]
+Just 3
+Q> firstMatch (== 3) []
+Nothing
+Q> firstMatch even [1, 2, 3]
+Just 2
 ```
 
 7. Define a function `firstMatchOr :: (a -> Bool) -> a -> [a] -> a` that uses the `firstMatch`
    function together with `foldMaybe` to provide a default value unless we find a matching element.
 
 ```haskell
+Q> firstMatchOr (== 3) 42 [1, 2, 3]
+3
+Q> firstMatchOr (== 3) 42 []
+42
+Q> firstMatchOr even 42 [1, 2, 3]
+2
+Q> firstMatchOr even 42 [1, 3, 5, 7]
+42
 ```
 
 8. Define a function `filterList :: (a -> Bool) -> [a] -> [a]` that takes a predicate and a list,
    and returns all the elements matching the predicate.
 
 ```haskell
+Q> filterList even [1..9]
+[2, 4, 6, 8]
+Q> filterList even [1, 3..9]
+[]
 ```
 
 9. Define a function `lengthOfList :: [a] -> Int` that returns the length of a list.
 
 ```haskell
+Q> lengthOfList [1..9]
+9
+Q> lengthOfList []
+0
 ```
 
 10. Define a function `takeFromList :: Int -> [a] -> [a]` that returns the first N elements from a
     list, or as many as possible if N is greater than the length of the list.
 
 ```haskell
+Q> takeFromList 3 [1..5]
+[1, 2, 3]
+Q> takeFromList 6 [1..5]
+[1, 2, 3, 4, 5]
 ```
 
 11. Define a function `takeWhileFromList :: (a -> Bool) -> [a] -> [a]` that takes elements from the
     list until it finds one that does not match the predicate passed to the function.
 
 ```haskell
+Q> takeWhileFromList odd [1, 3, 5, 6, 7, 8, 9]
+[1, 3, 5]
+Q> takeWhileFromList even [1, 3, 5, 6, 7, 8, 9]
+[]
 ```
 
 12. Define a function `takeUntilFromList :: (a -> Bool) -> [a] -> [a]` that takes elements from the
     list until it finds one that matches the predicate passed to the function.
 
 ```haskell
+Q> takeUntilFromList even [1, 3, 5, 6, 7, 8, 9]
+[1, 3, 5]
+Q> takeUntilFromList odd [1, 3, 5, 6, 7, 8, 9]
+[]
 ```
 
 13. Define a function `dropWhileFromList :: (a -> Bool) -> [a] -> [a]` that drops elements from the
     list until it finds one that does not match the predicate passed to the function.
 
 ```haskell
+Q> dropWhileFromList odd [1, 3, 5, 6, 7, 8, 9]
+[6, 7, 8, 9]
+Q> dropWhileFromList even [1, 3, 5, 6, 7, 8, 9]
+[1, 3, 5, 6, 7, 8, 9]
 ```
 
 14. Define a function `dropUntilFromList :: (a -> Bool) -> [a] -> [a]` that drops elements from the
     list until it finds one that matches the predicate passed to the function.
 
 ```haskell
+Q> dropUntilFromList odd [1, 3, 5, 6, 7, 8, 9]
+[1, 3, 5, 6, 7, 8, 9]
+Q> dropUntilFromList even [1, 3, 5, 6, 7, 8, 9]
+[6, 7, 8, 9]
 ```
 
 15. Define a function `zipList :: [a] -> [b] -> [(a, b)]`.
 
 ```haskell
-```
-
-16. Define a function `unzipList :: [(a, b)] -> ([a], [b])`.
-
-```haskell
+Q> zipList [1..9] [5..10]
+[(1, 5), (2, 6), (3, 7), (4, 8), (5, 9), (6, 10)]
+Q> zipList [1..100] [42, 1337]
+[(1, 42), (2, 1337)]
+Q> zipList [1..100] []
+[]
+Q> zipList [] [1, 2, 3]
+[]
 ```
 
 16. Define a function `foldRight :: b -> (a -> b -> b) -> [a] -> b`.
 
 ```haskell
+Q> foldRight 0 max [1, 2, 3]
+3
+Q> foldRight 0 max []
+3
+Q> foldRight 0 (+) [1, 2, 3]
+6
+Q> foldRight 1 (*) [1, 2, 3]
+6
 ```
 
 17. Define a function `pureList :: a -> [a]`.
 
 ```haskell
+Q> pureList 42
+[42]
 ```
 
 18. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
 
 ```haskell
+Q> mapList (+ 1) [1, 2, 3]
+[2, 3, 4]
+Q> mapList (+ 1) []
+[]
 ```
 
 19[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
 
+```haskell
+Q> applyList [(+ 1), (* 2)] [1, 2, 3]
+[2, 3, 4, 2, 4, 6]
+```
+
 20[1]. Define a function `bindList :: (a -> [b]) -> [a] -> [b]`.
+
+```haskell
+Q> bindList (\n -> replicate n n) [1, 2, 3, 4]
+[1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+```
 
 ##### Exercise notes (Lists)
 
