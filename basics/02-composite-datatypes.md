@@ -1285,14 +1285,51 @@ of our own can be very descriptive.
 
 1. Define a function `foldEither :: (l -> a) -> (r -> a) -> Either l r -> a`.
 
+```haskell
+Q> foldEither length (+ 1) $ Right 42
+43
+Q> foldEither length (+ 1) $ Left "error"
+5
+```
+
 2. Define a function `pureEither :: a -> Either l a`.
+
+```haskell
+Q> pureEither 42
+Right 42
+```
 
 3. Define a function `mapEither :: (r -> a) -> Either l r -> Either l a`. Consider what we will have
    to do if we have a `Left`.
 
+```haskell
+Q> mapEither (+ 1) $ Right 42
+Right 43
+Q> mapEither (+ 1) $ Left "error"
+Left "error"
+```
+
 4. Define a function `applyEither :: (Either l (r -> a)) -> Either l r -> Either l a`.
 
+```haskell
+Q> applyEither (Right (+ 1)) $ Right 42
+Right 43
+Q> applyEither (Right (+ 1)) $ Left "error"
+Left "error"
+Q> applyEither (Left "other error") $ Right 42
+Left "other error"
+```
+
 5. Define a function `bindEither :: (r -> Either l a) -> Either l r -> Either l a`.
+
+```haskell
+Q> bindEither (\v -> Right (v + 1)) $ Right 42
+Right 43
+Q> bindEither (\v -> Right (v + 1)) $ Left "error"
+Left "error"
+Q> bindEither (\v -> Left "error from the function we ran") $ Right 42
+Left "error from the function we ran"
+```
 
 ##### Exercise notes (Either)
 
@@ -1392,54 +1429,111 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
    the list. If the sum of the "tail" (rest) is 0 or there are no elements in the list, return
    `Nothing`.
 
+```haskell
+```
+
 2. Define a function that takes a `[a]` and returns a `Maybe [a]` where the returned list is the
    tail of the list. Consider what to return if the list is empty.
+
+```haskell
+```
 
 3. Define an `average` function that takes a `[Int]` and returns `Maybe Float` where the return
    value is the average value. When and why might we need to return `Nothing`?
 
+```haskell
+```
+
 4. Define a function `maybeMaximumInt :: [Int] -> Maybe Int` function that takes a list of integers
    and finds the maximum integer of the list.
+
+```haskell
+```
 
 5. Define a function `maximumInt :: Int -> [Int] -> Int` function that takes a default value and a
    list of integers, then either returns the default value or the found maximum value. Use the
    function you defined in exercise 4 together with `maybe`.
 
+```haskell
+```
+
 6. Define a function `firstMatch :: (a -> Bool) -> [a] -> Maybe a` that returns the first element in
    a list that matches a given predicate, or `Nothing` otherwise.
+
+```haskell
+```
 
 7. Define a function `firstMatchOr :: (a -> Bool) -> a -> [a] -> a` that uses the `firstMatch`
    function together with `foldMaybe` to provide a default value unless we find a matching element.
 
+```haskell
+```
+
 8. Define a function `filterList :: (a -> Bool) -> [a] -> [a]` that takes a predicate and a list,
    and returns all the elements matching the predicate.
 
+```haskell
+```
+
 9. Define a function `lengthOfList :: [a] -> Int` that returns the length of a list.
+
+```haskell
+```
 
 10. Define a function `takeFromList :: Int -> [a] -> [a]` that returns the first N elements from a
     list, or as many as possible if N is greater than the length of the list.
 
+```haskell
+```
+
 11. Define a function `takeWhileFromList :: (a -> Bool) -> [a] -> [a]` that takes elements from the
     list until it finds one that does not match the predicate passed to the function.
+
+```haskell
+```
 
 12. Define a function `takeUntilFromList :: (a -> Bool) -> [a] -> [a]` that takes elements from the
     list until it finds one that matches the predicate passed to the function.
 
+```haskell
+```
+
 13. Define a function `dropWhileFromList :: (a -> Bool) -> [a] -> [a]` that drops elements from the
     list until it finds one that does not match the predicate passed to the function.
+
+```haskell
+```
 
 14. Define a function `dropUntilFromList :: (a -> Bool) -> [a] -> [a]` that drops elements from the
     list until it finds one that matches the predicate passed to the function.
 
+```haskell
+```
+
 15. Define a function `zipList :: [a] -> [b] -> [(a, b)]`.
+
+```haskell
+```
 
 16. Define a function `unzipList :: [(a, b)] -> ([a], [b])`.
 
+```haskell
+```
+
 16. Define a function `foldRight :: b -> (a -> b -> b) -> [a] -> b`.
+
+```haskell
+```
 
 17. Define a function `pureList :: a -> [a]`.
 
+```haskell
+```
+
 18. Define a function `mapList :: (a -> b) -> [a] -> [b]`.
+
+```haskell
+```
 
 19[1]. Define a function `applyList :: [(a -> b)] -> [a] -> [b]`.
 
