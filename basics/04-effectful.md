@@ -171,7 +171,7 @@ main = do
 ```
 
 It's perhaps helpful to draw the analogy to `await` in JavaScript/TypeScript, where we sometimes
-write our code "in the `Promise` monad" and so we can do asynchronous things. We unpack/evaluaten
+write our code "in the `Promise` monad" and so we can do asynchronous things. We unpack/evaluate
 these asynchronous values by using `await` (or `.then()` for people who aren't up-to-date) and when
 we refer to them in code the asynchronous nature does not matter in terms of the values they
 represent.
