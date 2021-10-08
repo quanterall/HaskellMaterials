@@ -346,6 +346,13 @@ spelled out we would be unable to call `a == 'a` in the instance.
 
 1. Define a function `isInList :: (Eq a) => a -> [a] -> Bool`. Do not use `elem`.
 
+```haskell
+Q> isInList 2 [1..9]
+True
+Q> isInList 2 [1, 3..9]
+False
+```
+
 2. Define a function `removeElement :: (Eq a) => a -> [a] -> RemovalResult a` that finds the first
    occurrence of `a` in the list, returning both the element and the list without it if it can find
    it. If not, it signals this in the return type and returns the list as-is.
