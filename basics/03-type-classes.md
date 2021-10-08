@@ -360,8 +360,22 @@ False
 3. Define a function `allNotEqual :: (Eq a) => a -> [a] -> [a]` that gets all the elements in the
    list that are not equal to the first parameter.
 
+```haskell
+Q> allNotEqual 2 [1..9]
+[1, 3, 4, 5, 6, 7, 8, 9]
+Q> allNotEqual 2 [1, 3..9]
+[1, 3, 5, 7, 9]
+```
+
 4. Define a function `mapNotEqual :: (Eq a) => a -> (a -> b) -> [a] -> [b]` that maps a function
    over all elements in a list that are not equal to the first parameter given to the function.
+
+```haskell
+Q> mapNotEqual 2 (+ 1) [1..9]
+[2, 4, 5, 6, 7, 8, 9, 10]
+Q> mapNotEqual 2 (+ 1) [1, 3..9]
+[2, 4, 6, 8, 10]
+```
 
 5. Define an `Eq` instance manually for the following datatype:
 
