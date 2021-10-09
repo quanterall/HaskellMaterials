@@ -444,9 +444,10 @@ getIpStringMaybe = do
   -- onto a value of type `LByteString` (`responseBody response`). We wrap our response body in a
   -- `Just` and wrap that in `IO` if we have a successful response, otherwise we just inject
   -- `Nothing` into `IO`.
-  if statusIsSuccessful $ responseStatus response
-    then pure $ Just (responseBody response)
-    else pure Nothing
+  pure $
+    if statusIsSuccessful $ responseStatus response
+      then Just (responseBody response)
+      else Nothing
 ```
 
 ### Dealing with JSON responses
@@ -494,17 +495,18 @@ getIpInfo = do
   let requestWithHeaders = request {requestHeaders = [("User-Agent", "curl")]}
 
   response <- httpLbs requestWithHeaders manager :: IO (Response LByteString)
-  if statusIsSuccessful $ responseStatus response
-    then -- We are using `eitherDecode` here in case we are getting a successful response.
-    -- `eitherDecode` takes a bytestring and attempts to decode it with a given `FromJSON`
-    -- instance. Haskell knows that we are expecting a `IPGeoInfo` here, so it knows that it
-    -- should use the `FromJSON` instance defined for it. It will attempt to decode each field as
-    -- the correct type and if it succeeds, we will get a `Right` result.
-      pure $ eitherDecode $ responseBody response
-    else -- Since we are returning `Either String IPGeoInfo` we have to turn the error case here
-    -- into a `Left`. The string chosen here is not particularly descriptive, but this example is
-    -- really only for illustrative purposes.
-      pure $ Left "Status code is not 200"
+  pure $
+    if statusIsSuccessful $ responseStatus response
+      then -- We are using `eitherDecode` here in case we are getting a successful response.
+      -- `eitherDecode` takes a bytestring and attempts to decode it with a given `FromJSON`
+      -- instance. Haskell knows that we are expecting a `IPGeoInfo` here, so it knows that it
+      -- should use the `FromJSON` instance defined for it. It will attempt to decode each field as
+      -- the correct type and if it succeeds, we will get a `Right` result.
+        eitherDecode $ responseBody response
+      else -- Since we are returning `Either String IPGeoInfo` we have to turn the error case here
+      -- into a `Left`. The string chosen here is not particularly descriptive, but this example is
+      -- really only for illustrative purposes.
+        Left "Status code is not 200"
 ```
 
 ### Exercises (Making HTTP requests)
