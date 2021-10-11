@@ -18,6 +18,11 @@
     - [Exercises (Making HTTP requests)](#exercises-making-http-requests)
   - [What makes `IO` special?](#what-makes-io-special)
   - [Should you avoid effectful things?](#should-you-avoid-effectful-things)
+  - [Small applications using `IO`](#small-applications-using-io)
+    - [File categorizer](#file-categorizer)
+      - [Hints (File categorizer)](#hints-file-categorizer)
+    - [Git status checker](#git-status-checker)
+      - [Hints (Git status checker)](#hints-git-status-checker)
 
 Lots of texts, these materials included, will talk about things being "effectful". So what does that
 actually mean?
@@ -578,3 +583,68 @@ Should a function meant to validate a data type execute in `IO`? Probably not. C
 here and software is iterative; you will be able to see what can be made pure and thus less
 mysterious in time. Making functions pure is not a chore to be done to appease the Haskell gods, but
 is mostly a question of removing future questions in future debugging sessions.
+
+## Small applications using `IO`
+
+It can be very useful to create applications using `IO` to get into the swing of things. It's not
+very effective to only learn theory or excessively small things when it comes to getting used to
+`IO`, so with this in mind here are some small applications that can be made:
+
+### File categorizer
+
+Create an application that, for every file in a given directory (from the command line) looks at the
+extension files and moves them into a sub-category of "Pictures", "Documents", "Movies" and
+"Archives". If a file cannot be placed in one of these categories, do not do anything with it.
+
+#### Hints (File categorizer)
+
+- You can use `getArgs` from `System.Environment` to get the arguments passed into a program as a
+  list of strings.
+
+### Git status checker
+
+Create an application that for all sub-folders in a folder checks for git directories and in the
+ones it finds, it checks for unstaged changes.
+
+#### Hints (Git status checker)
+
+- You can use the `typed-process` library (or just `RIO.Process` from the `rio` library). The
+  following snippet should help in getting process output:
+
+```haskell
+data ProcessOutput = ProcessOutput
+  { standardOut :: OutputBytes,
+    standardError :: ErrorBytes
+  }
+  deriving (Eq, Show)
+
+newtype OutputBytes = OutputBytes ByteString
+  deriving (Eq, Show)
+
+newtype ErrorBytes = ErrorBytes ByteString
+  deriving (Eq, Show)
+
+newtype WorkingDirectory = WorkingDirectory FilePath
+  deriving (Eq, Show)
+
+newtype CommandString = CommandString String
+  deriving (Eq, Show)
+
+getProcessOutput :: WorkingDirectory -> CommandString -> IO ProcessOutput
+getProcessOutput (WorkingDirectory workingDirectory) (CommandString commandString) = do
+  case words commandString of
+    command : arguments -> do
+      let processConfiguration =
+            Process.proc command arguments
+              & Process.setStdout Process.byteStringOutput
+              & Process.setStderr Process.byteStringOutput
+              & Process.setWorkingDir workingDirectory
+      Process.withProcessWait processConfiguration $ \process -> atomically $ do
+        outBytes <- Process.getStdout process
+        errorBytes <- Process.getStderr process
+        let standardOut = outBytes & LazyByteString.toStrict & OutputBytes
+            standardError = errorBytes & LazyByteString.toStrict & ErrorBytes
+        pure ProcessOutput {standardOut, standardError}
+    [] ->
+      error "Empty command string"
+```
