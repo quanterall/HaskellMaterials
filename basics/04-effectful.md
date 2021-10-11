@@ -593,7 +593,7 @@ very effective to only learn theory or excessively small things when it comes to
 ### File categorizer
 
 Create an application that, for every file in a given directory (from the command line) looks at the
-extension files and moves them into a sub-category of "Pictures", "Documents", "Movies" and
+extension files and moves them into a sub-category of "Pictures", "Documents", "Movies", "Music" and
 "Archives". If a file cannot be placed in one of these categories, do not do anything with it.
 
 #### Hints (File categorizer)
