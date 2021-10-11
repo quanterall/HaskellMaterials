@@ -23,6 +23,8 @@
       - [Hints (File categorizer)](#hints-file-categorizer)
     - [Git status checker](#git-status-checker)
       - [Hints (Git status checker)](#hints-git-status-checker)
+    - [ID3v2 tag reader (MP3 tag reader)](#id3v2-tag-reader-mp3-tag-reader)
+      - [Hints (ID3v2 tag reader)](#hints-id3v2-tag-reader)
 
 Lots of texts, these materials included, will talk about things being "effectful". So what does that
 actually mean?
@@ -650,3 +652,13 @@ getProcessOutput (WorkingDirectory workingDirectory) (CommandString commandStrin
     [] ->
       error "Empty command string"
 ```
+
+### ID3v2 tag reader (MP3 tag reader)
+
+Create an application that takes a MP3 file and if it can read an
+[ID3v2 tag](http://fileformats.archiveteam.org/wiki/ID3) it will print song information.
+
+#### Hints (ID3v2 tag reader)
+
+- `Data.Binary.Get` can be used to read binary data. Note that this creates a `Get` action that can
+  be run with `runGet` (providing the data to read from).
