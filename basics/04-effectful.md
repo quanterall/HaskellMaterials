@@ -612,6 +612,8 @@ ones it finds, it checks for unstaged changes.
   following snippet should help in getting process output:
 
 ```haskell
+import qualified System.Process.Typed as Process
+
 data ProcessOutput = ProcessOutput
   { standardOut :: OutputBytes,
     standardError :: ErrorBytes
