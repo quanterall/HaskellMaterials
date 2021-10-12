@@ -25,6 +25,8 @@
       - [Hints (Git status checker)](#hints-git-status-checker)
     - [ID3v2 tag reader (MP3 tag reader)](#id3v2-tag-reader-mp3-tag-reader)
       - [Hints (ID3v2 tag reader)](#hints-id3v2-tag-reader)
+    - [Web scraping application](#web-scraping-application)
+      - [Hints (Web scraping application)](#hints-web-scraping-application)
 
 Lots of texts, these materials included, will talk about things being "effectful". So what does that
 actually mean?
@@ -662,3 +664,16 @@ Create an application that takes a MP3 file and if it can read an
 
 - `Data.Binary.Get` can be used to read binary data. Note that this creates a `Get` action that can
   be run with `runGet` (providing the data to read from).
+
+### Web scraping application
+
+Create an application that downloads and analyzes some kind of information from a web page. Since
+this is a very broad category of applications it's likely best left to the user of this material to
+decide what to apply it to.
+
+#### Hints (Web scraping application)
+
+- The library [`scalpel`](https://www.stackage.org/lts-18.13/package/scalpel-0.6.2) can be used to
+  write a parser for a web page. For simpler use cases the `scrapeURL`[0] function can be useful.
+
+0. [`scrapeURL`](https://www.stackage.org/haddock/lts-18.13/scalpel-0.6.2/Text-HTML-Scalpel.html#v:scrapeURL)
