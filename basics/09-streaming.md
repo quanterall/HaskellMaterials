@@ -35,36 +35,34 @@ data Person = Person
   }
   deriving (Eq, Show, Generic, FromRecord, ToRecord, FromNamedRecord, ToNamedRecord)
 
-newtype TarballPath = TarballPath {unTarballPath :: FilePath}
-  deriving (Eq, Show)
-
-newtype SoughtFile = SoughtFile {unSoughtFile :: FilePath}
+newtype Tarball = Tarball {unTarball :: FilePath}
   deriving (Eq, Show)
 
 runMain :: IO ()
 runMain = do
   runConduitRes $
-    streamFileFromTarball decodeCSVAsPeople (TarballPath "people.tgz") (SoughtFile "people.csv")
+    streamFromTarball csvAsPeople (Tar.headerFilePath >>> (== "people.csv")) (Tarball "people.tgz")
       .| printC
 
--- | Searches a tarball for a given file, running the supplied conduit on it when found.
-streamFileFromTarball ::
-  forall o m.
+-- | Searches a tarball for files matching a predicate, running the supplied conduit on them when
+-- found.
+streamFromTarball ::
   (MonadResource m, PrimMonad m, MonadThrow m) =>
   -- | Our inner conduit to run on the found CSV file. Note that whatever this conduit does
   -- determines the output of the entire conduit.
   ConduitT ByteString o m () ->
+  -- | The predicate that a file in the tarball should match to have the inner conduit run on it.
+  (Tar.Header -> Bool) ->
   -- | The tarball to open and search for files in.
-  TarballPath ->
-  -- | The file we are looking for inside of the tarball.
-  SoughtFile ->
+  Tarball ->
   ConduitT () o m ()
-streamFileFromTarball innerConduit (TarballPath tarballPath) (SoughtFile soughtFile) = do
-  let matchFile :: Tar.Header -> ConduitT ByteString o m ()
-      matchFile header =
-        when (Tar.headerFilePath header == soughtFile) innerConduit
+streamFromTarball innerConduit predicate (Tarball tarballPath) = do
+  let matchFile header = when (predicate header) innerConduit
   sourceFileBS tarballPath .| Zlib.ungzip .| Tar.untarChunks .| Tar.withEntries matchFile
 
-decodeCSVAsPeople :: (MonadThrow m) => ConduitT ByteString Person m ()
-decodeCSVAsPeople = intoCSV defCSVSettings .| mapC getNamed
+csvAsPeople :: (MonadThrow m) => ConduitT ByteString Person m ()
+csvAsPeople =
+  -- We use `getNamed` here because `Named a` automatically wraps results in a `Named` wrapper, so
+  -- in order to just have our type, we need to extract them from that structure.
+  intoCSV defCSVSettings .| mapC getNamed
 ```
