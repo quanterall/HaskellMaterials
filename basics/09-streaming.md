@@ -38,6 +38,8 @@ data Person = Person
     age :: Maybe Int,
     profession :: Maybe Text
   }
+  -- The "Record" derivations here are for CSV decoding. We automatically get CSV decoding for free
+  -- if we derive these.
   deriving (Eq, Show, Generic, FromRecord, ToRecord, FromNamedRecord, ToNamedRecord)
 
 newtype Tarball = Tarball {unTarball :: FilePath}
@@ -63,13 +65,17 @@ streamFromTarball ::
   ConduitT () o m ()
 streamFromTarball innerConduit predicate (Tarball tarballPath) = do
   let matchFile header = when (predicate header) innerConduit
-  sourceFileBS tarballPath .| Zlib.ungzip .| Tar.untarChunks .| Tar.withEntries matchFile
+  sourceFileBS tarballPath .| unTarGz .| Tar.withEntries matchFile
 
 csvAsPeople :: (MonadThrow m) => ConduitT ByteString Person m ()
 csvAsPeople =
   -- We use `getNamed` here because `Named a` automatically wraps results in a `Named` wrapper, so
   -- in order to just have our type, we need to extract them from that structure.
   intoCSV defCSVSettings .| mapC getNamed
+
+-- | Untars and ungzips a `ByteStream`, akin to extracting the raw data from a `.tar.gz` file.
+unTarGz :: (PrimMonad m, MonadThrow m) => ConduitT ByteString Tar.TarChunk m ()
+unTarGz = Zlib.ungzip .| Tar.untarChunks
 ```
 
 ## `ConduitT`
