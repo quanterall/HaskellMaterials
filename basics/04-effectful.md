@@ -228,7 +228,7 @@ For a concrete comparison of these two side by side, see [this file](../misc/typ
 
 9. Define a function `findProjectRoot :: FilePath -> IO (Maybe FilePath)` that will search backwards
    starting from a given path, looking for a directory called `.git`. When it finds it, it returns
-   the result. If it can't find a it, returns `Nothing`.
+   the result. If it can't find it, returns `Nothing`.
 
    Examples:
 
