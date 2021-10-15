@@ -116,8 +116,8 @@ downstream and `result` is for final results. The expectation here is that there
 something that takes care of whatever output you are passing downstream, whereas a `result` is for
 a final result in the pipeline, retrieved when we run `runConduit`/`runConduitRes`.
 
-If we were to use `sinkList` in the middle of our example pipeline, for example, we'd be able to get
-all the people in a list:
+If we were to use `sinkList` in our example pipeline, for example, we'd be able to get all the
+people in a list:
 
 ```haskell
 -- sinkList :: Monad m => ConduitT i o m [i]
