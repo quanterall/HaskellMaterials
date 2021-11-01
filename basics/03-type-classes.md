@@ -353,9 +353,8 @@ Q> isInList 2 [1, 3..9]
 False
 ```
 
-2. Define a function `removeElement :: (Eq a) => a -> [a] -> RemovalResult a` that finds the first
-   occurrence of `a` in the list, returning both the element and the list without it if it can find
-   it. If not, it signals this in the return type and returns the list as-is.
+2. Define a function `removeElement :: (Eq a) => a -> [a] -> [a]` that removes the first occurrence
+   of `a` in the list, returning the list without that element.
 
 3. Define a function `allNotEqual :: (Eq a) => a -> [a] -> [a]` that gets all the elements in the
    list that are not equal to the first parameter.
