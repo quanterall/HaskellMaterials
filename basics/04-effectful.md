@@ -212,9 +212,16 @@ For a concrete comparison of these two side by side, see [this file](../misc/typ
    function that allows you to run the function from exercise 3 on the list of files, returning a
    list of whatever type you return from that.
 
-6. Define a data type `FileType` representing either a `Directory` or `File` and create a function
-   that takes a path and returns all the paths inside of it as either `Directory`[5] or `File`,
-   depending on their file type.
+6. Use the provided type definition and create a function
+   `pathToFileType :: FilePath -> IO FileType`. Consider what has to happen when we have a
+   directory.
+
+```haskell
+data FileType
+  = File FilePath
+  | Directory FilePath [FileType]
+  deriving (Eq, Show)
+```
 
 7. Make the function that you created in exercise 5 work for a given directory and all its
    sub-directories, recursively. Use the function from exercise 6 to figure out when you need to go
