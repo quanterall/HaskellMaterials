@@ -77,9 +77,17 @@ It would be a failure for this material to have you walking way saying things li
 
 ### Category theory is a branch of mathematics
 
-While stimulating to learn it's not useful knowledge for getting things done in Haskell. It is my
-experience that people who don't use Haskell will often misrepresent the usefulness of theory. This
-applies to more things than category theory.
+While it can be stimulating to learn it's not useful knowledge for getting things done in Haskell.
+It is my experience that people who don't use Haskell will often misrepresent the usefulness of
+theory. This applies to more things than category theory.
+
+If you feel compelled to learn category theory, keep in mind that it is unlikely to further your
+knowledge of Haskell in any meaningful way and that it is more likely to serve as a potential
+motivator for learning about programming language theory.
+
+If you actually want to learn Haskell, couple pointed pieces of theory with practical exercise and
+then write programs that actually do things. You'll be infinitely more productive and better at
+Haskell and programming in general than someone who spent their time on things like category theory.
 
 ### Asking questions is good
 
