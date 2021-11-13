@@ -75,6 +75,11 @@ It would be a failure for this material to have you walking way saying things li
 
 > Haskell made me think differently. I don't use it often but it shaped the way I think.
 
+In short, this repository is meant to serve not only as a jumping off point for exploring Haskell,
+but also for using it. With that in mind it's important to stop at key points in your Haskell
+journey and apply the things you think you know in order to iron out the specifics of them, as well
+as get a sense of what you are able to create with them.
+
 ### Category theory is a branch of mathematics
 
 While it can be stimulating to learn it's not useful knowledge for getting things done in Haskell.
