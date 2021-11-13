@@ -194,10 +194,8 @@ make the experience a bit better in the development container REPLs:
 ## Basic reading materials
 
 The below documents contain information and examples about different topics. Generally speaking they
-are readable from top to bottom in terms of the assumptions they make about knowledge level, though
-the "Modules" document is somewhat of a standalone affair and might be removed entirely.
+are readable from top to bottom in terms of the assumptions they make about knowledge level.
 
-- [Modules](./basics/00-modules.md)
 - [Values and functions, basic types](./basics/01-values-and-functions.md)
 - [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
 - [Type classes](./basics/03-type-classes.md)
