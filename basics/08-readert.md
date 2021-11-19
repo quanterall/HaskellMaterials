@@ -3,7 +3,7 @@
 - [The ReaderT Monad Transformer](#the-readert-monad-transformer)
   - [Monad transformers](#monad-transformers)
   - [ReaderT](#readert)
-  - [Hypothetical example](#hypothetical-example)
+  - [Our `Reader` example, extended](#our-reader-example-extended)
 
 ## Monad transformers
 
@@ -41,84 +41,38 @@ allows for implicit environment reading as well as `IO` actions, which means we 
 tightly controlled usage of mutable variables with a clear initialization stage, as the application
 state has to be initialized with `runReaderT` at the start of the application.
 
-## Hypothetical example
+## Our `Reader` example, extended
 
-The following is a hypothetical structure of an application that is using `ReaderT` to provide an
-environment to the different functions in it.
+We will continue with our `Reader` example and extend it to work with `ReaderT`, allowing us to
+retain the functionality of using implicit values but also bake in `IO`:
 
 ```haskell
-data ApplicationState = ApplicationState
-  { databaseConnection :: DBConnection,
-    logHandle :: LogHandle
-  }
+module Library where
 
-data DeletionResult
-  = NotFound
-  | AssociationError
-  | Deleted
+import RIO -- requires `rio` in `package.yaml`
+import System.IO (print, putStrLn)
 
--- Execution starts here
+notPassingArguments :: ReaderT String IO Int
+notPassingArguments = do
+  -- `ask` retrieves the environment, in this case a `String`.
+  stringFromEnvironment <- ask
+  -- Note how we use `liftIO` here to execute IO actions in a monad that contains `IO`.
+  liftIO $ putStrLn $ "We got '" <> stringFromEnvironment <> "' from the environment"
+  pure $ length stringFromEnvironment
+
+canReadString :: Int -> ReaderT String IO Int
+canReadString added = do
+  -- We don't need to pass any arguments here; `notPassingArguments` will read the environment.
+  liftIO $ putStrLn "We're about to call `notPassingArguments`"
+  result <- notPassingArguments
+  pure $ added + result
+
 main :: IO ()
 main = do
-  -- We set up the initial application state so that `runApplication` and everything it runs has
-  -- access to it.
-  databaseInfo <- Environment.get "DB_CONNECTION_INFO"
-  dbConnection <- connectToDatabase databaseInfo
-  logHandle' <- setupLog
-  let applicationState =
-        ApplicationState
-          { databaseConnection = dbConnection,
-            logHandle = logHandle'
-          }
-
-  runReaderT runApplication applicationState
-
-runApplication :: ReaderT ApplicationState IO ()
-runApplication = do
-  -- Implementation of request handlers here, perhaps for a web server.
-  -- One of them will use `handleDeleteUserRequest`, which has access to the already set up
-  -- environment.
-  undefined
-
-handleDeleteUserRequest :: UserId -> ReaderT ApplicationState IO ()
-handleDeleteUserRequest userId = do
-  deletionResult <- runDatabase $ deleteUserWithId userId
-  case deletionResult of
-    Deleted -> do
-      logInfo $ "Found and deleted user with ID: " <> show userId
-
-    NotFound ->
-      logWarn $ "Unable to find user with ID: " <> show userId <> " for deletion."
-
-    AssociationError ->
-      logError $
-        mconcat
-          [ "Unable to delete user with ID '",
-            show userId,
-            "' because stuff relies on it existing."
-          ]
-
-logInfo :: Text -> ReaderT ApplicationState IO ()
-logInfo message = logMessage "INFO" message
-
-logWarn :: Text -> ReaderT ApplicationState IO ()
-logWarn message = logMessage "WARN" message
-
-logError :: Text -> ReaderT ApplicationState IO ()
-logError message = logMessage "ERROR" message
-
-logMessage :: Text -> Text -> ReaderT ApplicationState IO ()
-logMessage prefix message = do
-  handle <- asks logHandle
-  -- This hypothetical function requires `IO`, so we lift the context into the wrapped `IO` we have
-  liftIO $ writeToLogHandle handle $ "[" <> prefix <> "]" <> message
-
-runDatabase :: DatabaseAction a -> ReaderT ApplicationState IO a
-runDatabase action = do
-  connection <- asks databaseConnection
-  -- This hypothetical function requires `IO`, so we lift the context into the wrapped `IO` we have
-  liftIO $ runQuery connection action
-
-deleteUserWithId :: UserId -> DatabaseAction DeletionResult
-deleteUserWithId userId = deleteEntity userId
+  -- Note how we have to use `bind`/`<-` here because `runReaderT` returns a value of type `m a`,
+  -- in this case `IO a`. This is different from `runReader`, which returns just `a`.
+  x <- runReaderT (canReadString 5) "Quanterall"
+  y <- runReaderT (canReadString 5) "Quanteral"
+  print x -- 15
+  print y -- 14
 ```
