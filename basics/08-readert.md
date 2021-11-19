@@ -4,6 +4,7 @@
   - [Monad transformers](#monad-transformers)
   - [ReaderT](#readert)
   - [Our `Reader` example, extended](#our-reader-example-extended)
+  - [Adding very basic logging to our example](#adding-very-basic-logging-to-our-example)
 
 ## Monad transformers
 
@@ -52,6 +53,15 @@ module Library where
 import RIO -- requires `rio` in `package.yaml`
 import System.IO (print, putStrLn)
 
+main :: IO ()
+main = do
+  -- Note how we have to use `bind`/`<-` here because `runReaderT` returns a value of type `m a`,
+  -- in this case `IO a`. This is different from `runReader`, which returns just `a`.
+  x <- runReaderT (canReadString 5) "Quanterall"
+  y <- runReaderT (canReadString 5) "Quanteral"
+  print x -- 15
+  print y -- 14
+
 notPassingArguments :: ReaderT String IO Int
 notPassingArguments = do
   -- `ask` retrieves the environment, in this case a `String`.
@@ -66,13 +76,49 @@ canReadString added = do
   liftIO $ putStrLn "We're about to call `notPassingArguments`"
   result <- notPassingArguments
   pure $ added + result
+```
+
+## Adding very basic logging to our example
+
+We'd like to add something like logging to our example. Let's switch out our environment type with
+a composite type that holds several things:
+
+```haskell
+import RIO
+import System.IO (hPutStrLn, openFile, print)
+
+data ApplicationState = ApplicationState
+  { string :: String,
+    logHandle :: Handle
+  }
 
 main :: IO ()
 main = do
-  -- Note how we have to use `bind`/`<-` here because `runReaderT` returns a value of type `m a`,
-  -- in this case `IO a`. This is different from `runReader`, which returns just `a`.
-  x <- runReaderT (canReadString 5) "Quanterall"
-  y <- runReaderT (canReadString 5) "Quanteral"
-  print x -- 15
-  print y -- 14
+  logHandle <- openFile "./run-log.txt" AppendMode
+  hSetBuffering logHandle LineBuffering
+  let initialState = ApplicationState {string = "", logHandle}
+  x <- runReaderT (canReadString 5) initialState {string = "Quanterall"}
+  y <- runReaderT (canReadString 5) initialState {string = "Quanteral"}
+  print x
+  print y
+
+notPassingArguments :: ReaderT ApplicationState IO Int
+notPassingArguments = do
+  ApplicationState {string} <- ask
+  -- We can use `logToFile` here and not be concerned with the file handle because we know it's in
+  -- the environment we're executing inside of already.
+  logToFile $ "We got '" <> string <> "' from the environment"
+  pure $ length string
+
+canReadString :: Int -> ReaderT ApplicationState IO Int
+canReadString added = do
+  logToFile "We're about to call `notPassingArguments`"
+  result <- notPassingArguments
+  pure $ added + result
+
+logToFile :: String -> ReaderT ApplicationState IO ()
+logToFile logString = do
+  -- We can use the `asks` function to automatically apply a function to the environment
+  fileHandle <- asks logHandle -- `logHandle :: ApplicationState -> Handle`
+  liftIO $ hPutStrLn fileHandle logString
 ```
