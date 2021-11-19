@@ -1,5 +1,8 @@
 # The Reader Monad
 
+- [The Reader Monad](#the-reader-monad)
+  - [The purpose of `Reader`](#the-purpose-of-reader)
+
 The `Reader` monad allows us to make an environment available to an entire part of our call graph.
 What this means is that we can, at the start of executing a `Reader` context, bake in a value that
 we won't have to pass explicitly to any of the `Reader` functions in that part of the call graph:
@@ -32,7 +35,11 @@ As you can see above, `Reader` has two type parameters: `Reader environmentType 
 
 The return value being in the right-most position is usual and is something we'll see more of.
 
-The above example is of course contrived, but it's enough to know that if one wants to have a shared
-environment for a call graph in ones program, the `Reader` monad can be useful. One thing to note is
-that a related type, `ReaderT`, forms the basis with which many Haskell users build applications,
-where they combine `Reader` with `IO` and thus get access to both `IO` and implicit values.
+## The purpose of `Reader`
+
+In the grand scheme of things `Reader` is useful when we have a deep call stack that might need a
+value in arbitrary depths of it, where passing a value down through every function might not be
+useful, even if it could be considered "cleaner".
+
+The most useful form of `Reader`, however, comes in the form of `ReaderT`, which you can read more
+about in the next chapter: [ReaderT](./08-readert.md).
