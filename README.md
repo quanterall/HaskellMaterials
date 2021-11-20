@@ -13,7 +13,7 @@
   - [Making your first example project](#making-your-first-example-project)
     - [Using development containers in VSCode](#using-development-containers-in-vscode)
   - [Using the REPL/GHCi](#using-the-replghci)
-  - [Basic reading materials](#basic-reading-materials)
+  - [Chapters](#chapters)
   - ["Help! I want to print a value but I can't print without IO!"](#help-i-want-to-print-a-value-but-i-cant-print-without-io)
   - ["I'm comfortable enough with Haskell basics but I don't know how to structure apps."](#im-comfortable-enough-with-haskell-basics-but-i-dont-know-how-to-structure-apps)
   - [Workflow screencasts](#workflow-screencasts)
@@ -191,7 +191,7 @@ make the experience a bit better in the development container REPLs:
 
 [![Watch](https://img.youtube.com/vi/JuaqOirNF8g/0.jpg)](https://youtu.be/JuaqOirNF8g)
 
-## Basic reading materials
+## Chapters
 
 The below documents contain information and examples about different topics. Generally speaking they
 are readable from top to bottom in terms of the assumptions they make about knowledge level.
@@ -204,6 +204,11 @@ are readable from top to bottom in terms of the assumptions they make about know
 - [Mutable variables in Haskell](./basics/06-mutable-variables.md)
 - [The Reader Monad](./basics/07-reader.md)
 - [The ReaderT Monad Transformer](./basics/08-readert.md)
+
+There is a series of extra materials that can be read to gain some familiarity with
+libraries/aspects of solving problems in Haskell:
+
+- [Streaming with Conduit](./basics/extras/streaming.md)
 
 ## "Help! I want to print a value but I can't print without IO!"
 
