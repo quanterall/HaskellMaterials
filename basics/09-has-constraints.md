@@ -167,13 +167,14 @@ logToFile logString = do
 ```
 
 We've added two new constraints to our function; we can now guarantee that this works with any stack
-that has `Reader` capabilities as well as `IO` regardless of any other transformers they may have.
+that can read an implicit argument of type `e`, where that `e` also has an implementation of
+`HasLogHandle`. On top of that we are also saying that the `m` needs to be able to execute `IO`
+actions.
 
-This is a perfectly fine stopping point for a program in terms of abstraction and is very useful in
-a library. We've made it generic enough where it can be used in many different contexts but are not
-mentioning any superfluous expectations; we're effectively saying in our type signature that we need
-the capability to read an implicit value of type `e` and that type needs to have `HasLogEnv`
-implemented for it. We are also saying that we will be doing `IO`.
+This would be a perfectly fine stopping point for our function: It's generic enough where it can
+work in many different stacks and with many different environment types, as long as they support
+the stated things. The type signature itself also very reliably signals something about what is
+going on in the function.
 
 ### Exercises (Constraints with `ReaderT`)
 
