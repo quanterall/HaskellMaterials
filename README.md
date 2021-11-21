@@ -205,6 +205,7 @@ are readable from top to bottom in terms of the assumptions they make about know
 - [The Reader Monad](./basics/07-reader.md)
 - [The ReaderT Monad Transformer](./basics/08-readert.md)
 - [`Has` constraints](./basics/09-has-constraints.md)
+- [Capability constraints](./basics/10-capability-constraints.md)
 
 There is a series of extra materials that can be read to gain some familiarity with
 libraries/aspects of solving problems in Haskell:
