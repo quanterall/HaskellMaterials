@@ -88,7 +88,7 @@ a composite type that holds several things:
 
 ```haskell
 import RIO
-import System.IO (hPutStrLn, openFile, print)
+import System.IO (hPutStrLn, print)
 
 data ApplicationState = ApplicationState
   { string :: String,
@@ -139,7 +139,7 @@ that stack and not be forced to write it out everywhere we use it:
 
 ```haskell
 import RIO
-import System.IO (hPutStrLn, openFile, print)
+import System.IO (hPutStrLn, print)
 
 -- type AppMonad a = ReaderT ApplicationState IO a
 type AppMonad = ReaderT ApplicationState IO

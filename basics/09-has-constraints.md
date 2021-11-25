@@ -12,7 +12,7 @@ the file name or file handle that we are logging with:
 
 ```haskell
 import RIO
-import System.IO (hPutStrLn, openFile, print)
+import System.IO (hPutStrLn, print)
 
 -- type AppMonad a = ReaderT ApplicationState IO a
 type AppMonad = ReaderT ApplicationState IO
@@ -62,7 +62,7 @@ of one to generalize `logToFile`:
 
 ```haskell
 import RIO
-import System.IO (hPutStrLn, openFile, print)
+import System.IO (hPutStrLn, print)
 
 -- type AppMonad a = ReaderT ApplicationState IO a
 type AppMonad = ReaderT ApplicationState IO
@@ -119,7 +119,7 @@ to support any monad transformer stack, however, we can go further:
 
 ```haskell
 import RIO
-import System.IO (hPutStrLn, openFile, print)
+import System.IO (hPutStrLn, print)
 
 -- type AppMonad a = ReaderT ApplicationState IO a
 type AppMonad = ReaderT ApplicationState IO
