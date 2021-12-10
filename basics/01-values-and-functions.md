@@ -188,22 +188,22 @@ an individual basis in terms of whether or not it makes the code more or less ea
 
 ### Boolean & arithmetic operations
 
-|   Math  | Haskell | Notes |
-| :-----: | :-----: | :-------------------------------------: |
-|    +    |    +    |                                         |
-|    -    |    -    |                                         |
-|    *    |    *    |                                         |
-|    /    |    /    |                                         |
-|    >    |    >    |                                         |
-|    <    |    <    |                                         |
-|    ≥    |   >=    |                                         |
-|    ≤    |   <=    |                                         |
-|    =    |   ==    |                                         |
-|    ≠    |   /=    |                                         |
-|    xⁿ   |  x ^ n  | x is numeric, n is integral             |
-|    xⁿ   | x ** n  | x & n are both floating point values    |
-| x mod n | x rem n | x and n are integral [0]                |
-| x mod n | x mod n | x and n are integral [0]                |
+|   Math  | Haskell   | Notes |
+| :-----: | :-----:   | :-------------------------------------: |
+|    +    |      +    |                                         |
+|    -    |      -    |                                         |
+|    *    |      *    |                                         |
+|    /    |      /    |                                         |
+|    >    |      >    |                                         |
+|    <    |      <    |                                         |
+|    ≥    |     >=    |                                         |
+|    ≤    |     <=    |                                         |
+|    =    |     ==    |                                         |
+|    ≠    |     /=    |                                         |
+|    xⁿ   |    x ^ n  | x is numeric, n is integral             |
+|    xⁿ   |   x ** n  | x & n are both floating point values    |
+| x mod n | x `rem` n | x and n are integral [0]                |
+| x mod n | x `mod` n | x and n are integral [0]                |
 
 | Math |  C   | Haskell |        Notes        |
 | :--: | :-:  | :-----: | :-----------------: |
