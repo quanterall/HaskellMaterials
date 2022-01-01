@@ -280,7 +280,6 @@ makeLenses ''Record
 data ThingThatStoresRecord = ThingThatStoresRecord {_record :: Record}
 
 makeLenses ''ThingThatStoresRecord
--- or `foldMapM makeLenses [''ThingThatStoresRecord, ''Record]` instead of separate calls
 ```
 
 With these `makeLenses` calls we get lenses that work exactly the way we defined them before, but we
