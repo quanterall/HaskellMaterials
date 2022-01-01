@@ -13,6 +13,7 @@
       - [Lenses are not only for records](#lenses-are-not-only-for-records)
   - [Prisms](#prisms)
   - [Lenses for free](#lenses-for-free)
+  - [Should I use optics?](#should-i-use-optics)
   - [Learning much, much more](#learning-much-much-more)
 
 Optics are a reasonably big part of the Haskell ecosystem and as such we'll go over what they are
@@ -308,6 +309,17 @@ foldMapM makeLenses [''ThingThatStoresRecord, ''Record]
 
 With the above code there is only one template haskell call and so the phase restriction does not
 come into play in the same way.
+
+## Should I use optics?
+
+It's a good idea to start using lenses in a limited way in order to internalize what kind of code we
+end up with by using them. There are libraries, like
+[brick](https://hackage.haskell.org/package/brick) that put lenses front and center for much of its
+functionality, even expecting them to be defined for structures interacting with library functions.
+
+You will most certainly make things easier for yourself once you start using lenses, even in a very
+limited fashion. Having access to a composable way of viewing and modifying data structures is
+guaranteed to be a positive, but it does require some up-front and practical learning.
 
 ## Learning much, much more
 
