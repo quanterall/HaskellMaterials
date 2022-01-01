@@ -197,13 +197,22 @@ data ThingThatStoresRecord = ThingThatStoresRecord {_record :: Record}
   deriving (Eq, Show)
 
 class HasRecordField env where
-  recordField :: Lens' env String
+  fieldL :: Lens' env String
 
 instance HasRecordField Record where
-  recordField = field
+  fieldL = field
 
 instance HasRecordField ThingThatStoresRecord where
-  recordField = record . field
+  fieldL = record . field
+
+class HasRecord env where
+  recordL :: Lens' env Record
+
+instance HasRecord Record where
+  recordL = id
+
+instance HasRecord ThingThatStoresRecord where
+  recordL = record
 
 field :: Lens' Record String
 field = lens _field (\record' newValue -> record' {_field = newValue})
@@ -211,14 +220,24 @@ field = lens _field (\record' newValue -> record' {_field = newValue})
 record :: Lens' ThingThatStoresRecord Record
 record = lens _record (\thing newValue -> thing {_record = newValue})
 
-functionUsingEnvironment :: (MonadReader env m, HasRecordField env) => m Int
-functionUsingEnvironment = do
-  value <- view recordField
+functionUsingView :: (MonadReader env m, HasRecordField env) => m Int
+functionUsingView = do
+  value <- view fieldL
+  pure $ length value
+
+functionUsingPreview :: (MonadReader env m, HasRecord env) => m Int
+functionUsingPreview = do
+  value <- preview $ recordL . field . ix 2
   pure $ length value
 ```
 
-With `view` we can use a lens in order to get a somewhat more flexible version of
+With [view](https://www.stackage.org/haddock/lts-18.20/rio-0.1.21.0/RIO.html#v:view) we can use a
+lens in order to get a somewhat more flexible version of
 [asks](https://www.stackage.org/haddock/lts-18.20/rio-0.1.21.0/RIO-Prelude.html#v:asks).
+
+With [preview](https://www.stackage.org/haddock/lts-18.20/rio-0.1.21.0/RIO.html#v:preview) we can
+get a version that may or may not return a value, i.e. it will return a `Maybe` of whatever we have
+focused on.
 
 #### Lenses are not only for records
 
