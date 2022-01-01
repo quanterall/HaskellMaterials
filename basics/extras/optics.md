@@ -313,7 +313,7 @@ do the following:
 
 module MyModule where
 
-import Control.Lens.TH
+import Control.Lens.TH (makeLenses)
 import RIO
 
 data Record = Record {_field :: String}
