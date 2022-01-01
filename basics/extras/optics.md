@@ -12,6 +12,7 @@
           - [Modifing values (`%~`)](#modifing-values-~)
       - [Lenses are not only for records](#lenses-are-not-only-for-records)
   - [Prisms](#prisms)
+  - [Lenses for free](#lenses-for-free)
   - [Learning much, much more](#learning-much-much-more)
 
 Optics are a reasonably big part of the Haskell ecosystem and as such we'll go over what they are
@@ -253,6 +254,56 @@ There are also common prisms that have to do with whether or not something has a
 
 These can be very useful for ensuring that we are only applying function in the case of `Just`,
 `Left` or `Right` values being present.
+
+## Lenses for free
+
+If you want to have lenses defined for your data structures without creating them yourself, you can
+do the following:
+
+```haskell
+{-# LANGUAGE TemplateHaskell #-}
+
+module MyModule where
+
+import Control.Lens.TH
+import RIO
+
+data Record = Record {_field :: String}
+
+makeLenses ''Record
+
+data ThingThatStoresRecord = ThingThatStoresRecord {_record :: Record}
+
+makeLenses ''ThingThatStoresRecord
+-- or `foldMapM makeLenses [''ThingThatStoresRecord, ''Record]` instead of separate calls
+```
+
+With these `makeLenses` calls we get lenses that work exactly the way we defined them before, but we
+don't have to define them ourselves. Note that this uses "Template Haskell" to generate the lenses
+and so it's important to keep its quirks in mind. We could, for example, not put the
+`ThingThatStoresRecord` definition and call to `makeLenses` before the `Record` definition, because
+Template Haskell splits modules up into separate compilation phases, effectively. Because of this,
+the order of definitions matters if we use the `makeLenses` calls like we did above.
+
+We can combat this quirk somewhat by using `makeLenses` together with `foldMapM`:
+
+```haskell
+{-# LANGUAGE TemplateHaskell #-}
+
+module MyModule where
+
+import Control.Lens.TH (makeLenses)
+import RIO
+
+data ThingThatStoresRecord = ThingThatStoresRecord {_record :: Record}
+
+data Record = Record {_field :: String}
+
+foldMapM makeLenses [''ThingThatStoresRecord, ''Record]
+```
+
+With the above code there is only one template haskell call and so the phase restriction does not
+come into play in the same way.
 
 ## Learning much, much more
 
