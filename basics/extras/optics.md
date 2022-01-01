@@ -10,6 +10,8 @@
         - [& for setting values](#-for-setting-values)
           - [Setting constant values (`.~`)](#setting-constant-values-~)
           - [Modifing values (`%~`)](#modifing-values-~)
+      - [Other notable uses of lenses](#other-notable-uses-of-lenses)
+        - [`view`](#view)
       - [Lenses are not only for records](#lenses-are-not-only-for-records)
   - [Prisms](#prisms)
   - [Lenses for free](#lenses-for-free)
@@ -177,6 +179,45 @@ ThingThatStoresRecord
         { _field = "Hello world" }
     }
 ```
+
+#### Other notable uses of lenses
+
+##### `view`
+
+The `view` function is a way to use a lens in a `MonadReader` context:
+
+```haskell
+import Control.Lens.TH (makeLenses)
+import RIO
+
+data Record = Record {_field :: String}
+  deriving (Eq, Show)
+
+data ThingThatStoresRecord = ThingThatStoresRecord {_record :: Record}
+  deriving (Eq, Show)
+
+class HasRecordField env where
+  recordField :: Lens' env String
+
+instance HasRecordField Record where
+  recordField = field
+
+instance HasRecordField ThingThatStoresRecord where
+  recordField = record . field
+
+field :: Lens' Record String
+field = lens _field (\record' newValue -> record' {_field = newValue})
+
+record :: Lens' ThingThatStoresRecord Record
+record = lens _record (\thing newValue -> thing {_record = newValue})
+
+functionUsingEnvironment :: (MonadReader env m, HasRecordField env) => m Int
+functionUsingEnvironment = do
+  value <- view recordField
+  pure $ length value
+```
+
+With `view` we can use a lens in order to get a somewhat more flexible version of `asks`.
 
 #### Lenses are not only for records
 
