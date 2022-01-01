@@ -211,6 +211,7 @@ There is a series of extra materials that can be read to gain some familiarity w
 libraries/aspects of solving problems in Haskell:
 
 - [Streaming with Conduit](./basics/extras/streaming.md)
+- [Optics (lenses & prisms)](./basics/extras/optics.md)
 
 ## "Help! I want to print a value but I can't print without IO!"
 
