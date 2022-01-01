@@ -217,7 +217,8 @@ functionUsingEnvironment = do
   pure $ length value
 ```
 
-With `view` we can use a lens in order to get a somewhat more flexible version of `asks`.
+With `view` we can use a lens in order to get a somewhat more flexible version of
+[asks](https://www.stackage.org/haddock/lts-18.20/rio-0.1.21.0/RIO-Prelude.html#v:asks).
 
 #### Lenses are not only for records
 
