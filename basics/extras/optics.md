@@ -98,7 +98,8 @@ field :: Lens' Record String
 field = lens _field (\record newValue -> record {_field = newValue})
 ```
 
-By itself, this lens isn't terribly useful, but let's take a look at what we can get out of it:
+By itself, this lens isn't terribly useful, but let's take a look at what we can get out of it if we
+also define a lens for the `_record` field in `ThingThatStoresRecord`:
 
 ```haskell
 import RIO
@@ -109,14 +110,18 @@ data Record = Record {_field :: String}
 data ThingThatStoresRecord = ThingThatStoresRecord {_record :: Record}
   deriving (Eq, Show)
 
--- `Lens'` here is a version of the `Lens` type that only specifies what type we are getting/setting
--- from/into as well as the type of the value that we are getting/setting. Here we can see that we
--- are getting a `String` and setting a `String`, inside of a value of type `Record`.
 field :: Lens' Record String
 field = lens _field (\record' newValue -> record' {_field = newValue})
+
+record :: Lens' ThingThatStoresRecord Record
+record = lens _record (\thing newValue -> thing {_record = newValue})
 ```
 
 #### Operators
+
+In order to get or set values in a structure, we'll have to employ a few different operators. These
+operators will tell us (and the type system) what it is we want to accomplish with our lenses, since
+they work for many different operations.
 
 ##### ^. for getting values
 
