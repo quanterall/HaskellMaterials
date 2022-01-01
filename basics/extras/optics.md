@@ -236,7 +236,7 @@ Q> [1..9] & ix 3 %~ (+ 5)
 -- Setting the head of a list to 42, if it exists
 Q> [1..9] & _head .~ 42
 [42, 2, 3, 4, 5, 6, 7, 8, 9]
-Q> [] & _head .~ 0
+Q> [] & _head .~ 42
 []
 -- Setting the last element of a list to 42, if it exists
 Q> [1..9] & _last .~ 42
