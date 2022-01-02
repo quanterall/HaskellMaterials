@@ -248,7 +248,7 @@ defined for it or we are able to define them ourselves:
 ```haskell
 -- Setting the third slot of a 3-tuple to 5
 Q> (1, 2, 3) & _3 .~ 5
-( 1, 2, 5)
+(1, 2, 5)
 -- Adding 5 to the fourth element in a list 
 Q> [1..9] & ix 3 %~ (+ 5)
 [1, 2, 3, 9, 5, 6, 7, 8, 9]
