@@ -266,7 +266,7 @@ Q> [] & _last .~ 42
 -- function that says to take the `_tail` result and apply something to each thing
 Q> [1..9] & _tail . mapped %~ (+ 5)
 [1, 7, 8, 9, 10, 11, 12, 13, 14]
-Q> [] & _tail %~ (+ 5)
+Q> [] & _tail . mapped %~ (+ 5)
 []
 ```
 
