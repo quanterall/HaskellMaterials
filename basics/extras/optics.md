@@ -377,6 +377,9 @@ It's a good idea to start using lenses in a limited way in order to internalize 
 end up with by using them. There are libraries, like
 [brick](https://hackage.haskell.org/package/brick) that put lenses front and center for much of its
 functionality, even expecting them to be defined for structures interacting with library functions.
+The very popular [amazonka](https://hackage.haskell.org/package/amazonka) library and its
+sub-libraries also use lenses for creation of the different commands one can execute in order to do
+things with AWS.
 
 You will most certainly make things easier for yourself once you start using lenses, even in a very
 limited fashion. Having access to a composable way of viewing and modifying data structures is
