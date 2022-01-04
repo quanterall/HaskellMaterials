@@ -204,8 +204,8 @@ types/handlers.
 
 ### Tools for working with exceptions and values
 
-We saw earlier in this document that we can take code throwing exceptions and capture exceptions
-into `Either errorType a` values. These functions come in three primary flavors:
+We saw earlier in this document that we can take code throwing exceptions and work with those
+exceptions in different ways. For example, we can use `try` to turn an exception into a value.
 
 #### `try`
 
