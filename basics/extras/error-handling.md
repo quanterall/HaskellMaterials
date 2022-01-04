@@ -24,6 +24,7 @@
         - [`catchIO` & `catchAny`](#catchio--catchany)
         - [`handle`, `handleIO` and `handleAny`](#handle-handleio-and-handleany)
         - [`catches`](#catches)
+      - [`bracket`](#bracket)
 
 Error handling is of course a central part of programming. Determining which errors are recoverable,
 unrecoverable, common, rare or have other important attributes is something that we constantly come
@@ -412,3 +413,29 @@ configuration <-
 Here we're catching two different exceptions. They happen to have exactly the same handling code in
 this case, but as long as both handlers return the same `m a` as the action we are catching
 exceptions from, we're fine.
+
+#### `bracket`
+
+When we want to acquire a resource and release it when we're done, we can use `bracket`. This
+function takes an action that gives us the resource ("acquire"), a resource that gives back the
+resource ("release") as well an action to run on the acquired resource. If an exception occurs in
+our action, we'll still run the cleanup/release code.
+
+An example:
+
+```haskell
+-- | Executes an action with a session. If an exception is thrown along the way, the session is
+-- automatically checked in again.
+withSession ::
+  (MonadUnliftIO m, MonadThrow m) =>
+  TBMQueue SeleniumProcess ->
+  (SeleniumProcess -> m a) ->
+  m a
+withSession sessions action = do
+  bracket (checkOutSession sessions) (checkInSession sessions) action
+```
+
+In this case we are acquiring a session to use, running the `action` (that takes a
+`SeleniumProcess`/session) and when we're done we're checking the session into the queue again.
+If we were to throw an exception along the way, the session would still be checked in.
+
