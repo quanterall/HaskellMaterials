@@ -212,6 +212,7 @@ libraries/aspects of solving problems in Haskell:
 
 - [Streaming with Conduit](./basics/extras/streaming.md)
 - [Optics (lenses & prisms)](./basics/extras/optics.md)
+- [Error handling](./basics/extras/error-handling.md)
 
 ## "Help! I want to print a value but I can't print without IO!"
 
