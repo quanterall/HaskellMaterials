@@ -26,6 +26,7 @@
         - [`catches`](#catches)
       - [`bracket`](#bracket)
     - [Reading more](#reading-more)
+    - [Additions to be made in the future](#additions-to-be-made-in-the-future)
 
 Error handling is of course a central part of programming. Determining which errors are recoverable,
 unrecoverable, common, rare or have other important attributes is something that we constantly come
@@ -449,3 +450,10 @@ details some of the considerations that go into handling errors in Haskell.
 This article also contains a link to
 [a more comprehensive article](https://www.fpcomplete.com/haskell/tutorial/exceptions/) that talks
 about these things and more.
+
+### Additions to be made in the future
+
+It's very likely that the concept of asynchronous exceptions will be added to this document in time.
+Since this is a tricker concept than bog standard synchronous exception handling and we can manage
+exceptions reasonably well using the tools outlined in this document, I think it can be delayed
+somewhat.
