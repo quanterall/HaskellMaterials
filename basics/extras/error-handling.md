@@ -25,6 +25,7 @@
         - [`handle`, `handleIO` and `handleAny`](#handle-handleio-and-handleany)
         - [`catches`](#catches)
       - [`bracket`](#bracket)
+    - [Reading more](#reading-more)
 
 Error handling is of course a central part of programming. Determining which errors are recoverable,
 unrecoverable, common, rare or have other important attributes is something that we constantly come
@@ -439,3 +440,12 @@ In this case we are acquiring a session to use, running the `action` (that takes
 `SeleniumProcess`/session) and when we're done we're checking the session into the queue again.
 If we were to throw an exception along the way, the session would still be checked in.
 
+### Reading more
+
+If one wants to read more, there is a
+[concise article](https://www.fpcomplete.com/blog/2016/11/exceptions-best-practices-haskell/) that
+details some of the considerations that go into handling errors in Haskell.
+
+This article also contains a link to
+[a more comprehensive article](https://www.fpcomplete.com/haskell/tutorial/exceptions/) that talks
+about these things and more.
