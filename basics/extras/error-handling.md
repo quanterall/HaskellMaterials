@@ -315,6 +315,7 @@ The usage of `fromEither` and `fromEitherM` is as follows:
 getEnvironmentValue :: (MonadIO m) => EnvironmentKey -> m (Either EnvironmentKey String)
 getEnvironmentValue key = do
   maybe (Left key) Right <$> liftIO (lookupEnv $ _unEnvironmentKey key)
+
 readEnvironmentVariable :: (FromEnvironmentValue a, MonadUnliftIO m) => EnvironmentKey -> m a
 readEnvironmentVariable key = do
   -- `getEnvironmentValue key` returns an `Either EnvironmentKey String` value. We use `mapLeft` to
