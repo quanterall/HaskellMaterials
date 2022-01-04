@@ -287,7 +287,7 @@ mapExceptionM UnzipError $ unzipIntoPath path $ responseBody response
 #### `fromX`
 
 The `fromX` functions are useful for turning values into exceptions when one wants to just bubble up
-an error value.
+an exception from that value.
 
 ##### `fromEither :: (Exception e, MonadThrow m) => Either e a -> m a`
 
