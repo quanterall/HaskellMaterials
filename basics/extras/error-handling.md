@@ -232,11 +232,10 @@ exceptional/rare errors still can be thrown and thus handled via the exception m
 at least stated up front that we have some particular type of errors that we wouldn't be surprised
 to see.
 
-If code is part of initialization, it's not unreasonable to assume that it can use exceptions to
+If code is part of application initialization, it's not unreasonable for it to use exceptions to
 signal failure. If most applications are going to use library functionality specifically during
 setup, we should feel free to make it use exceptions. If a user needs error values from them for
-a specific set of errors, they should feel free to use `try`/`catch` to capture these scenarios into
-types/handlers.
+a specific set of errors, they can use `try`/`catch` to capture these scenarios into types/handlers.
 
 ### Tools for working with exceptions and values
 
