@@ -220,7 +220,7 @@ One of the most obvious downsides of this approach is that we're not signalling 
 expected error type is. Though, it's of course always the case, as illustrated in the previous
 section, that we can **say** that we expect some type of error, but still throw a completely
 different one that we're not handling. Any promise that we're throwing or returning a specific one,
-then, is more of a guarantee that we can throw/return that one (**among others**).
+then, is more of a suggestion that we might throw/return that one (**among others**).
 
 ### When should we do what?
 
