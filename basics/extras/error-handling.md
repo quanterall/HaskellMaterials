@@ -75,6 +75,21 @@ tryStartSession ::
   m (Either SessionStartError SessionStartResult)
 tryStartSession sessionMode =
   startSession sessionMode >>> try
+
+startSession ::
+  (MonadThrow m, MonadUnliftIO m) =>
+  SessionMode ->
+  SeleniumPath ->
+  m SessionStartResult
+startSession SessionOnDemand seleniumPath = do
+  xvfbProcess <- mapExceptionM XvfbSessionError startXvfb
+  (StartedOnDemand <$> startSelenium xvfbProcess seleniumPath)
+    `catch` ( \(e :: SeleniumStartError) -> do
+                xvfbProcess ^. xpProcess & stopProcess
+                throwM $ SeleniumSessionError e
+            )
+startSession (SessionAlreadyStarted seleniumPort) _seleniumPath = do
+  pure $ PremadeSession seleniumPort
 ```
 
 We can see here that our function should return one of two things:
@@ -143,26 +158,46 @@ In many cases code can actually be improved by using `m a` instead of `m (Either
 often results in more easily composed code and it's trivial for a caller to turn `m a` into
 `Either errorType a` themselves by using `try`.
 
-If we employ this approach instead, the function we call looks as follows:
+The reason it's easier to compose code that only returns `m a` is that functions returning
+`m (Either e a)` have explicitly put a separate `Monad` structure outside of the one we are
+currently in: `m`. When we do this, we could try to extract these from our `m`:
 
 ```haskell
-startSession ::
-  (MonadThrow m, MonadUnliftIO m) =>
-  SessionMode ->
-  SeleniumPath ->
-  m SessionStartResult
-startSession SessionOnDemand seleniumPath = do
-  xvfbProcess <- mapExceptionM XvfbSessionError startXvfb
-  (StartedOnDemand <$> startSelenium xvfbProcess seleniumPath)
-    `catch` ( \(e :: SeleniumStartError) -> do
-                xvfbProcess ^. xpProcess & stopProcess
-                throwM $ SeleniumSessionError e
-            )
-startSession (SessionAlreadyStarted seleniumPort) _seleniumPath = do
-  pure $ PremadeSession seleniumPort
+result1 <- action1 :: m (Either e1 a)
+result2 <- action2 :: m (Either e2 b)
+let result = do
+      r1 <- result1 :: Either e1 a
+      -- This will never compile, as `Either e1` is a different `Monad` than `Either e2`
+      r2 <- result2 :: Either e2 b
+      ...
 ```
 
-The calling code now becomes:
+To get around the above situation we would have to somehow unify `e1` and `e2`, either via a union
+type that represents both of them, or by using constraints on a `e` that matches with both of them.
+This way we would have `Either e` as the `Monad` and could compose them. If we end up doing a lot of
+work to support the case of a unified `e`, what have we actually accomplished in the end? A calling
+function will still not share `e` with our `e`, very likely, unless it also employs more of this
+unification machinery (this can get very tedious with union types). This means that functions that
+might call ours still will have composition problems while using ours.
+
+So what happens if we employ the approach of using just `m a` instead?
+
+```haskell
+result1 <- action1 :: m a
+result2 <- action2 :: m b
+```
+
+There is no extra error unpacking required and `result1` will always be of type `a`, and `result2`
+will always be of type `b`. On top, if we want to engage in specific error handling here, there is
+no requirement that any of the errors have the same type, as they are never mentioned in the same
+type as each other. This allows you to actually define separate types for all of your errors.
+
+If a function calls ours, we'll have just returned a `m a` that they can compose as they please
+(they're already executing in `m` if they're calling our function, obviously). The errors they might
+be concerned about they can still handle or catch as they see fit. As the call stack grows, this
+type of error handling **can** grow more gracefully.
+
+The calling code if we were to use just `startSession` that returns `m SessionStartresult` becomes:
 
 ```haskell
 -- `startResult` will just be a `SessionStartResult` here
