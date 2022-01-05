@@ -79,8 +79,8 @@ tryStartSession sessionMode =
 
 We can see here that our function should return one of two things:
 
-- A `Right` value, which is a `SessionStartResult`; this is the success case of this function
-- A `Left` value, which is a `SessionStartError`; this is the failure case of this function
+- A `Right SessionStartResult`: the success case
+- A `Left SessionStartError`: the failure case
 
 When we use this function we have to do the following if we want to move forward with using a
 potential success value:
