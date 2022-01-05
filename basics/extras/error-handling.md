@@ -57,9 +57,9 @@ value to see if it's a valid result or not. The same applies to functions return
 there is a `Left` with some attached error information or not. Otherwise they know that the call
 succeeded and can use the success value.
 
-For pure code, this is a fairly solid approach. Impure exceptions **are** rare and we shouldn't
-necessarily be too cautious and expect to catch too many exceptions in pure code (and we should
-never expect to throw exceptions in pure code).
+For pure code, this is a good approach. Impure exceptions **are** rare and we shouldn't necessarily
+be too cautious and expect to catch too many exceptions in pure code (and we should never throw
+exceptions in pure code).
 
 There are scenarios where this model starts falling apart a bit, however.
 
