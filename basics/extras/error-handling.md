@@ -129,12 +129,13 @@ We could also use `tryIO` to catch any `IOException` and turn it into a `Left` v
 very specific user-defined exception type, this would not catch just any exception, but rather just
 `IOException`.
 
-With the above in mind, the criticism that error handling with exceptions "lies" about its return
-values becomes hard to reconcile. If you think back to other languages, even the ones using
-primarily error values, it's usually a safe bet that you'll find that they, too, have some manner of
-exceptions or exception-like language feature that likewise causes this type of "lie".
+With the above in mind, the criticism that error handling in Haskell with exceptions "lies" about
+return types becomes hard to take seriously. If you think back to other languages, even the ones
+using primarily error values, it's usually a safe bet that you'll find that they, too, have some
+manner of exceptions or exception-like language feature that likewise causes this type of "lie".
 
-So what is the most "honest" type signature in the end?
+The concept of "honesty" in return types seems a bit hollow for effectful code, then.  But what is
+the most "honest" type signature in the end?
 
 ### `(MonadThrow m) => m a`
 
