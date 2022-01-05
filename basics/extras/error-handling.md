@@ -77,7 +77,7 @@ tryStartSession sessionMode =
   startSession sessionMode >>> try
 ```
 
-We can see here that our function should return two primary things:
+We can see here that our function should return one of two things:
 
 - A `Right` value, which is a `SessionStartResult`; this is the success case of this function
 - A `Left` value, which is a `SessionStartError`; this is the failure case of this function
