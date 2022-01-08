@@ -15,6 +15,7 @@
       - [Lenses are not only for records](#lenses-are-not-only-for-records)
   - [Prisms](#prisms)
     - [Prisms as a way of narrowing types](#prisms-as-a-way-of-narrowing-types)
+  - [Optics for free](#optics-for-free)
   - [Should I use optics?](#should-i-use-optics)
   - [Learning much, much more](#learning-much-much-more)
 
@@ -382,6 +383,7 @@ Q> _FlashEvent # RemoveFlashMessage 42
 FlashEvent (RemoveFlashMessage 42)
 ```
 
+## Optics for free
 
 If you want to have lenses defined for your data structures without creating them yourself, you can
 do the following:
@@ -429,6 +431,55 @@ foldMapM makeLenses [''ThingThatStoresRecord, ''Record]
 
 With the above code there is only one template haskell call and so the phase restriction does not
 come into play in the same way.
+
+If we want prisms to be defined we can use `makeClassyPrisms` as well:
+
+```haskell
+{-# LANGUAGE TemplateHaskell #-}
+
+module MyModule where
+
+import Control.Lens.TH (makeClassyPrisms)
+import RIO
+
+data Event
+  = FlashEvent !FlashMessageEvent
+  | CurrentQueueAttributes !(Maybe QueueAttributes)
+  deriving (Eq, Show)
+
+makeClassyPrisms ''Event
+```
+
+This automatically defines a class called `AsEvent`:
+
+```haskell
+class AsEvent a where
+  _Event :: Prism' a Event
+  _FlashEvent :: Prism' a FlashMessageEvent
+  _CurrentQueueAttributes :: Prism' a (Maybe QueueAttributes)
+  _FlashEvent = ((.) _Event) _FlashEvent
+  _CurrentQueueAttributes = ((.) _Event) _CurrentQueueAttributes
+
+instance AsEvent Event where
+  _Event = id
+  _FlashEvent =
+    prism
+      FlashEvent
+      (\case e of
+         FlashEvent flashMessageEvent -> Right flashMessageEvent
+         _ -> Left e)
+  _CurrentQueueAttributes =
+    prism
+      CurrentQueueAttributes
+      (\case e of
+         CurrentQueueAttributes maybeQueueAttributes -> Right maybeQueueAttributes
+         _ -> Left e)
+```
+
+In terms of the class, we see that in addition to the constructor prisms we also have one for the
+`Event` type. We also get implementations for this where the prism definition for turning an `Event`
+into an `Event` is predictably `id` and the other definitions, while cleaned up somewhat manually
+here, are defined as illustrated above.
 
 ## Should I use optics?
 
