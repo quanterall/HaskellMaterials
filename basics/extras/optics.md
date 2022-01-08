@@ -14,7 +14,7 @@
         - [`view`](#view)
       - [Lenses are not only for records](#lenses-are-not-only-for-records)
   - [Prisms](#prisms)
-  - [Lenses for free](#lenses-for-free)
+    - [Prisms as a way of narrowing types](#prisms-as-a-way-of-narrowing-types)
   - [Should I use optics?](#should-i-use-optics)
   - [Learning much, much more](#learning-much-much-more)
 
@@ -322,7 +322,66 @@ There are also common prisms that have to do with whether or not something has a
 These can be very useful for ensuring that we are only applying function in the case of `Just`,
 `Left` or `Right` values being present.
 
-## Lenses for free
+### Prisms as a way of narrowing types
+
+We can see in the examples above that we can use prisms to zoom into a value that is part of a
+bigger type. In some ways we can view this as a way of further narrowing a type. We saw this also
+with our `positive` prism. In fact, if we add a type to this, we can make this more obvious:
+
+```haskell
+newtype PositiveNumber a = PositiveNumber {_unPositiveNumber :: a}
+  deriving (Eq, Show, Num)
+
+_PositiveNumber :: (Ord a, Num a) => Prism' a (PositiveNumber a)
+_PositiveNumber =
+  prism' _unPositiveNumber (\a -> if a > 0 then Just (PositiveNumber a) else Nothing)
+```
+
+Here `PositiveNumber` represents something that is a positive number, and we can use this to narrow
+down our normally just numeric types into positive versions. If we had a suite of tools that worked
+only with these, we could trivially use this lens to refer only to the positive ones.
+
+This is not just limited to these kinds of prisms, however. It's even clearer that we can refer to
+a narrower type if we look at the following:
+
+```haskell
+data Event
+  = FlashEvent !FlashMessageEvent
+  | CurrentQueueAttributes !(Maybe QueueAttributes)
+  deriving (Eq, Show)
+
+_FlashEvent :: Prism' Event FlashMessageEvent
+_FlashEvent =
+  prism'
+    FlashEvent
+    -- This is known as a "LambdaCase", it's a way of using `case` on an incoming argument without
+    -- having to bind it.
+    ( \case
+        FlashEvent e -> Just e
+        _ -> Nothing
+    )
+```
+
+In the code above we are defining this prism as a narrowing of our `Event` type. If we apply this
+prism to an `Event` value we'll be able to say whether or not it's a `FlashMessageEvent` or
+something else, just like with our previous prisms.
+
+Of course, we can also go the opposite direction and use this to construct an `Event` from a
+`FlashMessageEvent`. This will always work if we consider a prism a narrowing of a type, because
+we'll always be able to widen a type in this scenario:
+
+```haskell
+-- `review` lets us take a prism and a value and return the "widened" type
+Q> review _FlashEvent $ RemoveFlashMessage 42
+FlashEvent (RemoveFlashMessage 42)
+-- `re` does the same thing in a getter context
+Q> RemoveFlashMessage 42 ^. re _FlashEvent
+FlashEvent (RemoveFlashMessage 42)
+-- `#` is an operator version of `review`
+Q> _FlashEvent # RemoveFlashMessage 42
+FlashEvent (RemoveFlashMessage 42)
+```
+
 
 If you want to have lenses defined for your data structures without creating them yourself, you can
 do the following:
