@@ -467,13 +467,13 @@ instance AsEvent Event where
       FlashEvent
       (\case
          FlashEvent flashMessageEvent -> Right flashMessageEvent
-         _ -> Left e)
+         e -> Left e)
   _CurrentQueueAttributes =
     prism
       CurrentQueueAttributes
       (\case
          CurrentQueueAttributes maybeQueueAttributes -> Right maybeQueueAttributes
-         _ -> Left e)
+         e -> Left e)
 ```
 
 In terms of the class, we see that in addition to the constructor prisms we also have one for the
