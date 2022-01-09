@@ -465,13 +465,13 @@ instance AsEvent Event where
   _FlashEvent =
     prism
       FlashEvent
-      (\case e of
+      (\case
          FlashEvent flashMessageEvent -> Right flashMessageEvent
          _ -> Left e)
   _CurrentQueueAttributes =
     prism
       CurrentQueueAttributes
-      (\case e of
+      (\case
          CurrentQueueAttributes maybeQueueAttributes -> Right maybeQueueAttributes
          _ -> Left e)
 ```
