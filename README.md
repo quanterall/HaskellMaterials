@@ -283,8 +283,20 @@ as well as emphasize different parts of them.
 As is usually the case with these things, people have helped make things possible and with improving
 things:
 
-Ivana Andersson, Bogdan Bogdanov, Pavlin Nedelchev & Ivan Volkov - For helping by reading the
-chapters and going through exercises, pointing out how they could be improved.
+Special thanks to **Daniel Valchev**, **Alex Radikov** & **Alex Yordanov** for bravely jumping into
+early Haskell learning sessions and providing feedback on how they could be improved.
+
+For testing out the materials, learning Haskell and going through exercises and pointing out how
+they could be improved:
+
+- Ivan Volkov
+- Ivana Andersson
+- Bogdan Bogdanov
+- Pavlin Nedelchev
+- Georgi Spasov
+- Maxime Kiriakov
+- Zahari Hristov
+- Mihail Dobrev
 
 Radiana Koleva - For giving general advice on structure.
 
