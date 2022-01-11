@@ -2,6 +2,7 @@
 
 - [HaskellMaterials](#haskellmaterials)
   - [Work In Progress](#work-in-progress)
+  - [Chapters](#chapters)
   - [Real World Haskell](#real-world-haskell)
   - [Learning Haskell](#learning-haskell)
     - [Resist the urge to try to learn exactly how everything works immediately](#resist-the-urge-to-try-to-learn-exactly-how-everything-works-immediately)
@@ -13,7 +14,6 @@
   - [Making your first example project](#making-your-first-example-project)
     - [Using development containers in VSCode](#using-development-containers-in-vscode)
   - [Using the REPL/GHCi](#using-the-replghci)
-  - [Chapters](#chapters)
   - ["Help! I want to print a value but I can't print without IO!"](#help-i-want-to-print-a-value-but-i-cant-print-without-io)
   - ["I'm comfortable enough with Haskell basics but I don't know how to structure apps."](#im-comfortable-enough-with-haskell-basics-but-i-dont-know-how-to-structure-apps)
   - [Workflow screencasts](#workflow-screencasts)
@@ -24,6 +24,29 @@
 This repository is (and likely will be for quite some time) a work in progress. Suggestions for
 articles on concepts and themes are welcome, as well as corrections/clarifications on already
 available material.
+
+## Chapters
+
+The below documents contain information and examples about different topics. Generally speaking they
+are readable from top to bottom in terms of the assumptions they make about knowledge level.
+
+- [Values and functions, basic types](./basics/01-values-and-functions.md)
+- [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
+- [Type classes](./basics/03-type-classes.md)
+- ["Effectful" and `IO`](./basics/04-effectful.md)
+- [JSON in Haskell](./basics/05-json-data.md)
+- [Mutable variables in Haskell](./basics/06-mutable-variables.md)
+- [The Reader Monad](./basics/07-reader.md)
+- [The ReaderT Monad Transformer](./basics/08-readert.md)
+- [`Has` constraints](./basics/09-has-constraints.md)
+- [Capability constraints](./basics/10-capability-constraints.md)
+
+There is a series of extra materials that can be read to gain some familiarity with
+libraries/aspects of solving problems in Haskell:
+
+- [Streaming with Conduit](./basics/extras/streaming.md)
+- [Optics (lenses & prisms)](./basics/extras/optics.md)
+- [Error handling](./basics/extras/error-handling.md)
 
 ## Real World Haskell
 
@@ -191,29 +214,6 @@ make the experience a bit better in the development container REPLs:
 
 [![Watch](https://img.youtube.com/vi/JuaqOirNF8g/0.jpg)](https://youtu.be/JuaqOirNF8g)
 
-## Chapters
-
-The below documents contain information and examples about different topics. Generally speaking they
-are readable from top to bottom in terms of the assumptions they make about knowledge level.
-
-- [Values and functions, basic types](./basics/01-values-and-functions.md)
-- [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
-- [Type classes](./basics/03-type-classes.md)
-- ["Effectful" and `IO`](./basics/04-effectful.md)
-- [JSON in Haskell](./basics/05-json-data.md)
-- [Mutable variables in Haskell](./basics/06-mutable-variables.md)
-- [The Reader Monad](./basics/07-reader.md)
-- [The ReaderT Monad Transformer](./basics/08-readert.md)
-- [`Has` constraints](./basics/09-has-constraints.md)
-- [Capability constraints](./basics/10-capability-constraints.md)
-
-There is a series of extra materials that can be read to gain some familiarity with
-libraries/aspects of solving problems in Haskell:
-
-- [Streaming with Conduit](./basics/extras/streaming.md)
-- [Optics (lenses & prisms)](./basics/extras/optics.md)
-- [Error handling](./basics/extras/error-handling.md)
-
 ## "Help! I want to print a value but I can't print without IO!"
 
 [`Debug.Trace`](https://hackage.haskell.org/package/base-4.14.1.0/docs/Debug-Trace.html) is your
@@ -271,6 +271,14 @@ point them out as things to do and experiment with:
 - Experiment with adding monad constraints like `CanModifyUsers m => User -> m ()` to your functions
   in order to limit them from being able to do anything else effectful; giving you ultimate control
   of exactly what effectful thing a function can do.
+
+The steps above can be found in our materials and be explored in the following order:
+
+- [Mutable variables in Haskell](./basics/06-mutable-variables.md)
+- [The Reader Monad](./basics/07-reader.md)
+- [The ReaderT Monad Transformer](./basics/08-readert.md)
+- [`Has` constraints](./basics/09-has-constraints.md)
+- [Capability constraints](./basics/10-capability-constraints.md)
 
 ## Workflow screencasts
 
