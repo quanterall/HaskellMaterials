@@ -136,7 +136,7 @@ to share those opinions on the Internet. What you'll come to realize after using
 most of those opinions (good and bad) don't necessarily match real life. Haskell is more talked
 about than it is used and with that comes a certain "lore".
 
-Since it's very common to talk about Haskell without actually knowing it people are free to, for
+Since it's very common to talk about Haskell without actually knowing it people feel free to, for
 lack of a better word, make up attributes and characteristics. Unless someone has provably used
 Haskell for creating applications to solve problems, there is no reason to trust anything they say
 about the language (This actually applies to all languages and programming in general, but it's
