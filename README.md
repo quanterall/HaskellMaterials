@@ -129,6 +129,19 @@ you can pick any way to contact me (RocketChat, Discord, rickard.andersson@quant
 do my very best to answer, correct or otherwise handle it. Another avenue would be to create an issue
 or submit a pull request with the changes and/or questions.
 
+### Leave most of what you've heard at the door
+
+It's not uncommon for people to have opinions on Haskell. It's only slightly less common for people
+to share those opinions on the Internet. What you'll come to realize after using Haskell is that
+most of those opinions (good and bad) don't necessarily match real life. Haskell is more talked
+about than it is used and with that comes a certain "lore".
+
+Since it's very common to talk about Haskell without actually knowing it people are free to, for
+lack of a better word, make up attributes and characteristics. Unless someone has provably used
+Haskell for creating applications to solve problems, there is no reason to trust anything they say
+about the language (This actually applies to all languages and programming in general, but it's
+worth noting here specifically).
+
 ## Installing the build- and project management-tool `stack`
 
 [How to install Stack](https://docs.haskellstack.org/en/stable/README/#how-to-install) is a
