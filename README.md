@@ -9,6 +9,7 @@
     - [Keep in mind that learning Haskell is about getting things done](#keep-in-mind-that-learning-haskell-is-about-getting-things-done)
     - [Category theory is a branch of mathematics](#category-theory-is-a-branch-of-mathematics)
     - [Asking questions is good](#asking-questions-is-good)
+    - [Leave most of what you've heard at the door](#leave-most-of-what-youve-heard-at-the-door)
   - [Installing the build- and project management-tool `stack`](#installing-the-build--and-project-management-tool-stack)
   - [Running the examples in this repository](#running-the-examples-in-this-repository)
   - [Making your first example project](#making-your-first-example-project)
@@ -47,6 +48,7 @@ libraries/aspects of solving problems in Haskell:
 - [Streaming with Conduit](./basics/extras/streaming.md)
 - [Optics (lenses & prisms)](./basics/extras/optics.md)
 - [Error handling](./basics/extras/error-handling.md)
+- [Testing](./basics/extras/testing.md)
 
 ## Real World Haskell
 
