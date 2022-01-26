@@ -251,3 +251,59 @@ has found an error, it also tries to find other values that cause the error. Thi
 attribute because it will allow you, very often, to find simpler inputs that display the issue you
 are looking at. Despite the input to your functions being random, it will try to humanize the result
 so that you can more easily work with them.
+
+## Considerations for testing
+
+While it's hard to recommend changing code in order to be able to test it, it can be very useful to
+consider which code we can test more easily and to find a balance where we are able to work
+intuitively with things and still be able to test them.
+
+Many people have tried to work with what's colloquially called the
+[*Command Pattern*](https://en.wikipedia.org/wiki/Command_pattern) and this can be hard to justify
+if you're not already using it for other purposes. While it's true that this is a very easily tested
+pattern, basing your entire design around it could be considered missing the point. It's worth
+considering this type of pattern if you can see other upsides to it, however.
+
+### Find a testable core
+
+If you cannot readily test the entire functionality of something, find a more easily testable core
+and split it out. We know intuitively that pure functions, calculations from one value another,
+are easily testable. Try to encode the piece you want to test as a matter of input and output
+without involving any side effects.
+
+### Encode your effects as type classes
+
+If we want to make a function that stores something testable, we could encode that side effect as a
+type class:
+
+```haskell
+newtype Filename = Filename {_unFilename :: Text}
+  deriving (Eq, Show, Ord)
+
+class Monad m => Storage m where
+  store :: Filename -> ByteString -> m ()
+```
+
+The production implementation of this function could store something in Amazon S3, but we don't
+necessarily want to talk to S3 in our tests. We can have a testing monad that we implement this type
+class for:
+
+```haskell
+data TestState = TestState
+  { filestore :: IORef (Map Filename ByteString)
+  }
+
+newtype TestMonad a = TestMonad {runTestMonad :: RIO TestState a}
+  deriving (Functor, Applicative, Monad, MonadReader TestState, MonadIO)
+
+instance Storage TestMonad where
+  store text fileData = do
+    store' <- asks filestore
+    liftIO $ modifyIORef' store' (Map.insert text fileData)
+```
+
+On top of the obvious win where we are now able to see that a function actually does store things in
+the tested circumstances, we also make it easier to see what we actually need from our storage. If
+the concept of deleting things comes up, we can add it to the type class and our implementations
+both for production and testing will have to be updated. The functions using this will be more
+explicit about what they are actually doing as well.
