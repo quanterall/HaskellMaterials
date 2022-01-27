@@ -4,6 +4,9 @@
   - [`package.yaml`](#packageyaml)
   - [Unit tests](#unit-tests)
   - [Property testing](#property-testing)
+  - [Considerations for testing](#considerations-for-testing)
+    - [Find a testable core](#find-a-testable-core)
+    - [Encode your effects as type classes](#encode-your-effects-as-type-classes)
 
 Testing is of course a pivotal part of development and just because we have access to a very
 competent type system does not mean that we don't have to test our code.
@@ -273,37 +276,84 @@ without involving any side effects.
 
 ### Encode your effects as type classes
 
-If we want to make a function that stores something testable, we could encode that side effect as a
-type class:
+Let's say we have the following function:
 
 ```haskell
-newtype Filename = Filename {_unFilename :: Text}
-  deriving (Eq, Show, Ord)
-
-class Monad m => Storage m where
-  store :: Filename -> ByteString -> m ()
+handleSignup :: (MonadIO m) => User -> m ()
 ```
 
-The production implementation of this function could store something in Amazon S3, but we don't
-necessarily want to talk to S3 in our tests. We can have a testing monad that we implement this type
-class for:
+The internal logic of this function is not super important, but let's say that we use MailChimp
+behind the scenes to handle adding a user to a mailing list, among other things. If we wanted to
+test this function, it could prove challenging. We could take the mailing list addition action
+(presumably something like `addToMailingList :: Email -> m ()`) as a parameter and swap that action
+out in tests. This can get very tedious if we have several effects and several places.
+
+One model is instead to describe our mailing list effects as a type class:
+
+```haskell
+class MailingListModify m where
+  addToMailingList :: Email -> m ()
+```
+
+The `handleSignup` function uses this `addToMailingList` function internally just as it would any
+other function that accomplishes the same thing. Our implementation for our normal application monad
+will look exactly the same as our previous one; we call a `MailChimp` function and that's it:
+
+```haskell
+instance MailingListModify AppMonad where
+  addToMailingList = MailChimp.addToMailingList
+```
+
+For testing purposes we will implement a piece of state and a testing monad, that we will use to
+implement a mocked version of the above:
 
 ```haskell
 data TestState = TestState
-  { filestore :: IORef (Map Filename ByteString)
+  { mailingListRef :: IORef (Set Email)
   }
 
 newtype TestMonad a = TestMonad {runTestMonad :: RIO TestState a}
   deriving (Functor, Applicative, Monad, MonadReader TestState, MonadIO)
 
-instance Storage TestMonad where
-  store text fileData = do
-    store' <- asks filestore
-    liftIO $ modifyIORef' store' (Map.insert text fileData)
+instance MailingListModify TestMonad where
+  addToMailingList email = do
+    list <- asks mailingListRef
+    liftIO $ modifyIORef' list (Set.insert email)
 ```
 
-On top of the obvious win where we are now able to see that a function actually does store things in
-the tested circumstances, we also make it easier to see what we actually need from our storage. If
-the concept of deleting things comes up, we can add it to the type class and our implementations
-both for production and testing will have to be updated. The functions using this will be more
-explicit about what they are actually doing as well.
+Our test monad implementation simply puts the requested e-mail address into a set that we reference
+via a `IORef`. This allows us to later query the reference to see what is in it.
+
+We want to test that `handleSignup` adds the user to the mailing list, so let's write a test for
+that:
+
+```haskell
+module LibrarySpec where
+
+import Library
+import RIO
+import qualified RIO.Set as Set
+import Test.Hspec
+
+spec :: Spec
+spec = do
+  describe "`handleSignup`" $ do
+    it "should add a user to the mailing list" $ do
+      mailingListRef <- newIORef Set.empty
+      let testState = TestState {mailingListRef}
+          user = User {_userName = "rickard", _userEmail = Email "rickard.andersson@quanterall.com"}
+      runRIO testState $ runTestMonad $ handleSignup user
+      readIORef mailingListRef `shouldReturn` Set.singleton (_userEmail user)
+```
+
+We now have a version of our function where we didn't need to change any of the runtime behavior of
+it and fundamentally the interface has remained essentially the same; we've just added the fact that
+we are modifying mailing lists as an explicit effect via type classes. This has then enabled us to
+implement this functionality for a testing monad that we can use to inspect the results of our
+effects.
+
+It's important to keep in mind that when we test like this, we are not testing whether or not we can
+add users to mailing lists, but rather that `handleSignup` adds users to mailing lists. We've
+mocked the functionality of adding the user, so fundamentally that part is essentially useless to
+test. We are testing the intent of `handleSignup` to add a user to the mailing list, not whether our
+mailing list addition code works.
