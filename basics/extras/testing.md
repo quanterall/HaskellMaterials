@@ -270,9 +270,9 @@ considering this type of pattern if you can see other upsides to it, however.
 ### Find a testable core
 
 If you cannot readily test the entire functionality of something, find a more easily testable core
-and split it out. We know intuitively that pure functions, calculations from one value another,
-are easily testable. Try to encode the piece you want to test as a matter of input and output
-without involving any side effects.
+and split it out into a pure function. We know intuitively that pure functions, calculations from
+one value another, are easily testable. Try to encode the piece you want to test as a matter of
+input and output without involving any side effects.
 
 ### Encode your effects as type classes
 
