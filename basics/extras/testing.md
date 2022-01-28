@@ -304,7 +304,7 @@ handleSignup :: (MailingListModify m, MonadIO m) => User -> m ()
 ```
 
 Our implementation for our normal application monad will look exactly the same as our previous one;
-we call a `MailChimp` function and that's it:
+we call a function that very likely works in `IO`/`MonadIO` and that's it:
 
 ```haskell
 instance MailingListModify AppMonad where
