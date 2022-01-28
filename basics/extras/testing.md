@@ -296,8 +296,15 @@ class MailingListModify m where
 ```
 
 The `handleSignup` function uses this `addToMailingList` function internally just as it would any
-other function that accomplishes the same thing. Our implementation for our normal application monad
-will look exactly the same as our previous one; we call a `MailChimp` function and that's it:
+other function that accomplishes the same thing, and it specifies that the monad has support for
+modifying mailing lists:
+
+```haskell
+handleSignup :: (MailingListModify m, MonadIO m) => User -> m ()
+```
+
+Our implementation for our normal application monad will look exactly the same as our previous one;
+we call a `MailChimp` function and that's it:
 
 ```haskell
 instance MailingListModify AppMonad where
