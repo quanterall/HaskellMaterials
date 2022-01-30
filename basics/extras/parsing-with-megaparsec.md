@@ -14,7 +14,7 @@
     - [What does the information look like?](#what-does-the-information-look-like)
     - [Starting from the top](#starting-from-the-top)
   - [Parsing a simple scripting language](#parsing-a-simple-scripting-language)
-    - [To be added](#to-be-added)
+    - [The language](#the-language)
 
 It's very common to write compilers and interpreters for both small and large languages in Haskell.
 For this task there are several tools, but a particularly interesting one is the
@@ -285,7 +285,44 @@ Right
 
 ## Parsing a simple scripting language
 
-### To be added
+### The language
 
-This is a work in progress and will be coming soon. If you skipped to this point you should know
-that you'll gain a lot more from going through the simpler example first.
+While this is meant to show more interesting things, the fundamental purpose is still just to be an
+example of something that is more interesting and involves baking in effects in our `Parser` type.
+The purpose is not at all to make some big, complete language. With that in mind, let's look at an
+example script:
+
+```c
+// Comments start with two slashes
+
+// We can assign a string to an identifier by using the equals sign and double quotes
+user = "pesho"
+
+// We can assign the output of a shell command to an identifier by enclosing the
+// command in single quotes and accessing the `.output` field of the shell invocation
+output = 'ls -l'.output
+
+// Likewise the exit code can be accessed as well
+exitCode = 'ls -l'.exitCode
+
+// And so can stderr
+error = 'ls -l'.error
+
+// We can use an `if` to conditionally execute code
+if exitCode == 0 {
+  'echo Success!'
+} else {
+  'echo Failure!'
+}
+
+// We can use string interpolation with backticks and curly braces
+'echo `Output: {output} | Error: {error}`'
+```
+
+Looking at the above, there are some things that should stand out:
+
+- We have bindings to values and these can be referenced later. We don't want to references values
+  that don't actually exist yet.
+- We have a shell execution construct that has different "fields" that we can access.
+- We have a basic `if` for conditional execution. This also means we need value comparisons.
+- We have a basic string interpolation construct.
