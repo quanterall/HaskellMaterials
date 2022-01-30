@@ -298,25 +298,28 @@ example script:
 // We can assign a string to an identifier by using the equals sign and double quotes
 user = "pesho"
 
-// We can assign the output of a shell command to an identifier by enclosing the
+// We can assign the result of running a shell command to a value
+result = 'ls -l'
+
+// We can assign the stdout of a shell command to an identifier by enclosing the
 // command in single quotes and accessing the `.output` field of the shell invocation
-output = 'ls -l'.output
+output = 'ls -l'.out
+
+// Or we can pull out stderr
+error = 'ls -l'.err
 
 // Likewise the exit code can be accessed as well
-exitCode = 'ls -l'.exitCode
-
-// And so can stderr
-error = 'ls -l'.error
+exitCode = 'ls -l'.code
 
 // We can use an `if` to conditionally execute code
-if exitCode == 0 {
+if result {
   'echo Success!'
 } else {
   'echo Failure!'
 }
 
 // We can use string interpolation with backticks and curly braces
-'echo `Output: {output} | Error: {error}`'
+'echo `Output: {output} | Error: {error} | Exit code: {exitCode}`'
 ```
 
 Looking at the above, there are some things that should stand out:
