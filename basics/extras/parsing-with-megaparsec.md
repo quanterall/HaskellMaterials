@@ -340,3 +340,222 @@ Looking at the above, there are some things that should stand out:
 - We have a shell execution construct that has different "fields" that we can access.
 - We have a basic `if` for conditional execution. This also means we need value comparisons.
 - We have a basic string interpolation construct.
+
+### Some useful helpers
+
+When writing parsers it can be useful to have some helper functions that deal with the concept of
+reading a construct of some sort and then all whitespace after it. We can do this via the
+`Lexer.space` function with which we define how spaces are read as well as which characters start
+line comments. We then define that a lexeme can be read by applying a parser and reading all
+available whitespace after it, as well as a symbol by reading a string of characters and doing the
+same:
+
+```haskell
+-- | Defines how whitespace is consumed.
+spaceConsumer :: Parser ()
+spaceConsumer = Lexer.space MChar.space1 (Lexer.skipLineComment "//") Megaparsec.empty
+
+-- | Applies a parser and any amount of whitespace after.
+lexeme :: Parser a -> Parser a
+lexeme = Lexer.lexeme spaceConsumer
+
+-- | Reads a specific string of text and any amount of whitespace after.
+symbol :: Text -> Parser Text
+symbol = Lexer.symbol spaceConsumer
+```
+
+### A plan of action
+
+When it comes to slightly bigger problems like this, it can be helpful to start from the top and
+establish a high-level plan that still does not define every possible construct yet.
+
+With that in mind we'll define the concept of bindings as well as literal values so that we can
+parse the first line of the script above (`user = "pesho"`):
+
+#### Some initial types
+
+Let's look at some initial types that should reflect how the language works and what's in it:
+
+```haskell
+-- Our parser will have access to `ParsingState`
+type Parser = Megaparsec.ParsecT Void Text (RIO ParsingState)
+
+newtype BindingName = BindingName {unBindingName :: Text}
+  deriving (Eq, Ord, Show)
+
+data ParsingState = ParsingState
+  { -- | This holds current bindings within the script. Note that this does not consider scopes.
+    -- A binding is just a name and an associated expression that can be evaluated.
+    bindingsRef :: !(IORef (Map BindingName Expression))
+  }
+
+-- | Scripts are composed out of statements and expressions.
+data ScriptComponent
+  = Statement !Statement
+  | Expression !Expression
+  deriving (Eq, Show)
+
+-- | A statement is an action of some sort in our code, that won't have a return value.
+data Statement
+  = AssignValue !BindingName !Expression
+  | IfStatement !Expression ![ScriptComponent] ![ScriptComponent]
+  deriving (Eq, Show)
+
+-- | An expression is a piece of code that can be evaluated and has a return value after evaluation.
+data Expression
+  = -- | "A string"
+    StringLiteral !Text
+  | -- | 42
+    IntegerLiteral !Integer
+  | -- | 1337.0
+    FloatLiteral !Double
+  | -- | true / false
+    BooleanLiteral !Bool
+  | -- | `A string with a {binding}`
+    InterpolatedString ![StringInterpolationFragment]
+  | -- | 'ls -l `{inputDirectory}`'
+    -- 'ls -l `{inputDirectory}`'.out
+    -- 'ls -l `{inputDirectory}`'.err
+    -- 'ls -l `{inputDirectory}`'.code
+    ShellCommand ![ShellCommandText] !(Maybe ShellCommandComponent)
+  | -- | (When a binding with the name `binding` exists)
+    -- binding
+    BindingExpression !BindingName
+  deriving (Eq, Show)
+```
+
+This should give a high-level view of what we are working with. Some of the types are not shown here
+but we'll take a look at those when the time comes to use them.
+
+We have both statements and expressions, meaning we have pieces of code that have no return value
+or represent no value, in statements. Expressions, on the other hand, can be used where one expects
+a value, i.e. when we assign a value to a variable, or in the condition part of an `if` statement.
+
+This means, of course, that we cannot assign the "result" of an `if` to a variable. Ideally, in a
+real programming language, you would want to be able to do this, because `if` should ideally be an
+expression, but we are writing a simple scripting language.
+
+#### Some initial high-level code
+
+```haskell
+parseScript ::
+  Filename ->
+  Text ->
+  IO (Either (Megaparsec.ParseErrorBundle Text Void) [ScriptComponent])
+parseScript (Filename filename) text = do
+  bindingsRef' <- newIORef mempty
+  let initialState = ParsingState {bindingsRef = bindingsRef'}
+  -- `runParserT` here is going to return a `RIO ParsingState (Either ...)` so we take that and
+  -- give it to `runRIO` which will unpack that into an `IO (Either ...)`
+  runRIO initialState $ Megaparsec.runParserT scriptComponentsP filename text
+
+scriptComponentsP :: Parser [ScriptComponent]
+scriptComponentsP =
+  -- A script is composed of a series of statements and expressions that can be preceded by
+  -- whitespace and comments. The potential whitespace and script components will be separated by
+  -- newlines.
+  Megaparsec.sepEndBy
+    (maybeWhiteSpaceAnd $ Megaparsec.choice [Statement <$> statementP, Expression <$> expressionP])
+    (some MChar.newline)
+  where
+    maybeWhiteSpaceAnd :: Parser a -> Parser a
+    maybeWhiteSpaceAnd p = optional spaceConsumer *> p
+
+statementP :: Parser Statement
+statementP = undefined
+
+assignValueP :: Parser Statement
+assignValueP = undefined
+
+ifStatementP :: Parser Statement
+ifStatementP = undefined
+
+expressionP :: Parser Expression
+expressionP = undefined
+```
+
+We start our parsing in `parseScript`, where we also set up our initial state
+
+#### The `AssignValue` statement
+
+If we want to parse assign statements, we'll have to define both our `statementP` function as well
+as a `assignValueP` function:
+
+```haskell
+statementP :: Parser Statement
+statementP = do
+  Megaparsec.choice [assignValueP, ifStatementP]
+
+bindingNameP :: Parser BindingName
+bindingNameP = do
+  -- A binding name starts with a letter
+  initialCharacter <- MChar.letterChar
+  -- ... the rest of the characters can be any alphanumeric character or underscore
+  restOfName <- Megaparsec.many (MChar.alphaNumChar <|> MChar.char '_')
+  pure $ BindingName $ Text.pack (initialCharacter : restOfName)
+
+bindValue :: BindingName -> Expression -> Parser ()
+bindValue bindingName expression = do
+  -- We read our bindings reference (a map of binding names to expressions)
+  ref <- asks bindingsRef
+  -- We then modify it by inserting our expression in the corresponding slot
+  modifyIORef ref $ Map.insert bindingName expression
+
+assignValueP :: Parser Statement
+assignValueP = do
+  -- If we can read a binding name followed by an equals sign and an expressions we want to add it
+  -- to the bindings map.
+  bindingName <- lexeme bindingNameP
+  _ <- symbol "="
+  expression <- expressionP
+  bindValue bindingName expression
+  pure $ AssignValue bindingName expression
+
+ifStatementP :: Parser Statement
+ifStatementP = undefined -- We leave `if` statements out for now
+```
+
+We also need to parse some kind of expression that we can use as part of our assignment. Let's
+implement reading of literal strings:
+
+```haskell
+expressionP :: Parser Expression
+expressionP =
+  -- for now we can leave only string literals
+  Megaparsec.choice [stringLiteralP]
+
+stringLiteralP :: Parser Expression
+stringLiteralP = do
+  -- A string starts with a double quote
+  _ <- MChar.char '\"'
+  -- The contents of it will be many printable characters, but we can also have escaped quotes,
+  -- which we need to handle. The `try` function here will try to apply a parser, but if it fails
+  -- will not end up consuming any input. This makes it so that we can say "Try to parse this but
+  -- put the content back if you end up failing".
+  -- When this first part fails, we'll move on tho `MChar.printChar` because we use `<|>`, the
+  -- alternative operator.
+  -- The string stops when we find a normal double quote.
+  string <-
+    Megaparsec.manyTill (Megaparsec.try readEscapedQuote <|> MChar.printChar) (MChar.char '\"')
+  pure $ StringLiteral $ Text.pack string
+  where
+    readEscapedQuote :: Parser Char
+    readEscapedQuote = do
+      -- An escaped double quote is a backslash followed by a double quote
+      MChar.char '\\' *> MChar.char '\"'
+```
+
+If we try this out in the REPL, we should see that it works:
+
+```haskell
+Q> parseScript (Filename "hello") "test = \"hello\""
+Right
+    [ Statement
+        ( AssignValue
+            ( BindingName
+                { unBindingName = "test" }
+            )
+            ( StringLiteral "hello" )
+        )
+    ]
+```
