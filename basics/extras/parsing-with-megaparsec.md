@@ -15,6 +15,11 @@
     - [Starting from the top](#starting-from-the-top)
   - [Parsing a simple scripting language](#parsing-a-simple-scripting-language)
     - [The language](#the-language)
+    - [Some useful helpers](#some-useful-helpers)
+    - [A plan of action](#a-plan-of-action)
+      - [Some initial types](#some-initial-types)
+      - [Some initial high-level code](#some-initial-high-level-code)
+      - [The `AssignValue` statement](#the-assignvalue-statement)
 
 It's very common to write compilers and interpreters for both small and large languages in Haskell.
 For this task there are several tools, but a particularly interesting one is the
@@ -284,6 +289,12 @@ Right
 ```
 
 ## Parsing a simple scripting language
+
+What follows below is a description and parsing implementation of a very simple scripting language.
+The code for this is available
+[here](https://github.com/quanterall/parsing-with-megaparsec/blob/main/src/ScriptingLanguage.hs)
+and it will be annotated and added here in time. What you see below is the current progress of
+taking it and adding it here in what is intended to be an understandable way.
 
 ### The language
 
