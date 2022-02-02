@@ -5,7 +5,7 @@
   - [IO](#io)
   - [IO ()](#io-)
   - [IO a](#io-a)
-    - [do-notation](#do-notation)
+    - [A refresher on `do`-notation](#a-refresher-on-do-notation)
     - [Exercises (`IO a`)](#exercises-io-a)
       - [Exercise notes (`IO a`)](#exercise-notes-io-a)
   - [Basic error handling](#basic-error-handling)
@@ -139,12 +139,13 @@ System.Environment.getEnv :: String -> IO String
 We can see here that we are passing the function a `String` and getting an `IO String` back. We are
 executing "in the IO monad", so this is something effectful that can do basically anything.
 
-### do-notation
+### A refresher on `do`-notation
 
-Haskell has special syntax/notation for using `IO` (and other monads). We get access to this
-notation by starting an expression with the `do` keyword. We will go into the specifics of what `do`
-here is actually doing in the next chapter, but suffice to say that you can consider this the way to
-write code in the `IO` monad for now.
+As we noted in the [previous section on `do`-notation](03-type-classes.md#do-notation),
+`do`-notation is special syntax that Haskell has for writing monadic expressions in a more
+imperative-looking style.  We get access to this notation by starting an expression with the `do`
+keyword. For now we can consider this the way we will be writing code executing in the `IO`
+monad.
 
 Technically speaking, when we have a **value** of type `IO a` we in actuality have an action that
 when executed will produce a value of type `a`. When we use `<-` in our do-expressions we are
