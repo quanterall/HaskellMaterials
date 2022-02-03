@@ -20,6 +20,8 @@
       - [Some initial types](#some-initial-types)
       - [Some initial high-level code](#some-initial-high-level-code)
       - [The `AssignValue` statement](#the-assignvalue-statement)
+    - [What next?](#what-next)
+  - [Final words](#final-words)
 
 It's very common to write compilers and interpreters for both small and large languages in Haskell.
 For this task there are several tools, but a particularly interesting one is the
@@ -362,6 +364,10 @@ lexeme = Lexer.lexeme spaceConsumer
 -- | Reads a specific string of text and any amount of whitespace after.
 symbol :: Text -> Parser Text
 symbol = Lexer.symbol spaceConsumer
+
+-- | Returns an error to be displayed.
+reportError :: String -> Parser a
+reportError = Megaparsec.ErrorFail >>> Set.singleton >>> Megaparsec.fancyFailure
 ```
 
 ### A plan of action
@@ -418,8 +424,7 @@ data Expression
     -- 'ls -l `{inputDirectory}`'.err
     -- 'ls -l `{inputDirectory}`'.code
     ShellCommand ![ShellCommandText] !(Maybe ShellCommandComponent)
-  | -- | (When a binding with the name `binding` exists)
-    -- binding
+  | -- | (When a binding with the name `binding` exists) -> binding
     BindingExpression !BindingName
   deriving (Eq, Show)
 ```
@@ -484,7 +489,7 @@ as a `assignValueP` function:
 ```haskell
 statementP :: Parser Statement
 statementP = do
-  Megaparsec.choice [assignValueP, ifStatementP]
+  Megaparsec.choice [ifStatementP, assignValueP]
 
 bindingNameP :: Parser BindingName
 bindingNameP = do
@@ -559,3 +564,413 @@ Right
         )
     ]
 ```
+
+Let's implement `ifStatementP` so that we can consider our `statementP` function complete:
+
+```haskell
+ifStatementP :: Parser Statement
+ifStatementP = do
+  -- An `if` statement starts with the literal symbol "if", then an expression to evalue for
+  -- truthiness, then a list of statements to execute if the expression is true, and then the symbol
+  -- "else" and a list of statements to execute if the expression is false.
+  _ <- symbol "if "
+  condition <- lexeme expressionP
+  _ <- symbol "{"
+  thenBranch <- lexeme scriptComponentsP
+  _ <- symbol "}"
+  _ <- symbol "else"
+  _ <- symbol "{"
+  elseBranch <- lexeme scriptComponentsP
+  _ <- MChar.char '}'
+  pure $ IfStatement condition thenBranch elseBranch
+```
+
+We can try to parse an `if` statement in the REPL:
+
+```haskell
+Q> parseScript (Filename "hello") "if \"value\" { test = \"hello\" } else { test = \"world\" }"
+Right
+    [ Statement
+        ( IfStatement
+            ( StringLiteral "value" )
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "test" }
+                    )
+                    ( StringLiteral "hello" )
+                )
+            ]
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "test" }
+                    )
+                    ( StringLiteral "world" )
+                )
+            ]
+        )
+    ]
+```
+
+Currently the only thing we have as an expression is a string literal, so that's what we've had to
+pass above. Let's implement some different literals:
+
+```haskell
+expressionP :: Parser Expression
+expressionP =
+  Megaparsec.choice
+    [ stringLiteralP,
+      booleanLiteralP,
+      -- The reason we want to use `floatLiteralP` here before `integerLiteralP` is that they start
+      -- with the same thing; a (potentially) signed number. Float then requires more (a period).
+      -- If we successfully read the number part, we don't want to fail because we failed to read
+      -- the period, so we put the input back in the stream with `try`, allowing `integerLiteralP`
+      -- to succeed.
+      Megaparsec.try floatLiteralP,
+      integerLiteralP
+    ]
+
+integerLiteralP :: Parser Expression
+integerLiteralP =
+  -- We use `signed` here to say that we want the capability to read both negative and positive
+  -- integer literals. The `pure ()` is how to read space between the sign and the number. Here we
+  -- are saying that we don't want to consume any space.
+  IntegerLiteral <$> Lexer.signed (pure ()) Lexer.decimal
+
+floatLiteralP :: Parser Expression
+floatLiteralP = FloatLiteral <$> Lexer.signed (pure ()) Lexer.float
+
+booleanLiteralP :: Parser Expression
+booleanLiteralP = do
+  -- A boolean literal is either `True` or `False`. We read it by saying that there are two strings
+  -- you are allowed to match, then we create the boolean by comparing the result to the literal
+  -- string "True".
+  text <- ["True", "False"] & fmap MChar.string & Megaparsec.choice
+  pure $ BooleanLiteral $ text == "True"
+```
+
+Now we can try passing different literals as the expression for our conditional:
+
+```haskell
+Q> parseScript (Filename "hello") "if 1 { test = \"hello\" } else { test = \"world\" }"
+Right
+    [ Statement
+        ( IfStatement
+            ( IntegerLiteral 1 )
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "test" }
+                    )
+                    ( StringLiteral "hello" )
+                )
+            ]
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "test" }
+                    )
+                    ( StringLiteral "world" )
+                )
+            ]
+        )
+    ]
+Q> parseScript (Filename "hello") "if 1.2 { test = \"hello\" } else { test = \"world\" }"
+Right
+    [ Statement
+        ( IfStatement
+            ( FloatLiteral 1.2 )
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "test" }
+                    )
+                    ( StringLiteral "hello" )
+                )
+            ]
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "test" }
+                    )
+                    ( StringLiteral "world" )
+                )
+            ]
+        )
+    ]
+Q> parseScript (Filename "hello") "if True { test = \"hello\" } else { test = \"world\" }"
+Right
+    [ Statement
+        ( IfStatement ( BooleanLiteral True )
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "test" }
+                    )
+                    ( StringLiteral "hello" )
+                )
+            ]
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "test" }
+                    )
+                    ( StringLiteral "world" )
+                )
+            ]
+        )
+    ]
+```
+
+We are still unable to read interpolated strings, so let's add that:
+
+```haskell
+interpolatedStringP :: Parser Expression
+interpolatedStringP = InterpolatedString <$> stringInterpolationFragmentsP
+
+stringInterpolationFragmentsP :: Parser [StringInterpolationFragment]
+stringInterpolationFragmentsP = do
+  -- An interpolated string starts with a backtick and we read interpolation fragments until another
+  -- backtick is read.
+  MChar.char '`' *> Megaparsec.manyTill interpolationFragmentP (MChar.char '`')
+
+interpolationFragmentP :: Parser StringInterpolationFragment
+interpolationFragmentP =
+  -- An interpolation fragment is either a binding fragment or a literal fragment. If reading a
+  -- binding fragment fails, we'll put whatever we read back in the input stream and read it as a
+  -- literal.
+  Megaparsec.choice [Megaparsec.try bindingFragmentP, literalFragmentP]
+
+bindingFragmentP :: Parser StringInterpolationFragment
+bindingFragmentP = do
+  -- A binding fragment is a curly brace followed by an available binding name, then a closing curly
+  -- brace.
+  _ <- MChar.char '{'
+  bindingName <- availableBindingP
+  _ <- MChar.char '}'
+  pure $ BindingFragment bindingName
+
+literalFragmentP :: Parser StringInterpolationFragment
+literalFragmentP =
+  -- A literal fragment is just all characters that aren't backticks or opening curly braces.
+  (Text.pack >>> LiteralFragment) <$> Megaparsec.some literalFragmentCharacterP
+  where
+    literalFragmentCharacterP :: Parser Char
+    literalFragmentCharacterP = Megaparsec.satisfy (`notElem` ['`', '{'])
+
+availableBindingP :: Parser BindingName
+availableBindingP = do
+  -- An available binding is one where we can read a binding name and look it up in our bindings to
+  -- verify that it is available.
+  bindingName <- bindingNameP
+  ref <- asks bindingsRef
+  bindingExists <- liftIO $ Map.member bindingName <$> readIORef ref
+  if bindingExists
+    then pure bindingName
+    else reportError $ "Binding " <> Text.unpack (unBindingName bindingName) <> " is not defined"
+```
+
+Note how we now also have the `availableBindingP` function that will error out if we are reading a
+binding and it does not exist in our available binding map.
+
+With this we also add `interpolatedStringP` to our `expressionP`:
+
+```haskell
+expressionP :: Parser Expression
+expressionP =
+  Megaparsec.choice
+    [ -- The three different string openers are very distinct and can be matched very easily with an
+      -- opening character (double quote, single quote or backtick), so we can put them first
+      -- without worrying that anything else contends for the same opening input. This allows the
+      -- parser to try to read the initial part, fail and move on to other alternatives with no
+      -- consumed input.
+      -- "..."
+      stringLiteralP,
+      -- `...`
+      interpolatedStringP,
+      booleanLiteralP,
+      Megaparsec.try (BindingExpression <$> availableBindingP),
+      -- The reason we want to use `floatLiteralP` here before `integerLiteralP` is that they start
+      -- with the same thing; a (potentially) signed number. Float then requires more (a period).
+      -- If we successfully read the number part, we don't want to fail because we failed to read
+      -- the period, so we put the input back in the stream with `try`, allowing `integerLiteralP`
+      -- to succeed.
+      Megaparsec.try floatLiteralP,
+      integerLiteralP
+    ]
+```
+
+The only thing we have left to add is shell command strings. These are interesting because they can
+also contain interpolated strings, so it's good that we already have a parser for that:
+
+```haskell
+shellCommandP :: Parser Expression
+shellCommandP = do
+  -- A shell command starts with a single quote followed by a special string that can either be
+  -- shell command text or interpolated string text. It can then be followed by an accessor to say
+  -- which part of the result we want to access.
+  _ <- MChar.char '\''
+  shellCommandText <- shellCommandTextP
+  maybeShellCommandComponent <- Megaparsec.optional shellCommandComponentP
+  pure $ ShellCommand shellCommandText maybeShellCommandComponent
+  where
+    shellCommandComponentP :: Parser ShellCommandComponent
+    shellCommandComponentP = do
+      -- A shell command component is an accessor for the result of a shell command. We might want
+      -- to access standard out, standard error or the exit code.
+      _ <- MChar.char '.'
+      Megaparsec.choice
+        [ MChar.string "out" *> pure ShellStandardOut,
+          MChar.string "err" *> pure ShellStandardError,
+          MChar.string "code" *> pure ShellExitCode
+        ]
+
+    shellCommandTextP :: Parser [ShellCommandText]
+    shellCommandTextP =
+      -- Shell command text is comprised of either string interpolation fragments or shell command
+      -- literal text. This continues until we read a single quote.
+      Megaparsec.manyTill
+        ( Megaparsec.choice
+            [ ShellCommandInterpolation <$> stringInterpolationFragmentsP,
+              shellCommandLiteralP
+            ]
+        )
+        (MChar.char '\'')
+
+    shellCommandLiteralP :: Parser ShellCommandText
+    shellCommandLiteralP =
+      -- A shell command literal is just any character that is not a backtick or single quote.
+      (Text.pack >>> ShellCommandLiteral) <$> Megaparsec.some shellLiteralCharacterP
+
+    shellLiteralCharacterP :: Parser Char
+    shellLiteralCharacterP = Megaparsec.satisfy (`notElem` ['\'', '`'])
+```
+
+With this we should actually be ready to parse our test file. Save it as `test-data/test.glue` and
+run the following in your REPL:
+
+```haskell
+Q> readFileUtf8 "test-data/test.glue" >>= parseScript (Filename "test-data/test.glue")
+Right
+    [ Statement
+        ( AssignValue
+            ( BindingName
+                { unBindingName = "user" }
+            )
+            ( StringLiteral "pesho" )
+        )
+    , Statement
+        ( AssignValue
+            ( BindingName
+                { unBindingName = "result" }
+            )
+            ( ShellCommand
+                [ ShellCommandLiteral "ls -l" ] Nothing
+            )
+        )
+    , Statement
+        ( AssignValue
+            ( BindingName
+                { unBindingName = "output" }
+            )
+            ( ShellCommand
+                [ ShellCommandLiteral "ls -l" ] ( Just ShellStandardOut )
+            )
+        )
+    , Statement
+        ( AssignValue
+            ( BindingName
+                { unBindingName = "error" }
+            )
+            ( ShellCommand
+                [ ShellCommandLiteral "ls -l" ] ( Just ShellStandardError )
+            )
+        )
+    , Statement
+        ( AssignValue
+            ( BindingName
+                { unBindingName = "exitCode" }
+            )
+            ( ShellCommand
+                [ ShellCommandLiteral "ls -l" ] ( Just ShellExitCode )
+            )
+        )
+    , Statement
+        ( IfStatement
+            ( BindingExpression
+                ( BindingName
+                    { unBindingName = "result" }
+                )
+            )
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "outputString" }
+                    )
+                    ( StringLiteral "Success!" )
+                )
+            ]
+            [ Statement
+                ( AssignValue
+                    ( BindingName
+                        { unBindingName = "outputString" }
+                    )
+                    ( StringLiteral "Failure!" )
+                )
+            ]
+        )
+    , Expression
+        ( ShellCommand
+            [ ShellCommandLiteral "echo "
+            , ShellCommandInterpolation
+                [ BindingFragment
+                    ( BindingName
+                        { unBindingName = "outputString" }
+                    )
+                ]
+            ] Nothing
+        )
+    , Expression
+        ( ShellCommand
+            [ ShellCommandLiteral "echo "
+            , ShellCommandInterpolation
+                [ LiteralFragment "Output: "
+                , BindingFragment
+                    ( BindingName
+                        { unBindingName = "output" }
+                    )
+                , LiteralFragment " | Error: "
+                , BindingFragment
+                    ( BindingName
+                        { unBindingName = "error" }
+                    )
+                , LiteralFragment " | Exit code: "
+                , BindingFragment
+                    ( BindingName
+                        { unBindingName = "exitCode" }
+                    )
+                ]
+            ] Nothing
+        )
+    ]
+```
+
+### What next?
+
+Our file is parsed. If we wanted to see the result of running this script we'd have to write an
+interpreter for the data structures we've parsed this file into. This can be done by walking the
+list element by element and evaluating them as you imagine they should.  For an assignment we'd
+probably want to have a map that maps a binding name to the result of actually executing the
+expression that it's bound to. If it was a literal we'd just set the value to that literal, if it
+was a shell command we'd run the shell command and get the result and so on.
+
+## Final words
+
+This was a whirlwind tour of parsing with Megaparsec. Don't worry if you didn't quite get everything
+that we did, you can always use what we did here as a reference point when you write your own
+parser. In the end this type of thing comes best with continued application and practice.
+
+The code for both the hosts parser and the language parser can be found in
+[quanterall/parsing-with-megaparsec](https://github.com/quanterall/parsing-with-megaparsec) and I
+hope you'll find it useful.
