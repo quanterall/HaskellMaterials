@@ -367,7 +367,8 @@ Q> allNotEqual 2 [1, 3..9]
 ```
 
 4. Define a function `mapNotEqual :: (Eq a) => a -> (a -> b) -> [a] -> [b]` that maps a function
-   over all elements in a list that are not equal to the first parameter given to the function.
+   over all elements in a list that are not equal to the first parameter given to the function. The
+   elements that are equal should be removed.
 
 ```haskell
 Q> mapNotEqual 2 (+ 1) [1..9]
