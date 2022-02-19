@@ -119,13 +119,13 @@ class HasLogHandle environment where
 instance HasLogHandle ApplicationState where
   getLogHandle = logHandle
 
-class MonadHandleLogging m where
+class LogToHandle m where
   logToHandle :: Handle -> String -> m ()
 
-instance MonadHandleLogging AppMonad where
+instance LogToHandle AppMonad where
   logToHandle h = hPutStrLn h >>> liftIO
 
-logToFile :: (HasLogHandle e, MonadReader e m, MonadHandleLogging m) => String -> m ()
+logToFile :: (HasLogHandle e, MonadReader e m, LogToHandle m) => String -> m ()
 logToFile logString = do
   fileHandle <- asks getLogHandle
   logToHandle fileHandle logString
