@@ -5,6 +5,7 @@
   - [Where we left off](#where-we-left-off)
   - [More constraints on what we can do in functions](#more-constraints-on-what-we-can-do-in-functions)
   - [Where do we go with this?](#where-do-we-go-with-this)
+    - [Exercises (Capability constraints)](#exercises-capability-constraints)
 
 ## Tagless final / `MonadX` constraints
 
@@ -200,3 +201,9 @@ Since we have these superclass requirements for `MonadSQS` we are guaranteeing t
 shows up in a type signature, it means the `m` in question has implementations of `MonadReadSQS` and
 `MonadWriteSQS`. This type of consolidation of capabilities can make sense depending on your
 particular needs in terms of code clarity.
+
+### Exercises (Capability constraints)
+
+1. Go back to the first exercise you did in [Has constraints](./09-has-constraints.md) and add type
+   classes for the different effectful things you are doing in your program. As an example, make a
+   constraint that describes the ability to download a file via HTTP.
