@@ -180,3 +180,6 @@ going on in the function.
 
 1. Go back to the first exercise you did in [ReaderT](./08-readert.md) and add `Has` constraints
    where you think they are applicable.
+
+2. Create a `HasSqlConnection` type class that describes the ability to get a `SqlConnection` from
+   an environment.
