@@ -184,3 +184,9 @@ going on in the function.
 2. Create a `HasSqlConnection` type class that describes the ability to get a `SqlConnection` from
    an environment. Implement it for the application state environment you would create for a web
    application that should be able to use a database as well as log to a file handle.
+
+If you want to have an empty `SqlConnection` type you can define it as follows:
+
+```haskell
+data SqlConnection
+```
