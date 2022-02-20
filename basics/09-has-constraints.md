@@ -190,3 +190,7 @@ If you want to have an empty `SqlConnection` type you can define it as follows:
 ```haskell
 data SqlConnection
 ```
+
+3. Read the extra chapter on [optics](./extras/optics.md) and make your `HasSqlConnection` type
+   class use a lens for accessing the SQL connection instead. Try using the `view` function for a
+   function that needs to get the SQL connection.
