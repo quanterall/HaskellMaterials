@@ -182,4 +182,5 @@ going on in the function.
    where you think they are applicable.
 
 2. Create a `HasSqlConnection` type class that describes the ability to get a `SqlConnection` from
-   an environment.
+   an environment. Implement it for the application state environment you would create for a web
+   application that should be able to use a database as well as log to a file handle.
