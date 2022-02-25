@@ -49,6 +49,7 @@ libraries/aspects of solving problems in Haskell:
 - [Optics (lenses & prisms)](./basics/extras/optics.md)
 - [Error handling](./basics/extras/error-handling.md)
 - [Testing](./basics/extras/testing.md)
+- [Parsing with Megaparsec](./basics/extras/parsing-with-megaparsec.md)
 
 ## Real World Haskell
 
