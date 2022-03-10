@@ -1147,7 +1147,7 @@ resourceLoadStatusToMaybe (Loaded resource) = Just resource
 
 <!-- markdownlint-disable MD013 -->
 ```haskell
-Q> user = User {username = "gonz", email = "rickard.andersson@quanterall.com", fullName = Just "Rickard Andersson", phone = Just "555 363 22 34"}
+Q> user = User {username = Username "gonz", email = Email "rickard.andersson@quanterall.com", fullName = Just (FullName "Rickard Andersson"), phone = Just (PhoneNumber "555 363 22 34")}
 Q> showUserPhoneNumber user
 "555 363 22 34"
 Q> userWithoutPhone = user {phone = Nothing}
@@ -1180,7 +1180,7 @@ Q> foldMaybe 1337 (+ 1) Nothing
 
 <!-- markdownlint-disable MD013 -->
 ```haskell
-Q> user = User {username = "gonz", email = "rickard.andersson@quanterall.com", fullName = Just "Rickard Andersson", phone = Just "555 363 22 34"}
+Q> user = User {username = Username "gonz", email = Email "rickard.andersson@quanterall.com", fullName = Just (Fullname "Rickard Andersson"), phone = Just (PhoneNumber "555 363 22 34")}
 Q> showUserPhoneNumber user
 "555 363 22 34"
 Q> userWithoutPhone = user {phone = Nothing}
