@@ -1432,7 +1432,7 @@ maybeExactlyTwoElements _anyOtherCase = Nothing
 ```haskell
 Q> divideBySumOfRestOfList [1, 2, 3]
 Just 0.2
-Q> divideByTail [1,2,3,4]
+Q> divideBySumOfRestOfList [1,2,3,4]
 Just 0.11111111
 Q> divideBySumOfRestOfList [1]
 Nothing
