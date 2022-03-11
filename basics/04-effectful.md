@@ -437,7 +437,7 @@ getIpString = do
 
 ### What if a HTTP request fails?
 
-What if we want to guard for failure somehow? HTTP can and will fail. Here is a version of
+What if we want to guard for failure somehow? HTTP calls can and will fail. Here is a version of
 `getIpString` that allows for the possibility of failing at the response level. Note how we reflect
 this possibility correctly in our return type:
 
