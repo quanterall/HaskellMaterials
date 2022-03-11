@@ -467,6 +467,9 @@ getIpStringMaybe = do
       else Nothing
 ```
 
+It's important to note that we have not guarded against an exception being thrown in this case, but
+rather just handled the case where there is an invalid response.
+
 ### Dealing with JSON responses
 
 Quite often the data that we request comes back in the form of JSON responses. We'll try to provide
