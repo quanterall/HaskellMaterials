@@ -77,8 +77,10 @@ these transactional blocks from `IO` we use the function `atomically`:
 import Control.Concurrent.STM (atomically, check, modifyTVar, readTVar, writeTVar)
 import Prelude
 
-functionUsingTransaction :: IO ()
-functionUsingTransaction = do
+-- Note how we are simply taking a reference to a value here, not the value that the reference holds
+-- itself. We can use these references in the function to both read and write from and to them.
+functionUsingTransaction :: TVar Int -> TVar Int -> Int -> IO ()
+functionUsingTransaction transactionalVariable otherTransactionalVariable neededValue = do
   -- Either everything in this block succeeds or nothing does; this is the
   -- guarantee we get from `STM`.
   atomically $ do
@@ -87,7 +89,7 @@ functionUsingTransaction = do
     -- only run again if `transactionalVariable` has changed.
     -- Until `transactionalVariable` changes it will block.
     check $ transactionalValue < neededValue
-    modifyTVar transactionalVariable (\v -> v + 1)
+    modifyTVar transactionalVariable (+ 1)
     writeTVar otherTransactionalVariable $ transactionalValue + 42
 ```
 
