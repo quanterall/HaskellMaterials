@@ -219,9 +219,9 @@ workers count processingFunction queue =
 worker :: (a -> IO ()) -> TBMQueue a -> IO ()
 worker processingFunction queue =
   let loop = do
-        -- This function seems to be in a loop if we still have values in the queue (i.e. it's still
-        -- open), however this `readTBMQueue` call blocks until there are values, which means that any
-        -- threads executing this won't just spin and consume resources.
+        -- This function seems to be in a loop if the queue is still open, however this
+        -- `readTBMQueue` call blocks until there are values, which means that any threads
+        -- executing this won't just spin and consume resources unless there are things to be done.
         ma <- atomically $ readTBMQueue queue
         case ma of
           Nothing -> pure ()
