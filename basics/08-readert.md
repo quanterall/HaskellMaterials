@@ -198,6 +198,11 @@ context that it provides.
    list of releases as well as the downloading of files and perhaps even when a file is **not**
    downloaded because it already exists.
 
+2. When the program in exercise 1 starts, start a thread via `async` that handles the logging in the
+   program. Make it listen to a `TBMQueue` that takes some kind of logging event that you decide the
+   structure of. When another thread wants to log something, it uses a utility function to put a
+   message on the queue. Remember that `TBMQueue`s can be shared via your environment.
+
 #### Exercise notes (ReaderT)
 
 0. [getCurrentTime](https://hackage.haskell.org/package/rio-0.1.21.0/docs/RIO-Time.html#v:getCurrentTime)
