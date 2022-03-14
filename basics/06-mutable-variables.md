@@ -164,7 +164,7 @@ threads move in some kind of lockstep.
 
 ### TBMQueue example
 
-What follows is an example of a workerpool handling a queue with several interesting attributes
+What follows is an example of a worker pool handling a queue with several interesting attributes
 under the hood, all from the Haskell runtime and `STM`:
 
 ```haskell
