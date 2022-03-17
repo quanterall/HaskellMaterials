@@ -622,6 +622,8 @@ If a file cannot be placed in one of these categories, do not do anything with i
 
 - You can use `getArgs` from `System.Environment` to get the arguments passed into a program as a
   list of strings.
+- You can use functions from `RIO.FilePath` for getting information out of file paths:
+  - [`takeExtension`](https://www.stackage.org/haddock/lts-18.28/rio-0.1.21.0/RIO-FilePath.html#v:takeExtension)
 
 ### Git status checker
 
