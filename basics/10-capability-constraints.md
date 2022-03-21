@@ -13,11 +13,10 @@ Sometimes we'd like to be very specific about what can happen in a function. Thi
 accomplished in many ways, one of which is called "Tagless final". We've seen glimpses of this in
 previous chapters, with both `MonadReader` and `MonadIO` showing up. When we see these in the type
 signature of a function we know that the function has a certain capability and can confidently say
-the function also works with any monad transformer stack that has the signalled capability.
+the function also works with any monad transformer stack that has the capability in question.
 
-In this chapter we'll take a look at defining our own a'la carte type classes for signalling
-behavior, to stand in as a general example of how we can be more specific about what can happen in
-functions.
+In this chapter we'll take a look at defining our own type classes for signalling behavior, to stand
+in as a general example of how we can be more specific about what can happen in functions.
 
 ## Where we left off
 
