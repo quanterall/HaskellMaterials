@@ -151,10 +151,9 @@ instance LogToDefault IO where
   outputToLog = putStrLn
 ```
 
-With this type class we are very free to implement entirely different behavior depending on the
-context we are executing in. As an added example of that, let's imagine we had a custom testing
-context set up and we wanted to implement `LogToDefault` for it in a way that let us capture the
-output:
+With this type class we are free to implement entirely different behavior depending on the context
+we are executing in. As an added example of that, let's imagine we had a custom testing context set
+up and we wanted to implement `LogToDefault` for it in a way that let us capture the output:
 
 ```haskell
 type TestMonad = ReaderT TestingState IO
@@ -168,6 +167,10 @@ instance LogToDefault TestMonad where
     outputReference <- asks output
     modifyIORef' outputReference (s :)
 ```
+
+Note that since we are not mentioning something as specific as `Handle` in `outputToLog` the
+implementation space actually grows considerably and different monads can implement it wildly
+differently in comparison to `logToHandle :: Handle -> String -> m ()`.
 
 ## Where do we go with this?
 
