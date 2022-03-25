@@ -170,7 +170,9 @@ instance LogToDefault TestMonad where
 
 Note that since we are not mentioning something as specific as `Handle` in `outputToLog` the
 implementation space actually grows considerably and different monads can implement it wildly
-differently in comparison to `logToHandle :: Handle -> String -> m ()`.
+differently in comparison to `logToHandle :: Handle -> String -> m ()`. Sometimes, of course, it's
+useful to be very specific about our requirements so that we can make more/stronger guarantees about
+the behavior of them, however.
 
 ## Where do we go with this?
 
