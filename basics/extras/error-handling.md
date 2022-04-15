@@ -10,8 +10,8 @@
     - [Tools for working with exceptions and values](#tools-for-working-with-exceptions-and-values)
       - [`try`](#try)
         - [`try :: (MonadUnliftIO m, Exception e) => m a -> m (Either e a)`](#try--monadunliftio-m-exception-e--m-a---m-either-e-a)
-        - [`tryAny :: MonadUnliftIO m => m a -> m (Either SomeException a)`](#tryany--monadunliftio-m--m-a---m-either-someexception-a)
-        - [`tryIO :: MonadUnliftIO m => m a -> m (Either IOException a)`](#tryio--monadunliftio-m--m-a---m-either-ioexception-a)
+        - [`tryAny :: (MonadUnliftIO m) => m a -> m (Either SomeException a)`](#tryany--monadunliftio-m--m-a---m-either-someexception-a)
+        - [`tryIO :: (MonadUnliftIO m) => m a -> m (Either IOException a)`](#tryio--monadunliftio-m--m-a---m-either-ioexception-a)
       - [`mapException`](#mapexception)
         - [`mapException :: (Exception e1, Exception e2) => (e1 -> e2) -> a -> a`](#mapexception--exception-e1-exception-e2--e1---e2---a---a)
         - [`mapExceptionM :: (Exception e1, Exception e2, MonadUnliftIO m) => (e1 -> e2) -> m a -> m a`](#mapexceptionm--exception-e1-exception-e2-monadunliftio-m--e1---e2---m-a---m-a)
@@ -253,13 +253,13 @@ as long as you have some idea of what you want to catch.
 Runs an action and if an exception of type `e` is thrown, this returns a `Left e` value. The way you
 use `e` is what will determine what type of exceptions are going to be caught.
 
-##### `tryAny :: MonadUnliftIO m => m a -> m (Either SomeException a)`
+##### `tryAny :: (MonadUnliftIO m) => m a -> m (Either SomeException a)`
 
 Returns an `Either SomeException a` value. Our usage of the `Left` value is always going to be the
 `SomeException` parent type of all exceptions, so there is no type-directed catching; it just
 catches all exceptions.
 
-##### `tryIO :: MonadUnliftIO m => m a -> m (Either IOException a)`
+##### `tryIO :: (MonadUnliftIO m) => m a -> m (Either IOException a)`
 
 Returns an `Either IOException a` value. This is the same as `tryAny` but for `IOException`.
 `IOException` is a narrower type than `SomeException` and thus can be used to catch more specific
