@@ -24,7 +24,7 @@
         - [`catchIO` & `catchAny`](#catchio--catchany)
         - [`handle`, `handleIO` and `handleAny`](#handle-handleio-and-handleany)
         - [`catches`](#catches)
-      - [`bracket`](#bracket)
+      - [`bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`](#bracket--monadunliftio-m--m-a---a---m-b---a---m-c---m-c)
     - [Reading more](#reading-more)
     - [Additions to be made in the future](#additions-to-be-made-in-the-future)
 
@@ -458,7 +458,7 @@ Here we're catching two different exceptions. They happen to have exactly the sa
 this case, but as long as both handlers return the same `m a` as the action we are catching
 exceptions from, we're fine.
 
-#### `bracket`
+#### `bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`
 
 When we want to acquire a resource and release it when we're done, we can use `bracket`. This
 function takes an action that gives us the resource ("acquire"), a resource that gives back the
