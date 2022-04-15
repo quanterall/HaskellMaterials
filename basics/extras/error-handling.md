@@ -429,7 +429,15 @@ respectively.
 
 These are really just versions of `catch` that takes the handler as the first argument. The use case
 for these is mostly obvious. It's good to know about them if the handling code fits this pattern
-better.
+better. The above `catch` example becomes:
+
+```haskell
+configuration <- handle handleConfigurationFileReadError $ getConfigurationFromFile path
+...
+  where
+    handleConfigurationFileReadError (ConfigurationFileReadError path) = do
+      pure defaultConfiguration
+```
 
 ##### `catches`
 
