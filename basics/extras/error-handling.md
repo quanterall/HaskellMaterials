@@ -25,6 +25,7 @@
         - [`handle`, `handleIO` and `handleAny`](#handle-handleio-and-handleany)
         - [`catches`](#catches)
       - [`bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`](#bracket--monadunliftio-m--m-a---a---m-b---a---m-c---m-c)
+      - [`finally :: (MonadUnliftIO m) => m a -> m b -> m a`](#finally--monadunliftio-m--m-a---m-b---m-a)
     - [Reading more](#reading-more)
     - [Additions to be made in the future](#additions-to-be-made-in-the-future)
 
@@ -482,6 +483,19 @@ withSession sessions action = do
 In this case we are acquiring a session to use, running the `action` (that takes a
 `SeleniumProcess`/session) and when we're done we're checking the session into the queue again.
 If we were to throw an exception along the way, the session would still be checked in.
+
+#### `finally :: (MonadUnliftIO m) => m a -> m b -> m a`
+
+If we want to always run some code after something, we can use `finally`:
+
+```haskell
+waitRunSession (Milliseconds 10000) (seleniumProcess ^. spPort & webdriverConfig) doScrape
+  `finally` stopSession seleniumProcess
+```
+
+The code that we run can return anything it pleases; it has no effect on the result of the action
+we are actually running, as we are still going to be returning `m a`. It is useful for ensuring that
+some kind of cleanup or other action is always run, regardless of exceptions happening.
 
 ### Reading more
 
