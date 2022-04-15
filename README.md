@@ -45,10 +45,10 @@ are readable from top to bottom in terms of the assumptions they make about know
 There is a series of extra materials that can be read to gain some familiarity with
 libraries/aspects of solving problems in Haskell:
 
-- [Streaming with Conduit](./basics/extras/streaming.md)
-- [Optics (lenses & prisms)](./basics/extras/optics.md)
 - [Error handling](./basics/extras/error-handling.md)
 - [Testing](./basics/extras/testing.md)
+- [Streaming with Conduit](./basics/extras/streaming.md)
+- [Optics (lenses & prisms)](./basics/extras/optics.md)
 - [Parsing with Megaparsec](./basics/extras/parsing-with-megaparsec.md)
 
 ## Real World Haskell
