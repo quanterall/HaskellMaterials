@@ -26,6 +26,8 @@
         - [`catches`](#catches)
       - [`bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`](#bracket--monadunliftio-m--m-a---a---m-b---a---m-c---m-c)
       - [`finally :: (MonadUnliftIO m) => m a -> m b -> m a`](#finally--monadunliftio-m--m-a---m-b---m-a)
+      - [`onException :: (MonadUnliftIO m) => m a -> m b -> m a`](#onexception--monadunliftio-m--m-a---m-b---m-a)
+      - [`withException :: (MonadUnliftIO m, Exception e) => m a -> (e -> m b) -> m a`](#withexception--monadunliftio-m-exception-e--m-a---e---m-b---m-a)
     - [Reading more](#reading-more)
     - [Additions to be made in the future](#additions-to-be-made-in-the-future)
 
@@ -496,6 +498,14 @@ waitRunSession (Milliseconds 10000) (seleniumProcess ^. spPort & webdriverConfig
 The code that we run can return anything it pleases; it has no effect on the result of the action
 we are actually running, as we are still going to be returning `m a`. It is useful for ensuring that
 some kind of cleanup or other action is always run, regardless of exceptions happening.
+
+#### `onException :: (MonadUnliftIO m) => m a -> m b -> m a`
+
+A version of `finally` that only runs the supplied action if there was an exception.
+
+#### `withException :: (MonadUnliftIO m, Exception e) => m a -> (e -> m b) -> m a`
+
+Like `onException`, but we also have access to the exception in question in our handler.
 
 ### Reading more
 
