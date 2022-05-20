@@ -43,7 +43,7 @@ are readable from top to bottom in terms of the assumptions they make about know
 - [Capability constraints](./basics/10-capability-constraints.md)
 
 There is a series of extra materials that can be read to gain some familiarity with
-libraries/aspects of solving problems in Haskell:
+libraries and tools commonly used for solving problems in Haskell:
 
 - [Error handling](./basics/extras/error-handling.md)
 - [Testing](./basics/extras/testing.md)
