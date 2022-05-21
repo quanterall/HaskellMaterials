@@ -35,17 +35,17 @@ are readable from top to bottom in terms of the assumptions they make about know
 - [Composite datatypes and working with them](./basics/02-composite-datatypes.md)
 - [Type classes](./basics/03-type-classes.md)
 - ["Effectful" and `IO`](./basics/04-effectful.md)
-- [JSON in Haskell](./basics/05-json-data.md)
-- [Mutable variables in Haskell](./basics/06-mutable-variables.md)
-- [The Reader Monad](./basics/07-reader.md)
-- [The ReaderT Monad Transformer](./basics/08-readert.md)
-- [`Has` constraints](./basics/09-has-constraints.md)
-- [Capability constraints](./basics/10-capability-constraints.md)
+- [Error handling](./basics/05-error-handling.md)
+- [JSON in Haskell](./basics/06-json-data.md)
+- [Mutable variables in Haskell](./basics/07-mutable-variables.md)
+- [The Reader Monad](./basics/08-reader.md)
+- [The ReaderT Monad Transformer](./basics/09-readert.md)
+- [`Has` constraints](./basics/10-has-constraints.md)
+- [Capability constraints](./basics/11-capability-constraints.md)
 
 There is a series of extra materials that can be read to gain some familiarity with
 libraries and tools commonly used for solving problems in Haskell:
 
-- [Error handling](./basics/extras/error-handling.md)
 - [Testing](./basics/extras/testing.md)
 - [Streaming with Conduit](./basics/extras/streaming.md)
 - [Optics (lenses & prisms)](./basics/extras/optics.md)
