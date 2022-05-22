@@ -7,7 +7,8 @@
     - [`(MonadThrow m) => m a`](#monadthrow-m--m-a)
       - [Downsides](#downsides)
     - [When should we do what?](#when-should-we-do-what)
-    - [Tools for working with exceptions and values](#tools-for-working-with-exceptions-and-values)
+    - [Tools and prerequisites/rules for working with exceptions and values](#tools-and-prerequisitesrules-for-working-with-exceptions-and-values)
+      - [Always define custom error types](#always-define-custom-error-types)
       - [`try`](#try)
         - [`try :: (MonadUnliftIO m, Exception e) => m a -> m (Either e a)`](#try--monadunliftio-m-exception-e--m-a---m-either-e-a)
         - [`tryAny :: (MonadUnliftIO m) => m a -> m (Either SomeException a)`](#tryany--monadunliftio-m--m-a---m-either-someexception-a)
@@ -64,7 +65,7 @@ For pure code, this is a good approach. Impure exceptions **are** rare and we sh
 be too cautious and expect to catch too many exceptions in pure code (and we should never throw
 exceptions in pure code).
 
-There are scenarios where this model starts falling apart a bit, however.
+There are scenarios where this model starts falling apart, however.
 
 ### Type signatures that don't tell us the whole truth
 
@@ -137,11 +138,11 @@ bubble up to the caller.
 This happens because exceptions are inherently tied to types in Haskell. On top of that, exceptions
 use a sub-typing system that otherwise is not present in Haskell. All exceptions are sub-types of a
 type called `SomeException`. If we were to use `tryAny`, we would catch all exceptions, but we would
-have an exception of precisely this type `SomeException`.
+have an exception of precisely the type `SomeException`.
 
-So when we're using `try` to turn this exception into an
-`Either SessionStartError SessionStartResult`, we're very specifically saying that we'll catch only
-this type of exception and turn it into a `Left` value.
+When we're using `try` to turn this exception into an `Either SessionStartError SessionStartResult`,
+we're very specifically saying that we'll catch only this type of exception and turn it into a
+`Left` value.
 
 We could also use `tryIO` to catch any `IOException` and turn it into a `Left` value. Much like our
 very specific user-defined exception type, this would not catch just any exception, but rather just
@@ -152,7 +153,7 @@ return types becomes hard to take seriously. If you think back to other language
 using primarily error values, it's usually a safe bet that you'll find that they, too, have some
 manner of exceptions or exception-like language feature that likewise causes this type of "lie".
 
-The concept of "honesty" in return types seems a bit hollow for effectful code, then.  But what is
+The concept of "honesty" in return types seems a bit hollow for effectful code, then. But what is
 the most "honest" type signature in the end?
 
 ### `(MonadThrow m) => m a`
@@ -181,7 +182,7 @@ This way we would have `Either e` as the `Monad` and could compose them. If we e
 work to support the case of a unified `e`, what have we actually accomplished in the end? A calling
 function will still not share `e` with our `e`, very likely, unless it also employs more of this
 unification machinery (this can get very tedious with union types). This means that functions that
-might call ours still will have composition problems while using ours.
+might call ours still will have composition problems while interacting with our code.
 
 So what happens if we employ the approach of using just `m a` instead?
 
@@ -195,10 +196,10 @@ will always be of type `b`. On top, if we want to engage in specific error handl
 no requirement that any of the errors have the same type, as they are never mentioned in the same
 type as each other. This allows you to actually define separate types for all of your errors.
 
-If a function calls ours, we'll have just returned a `m a` that they can compose as they please
-(they're already executing in `m` if they're calling our function, obviously). The errors they might
-be concerned about they can still handle or catch as they see fit. As the call stack grows, this
-type of error handling **can** grow more gracefully.
+If a function calls our function, we'll have just returned a `m a` that they can compose as they
+please (they're already executing in `m` if they're calling our function, obviously). The errors
+they might be concerned about they can still handle or catch as they see fit. As the call stack
+grows, this type of error handling **can** grow more gracefully.
 
 The calling code if we were to use just `startSession` that returns `m SessionStartresult` becomes:
 
@@ -240,12 +241,41 @@ signal failure. If most applications are going to use library functionality spec
 setup, we should feel free to make it use exceptions. If a user needs error values from them for
 a specific set of errors, they can use `try`/`catch` to capture these scenarios into types/handlers.
 
-### Tools for working with exceptions and values
+### Tools and prerequisites/rules for working with exceptions and values
+
+#### Always define custom error types
+
+When we use exceptions we'll want to signal very clearly what has gone wrong. This means that we do
+not use strings as errors, but rather define our own types that can hold information about our
+errors:
+
+```haskell
+-- | Represents a failure to read the current value of an environment variable.
+data ReadEnvironmentVariableError
+  = -- | We were unable to read the value into the desired type, though a value existed.
+    ReadEnvironmentInvalidValue !EnvironmentKey !EnvironmentValue !String
+  | -- | The environment variable was not found/set.
+    ReadEnvironmentMissingValue !EnvironmentKey
+  deriving (Eq, Show)
+
+instance Exception ReadEnvironmentVariableError
+
+newtype EnvironmentFile = EnvironmentFile {_unEnvironmentFile :: FilePath}
+  deriving (Eq, Show, Generic, IsString, FromJSON, ToJSON)
+
+newtype EnvironmentFileNotFound = EnvironmentFileNotFound
+  {_unEnvironmentFileNotFound :: EnvironmentFile}
+  deriving (Eq, Show)
+
+instance Exception EnvironmentFileNotFound
+```
+
+Note that we have to define our exceptions as instances of `Exception`.
+
+#### `try`
 
 We saw earlier in this document that we can take code throwing exceptions and work with those
 exceptions in different ways. For example, we can use `try` to turn an exception into a value.
-
-#### `try`
 
 `try` and its variants allow you to take functions throwing exceptions and turn errors into values,
 as long as you have some idea of what you want to catch.
