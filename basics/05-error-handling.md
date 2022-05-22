@@ -148,15 +148,19 @@ We could also use `tryIO` to catch any `IOException` and turn it into a `Left` v
 very specific user-defined exception type, this would not catch just any exception, but rather just
 `IOException`.
 
-With the above in mind, the criticism that error handling in Haskell with exceptions "lies" about
-return types becomes hard to take seriously. If you think back to other languages, even the ones
-using primarily error values, it's usually a safe bet that you'll find that they, too, have some
-manner of exceptions or exception-like language feature that likewise causes this type of "lie".
-
-The concept of "honesty" in return types seems a bit hollow for effectful code, then. But what is
-the most "honest" type signature in the end?
+Functions that omit information about which errors they can throw are a reality we have to deal
+with, then, much like in most languages where we cannot always just divide by a value and always get
+a value out of it, but rather have to be aware that sometimes that kind of operation causes a
+division by zero exception. In Haskell we can use the type-directed exception machinery to slice out
+which sub-types we are interested in handling and let everything else throw. Later in this document
+we'll take a look at some of the tools we can use to make this easier.
 
 ### `(MonadThrow m) => m a`
+
+It is tempting in many cases to try to encode as much as possible in containers such as `Maybe` and
+`Either`. Usually people will gravitate towards `Either` because it allows them to annotate their
+errors with real information, not just signal that some operation was impossible or there was a lack
+of a value.
 
 In many cases code can actually be improved by using `m a` instead of `m (Either errorType a)`. This
 often results in more easily composed code and it's trivial for a caller to turn `m a` into
@@ -164,7 +168,7 @@ often results in more easily composed code and it's trivial for a caller to turn
 
 The reason it's easier to compose code that only returns `m a` is that functions returning
 `m (Either e a)` have explicitly put a separate `Monad` structure outside of the one we are
-currently in: `m`. When we do this, we could try to extract these from our `m`:
+currently in: `m`. We could try to extract these from our `m`:
 
 ```haskell
 result1 <- action1 :: m (Either e1 a)
