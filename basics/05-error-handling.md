@@ -57,15 +57,16 @@ divideInt x y = if y == 0 then Nothing else Just (x `div` y)
 Note here that we're pre-checking the condition we're interested in guarding against. We're then
 turning this condition into a specific return value, and the caller will have to inspect the return
 value to see if it's a valid result or not. The same applies to functions returning a value of type
-`Either errorType a`. In this case, the caller will have to inspect the `Either` value to see if
+`Either errorType a`. In that case, the caller will have to inspect the `Either` value to see if
 there is a `Left` with some attached error information or not. Otherwise they know that the call
-succeeded and can use the success value.
+succeeded and can use the value attached to the `Right` constructor.
 
-For pure code, this is a good approach. Impure exceptions **are** rare and we shouldn't necessarily
-be too cautious and expect to catch too many exceptions in pure code (and we should never throw
-exceptions in pure code).
+For pure code this is a good approach. Exceptions in pure code **are rare** and we shouldn't
+necessarily be too cautious and expect to catch too many exceptions in pure code (and we should
+never throw exceptions in pure code). Note that the same kind of errors you'd find in many other
+languages may show up in Haskell as well, such as division by zero exceptions.
 
-There are scenarios where this model starts falling apart, however.
+In effectful code this model of representing errors can be misleading.
 
 ### Type signatures that don't tell us the whole truth
 
