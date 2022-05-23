@@ -18,6 +18,7 @@
     - [Exercises (Making HTTP requests)](#exercises-making-http-requests)
   - [What makes `IO` special?](#what-makes-io-special)
   - [Should you avoid effectful things?](#should-you-avoid-effectful-things)
+  - [Effectful code and error handling](#effectful-code-and-error-handling)
   - [Small applications using `IO`](#small-applications-using-io)
     - [File categorizer](#file-categorizer)
       - [Hints (File categorizer)](#hints-file-categorizer)
@@ -598,6 +599,15 @@ Should a function meant to validate a data type execute in `IO`? Probably not. C
 here and software is iterative; you will be able to see what can be made pure and thus less
 mysterious in time. Making functions pure is not a chore to be done to appease the Haskell gods, but
 is mostly a question of removing future questions in future debugging sessions.
+
+## Effectful code and error handling
+
+Effectful code can fail in many ways that pure code will generally not; we have to deal with missing
+files/handles to things or operations that otherwise inherently depend on resources that may change
+over time and exist or go missing without interaction from our code. This means we have to handle
+errors. If you're curious what we can do to make our code handle these scenarios you can look into
+the [next chapter on error handling](./05-error-handling.md) even before going forward with the
+below examples of small applications using `IO`.
 
 ## Small applications using `IO`
 
