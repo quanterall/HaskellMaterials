@@ -7,6 +7,7 @@
     - [`(MonadThrow m) => m a`](#monadthrow-m--m-a)
       - [Downsides](#downsides)
     - [When should we do what?](#when-should-we-do-what)
+    - [A note on `IOException`](#a-note-on-ioexception)
     - [Tools and prerequisites/rules for working with exceptions and values](#tools-and-prerequisitesrules-for-working-with-exceptions-and-values)
       - [Always define custom error types](#always-define-custom-error-types)
       - [`try`](#try)
@@ -29,6 +30,7 @@
       - [`finally :: (MonadUnliftIO m) => m a -> m b -> m a`](#finally--monadunliftio-m--m-a---m-b---m-a)
       - [`onException :: (MonadUnliftIO m) => m a -> m b -> m a`](#onexception--monadunliftio-m--m-a---m-b---m-a)
       - [`withException :: (MonadUnliftIO m, Exception e) => m a -> (e -> m b) -> m a`](#withexception--monadunliftio-m-exception-e--m-a---e---m-b---m-a)
+      - [Exercises (Tools and prerequisites/rules for working with exceptions and values)](#exercises-tools-and-prerequisitesrules-for-working-with-exceptions-and-values)
     - [Reading more](#reading-more)
     - [Additions to be made in the future](#additions-to-be-made-in-the-future)
 
@@ -245,6 +247,18 @@ If code is part of application initialization, it's not unreasonable for it to u
 signal failure. If most applications are going to use library functionality specifically during
 setup, we should feel free to make it use exceptions. If a user needs error values from them for
 a specific set of errors, they can use `try`/`catch` to capture these scenarios into types/handlers.
+
+### A note on `IOException`
+
+`IOException` is a bit of an oddity in that it is an opaque type that we have no structural insight
+into, and so we have to query the error for what it actually represents. This is usually something
+you can get around with wrappers (written by you or someone else) or other utilities. Some basic
+utilities for querying this type can be found in the
+[`System.IO.Error`](https://www.stackage.org/haddock/lts-19.8/base-4.15.1.0/System-IO-Error.html)
+module.
+
+This can be helpful when you need to establish whether or not an error is specifically about a file
+or resource not existing, and so on.
 
 ### Tools and prerequisites/rules for working with exceptions and values
 
@@ -541,6 +555,18 @@ A version of `finally` that only runs the supplied action if there was an except
 #### `withException :: (MonadUnliftIO m, Exception e) => m a -> (e -> m b) -> m a`
 
 Like `onException`, but we also have access to the exception in question in our handler.
+
+#### Exercises (Tools and prerequisites/rules for working with exceptions and values)
+
+1. Create a function that takes a `FilePath` and returns `Either IOException Text`. Note that you
+   can use `readFileUtf8`[0] from `RIO` to read the contents of a file.
+
+2. Create a similar function to exercise 1 except have it return a `FileReadError` that can be
+   either `FileDoesNotExist FilePath`, `PermissionDeniedForFile FilePath` or
+   `UnknownIOError IOException`.
+
+3. Make the type you defined for your error information an instance of `Exception` and instead of
+   returning it, use `throwM` to throw it.
 
 ### Reading more
 
