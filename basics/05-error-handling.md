@@ -440,7 +440,15 @@ chromeVersion <- getChromeVersion chromeBinary
 #### `catch`
 
 `catch` and its friends are useful when we believe we can completely recover from an error and
-provide a value of the same type as the code that threw the exception.
+provide a value of the same type as the code that threw the exception. It's important to keep in
+mind the fundamental difference between functions that allow us to capture errors and functions
+designed to handle them, as overzealous handling of errors can often lead to code that never quite
+fails gracefully but also doesn't quite work.
+
+The belief that we can recover from an error needs to be grounded in a reality where moving forward
+in the program is actually desirable and not something we do because we think it's better to have a
+badly behaving program that still runs than one that clearly signals that critical errors have
+happened.
 
 ##### `catch :: (MonadUnliftIO m, Exception e) => m a -> (e -> m a) -> m a`
 
@@ -568,9 +576,9 @@ Like `onException`, but we also have access to the exception in question in our 
 3. Make the type you defined for your error an instance of `Exception` and instead of returning it,
    use `throwM` to throw it.
 
-4. Create a function that, using error handling functions, gets a handle to a file. If the file does
-   not exist, create it and return the handle. What is the fundamental difference between this
-   function and the ones created in the previous exercises?
+4. Create a function (`getHandleToFile :: FilePath -> IO Handle`). If the file does not exist,
+   create it and return the handle. What is the fundamental difference between this function and the
+   ones created in the previous exercises?
 
 ### Reading more
 
