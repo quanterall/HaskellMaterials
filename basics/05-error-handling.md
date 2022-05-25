@@ -565,8 +565,12 @@ Like `onException`, but we also have access to the exception in question in our 
    either `FileDoesNotExist FilePath`, `PermissionDeniedForFile FilePath` or
    `UnknownIOError IOException`.
 
-3. Make the type you defined for your error information an instance of `Exception` and instead of
-   returning it, use `throwM` to throw it.
+3. Make the type you defined for your error an instance of `Exception` and instead of returning it,
+   use `throwM` to throw it.
+
+4. Create a function that, using error handling functions, gets a handle to a file. If the file does
+   not exist, create it and return the handle. What is the fundamental difference between this
+   function and the ones created in the previous exercises?
 
 ### Reading more
 
