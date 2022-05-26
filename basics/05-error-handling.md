@@ -581,6 +581,12 @@ Like `onException`, but we also have access to the exception in question in our 
    create it and return the handle. What is the fundamental difference between this function and the
    ones created in the previous exercises?
 
+5. Create a function `getHttpContent :: String -> IO (Either HttpException LByteString)`[1] that
+   takes a string representing a URL and returns the result of executing a `GET` request to the
+   given endpoint. If the request resulted in a `InternalException`, `ConnectionClosed` or
+   `HttpZlibException` we want to rethrow the exception, otherwise we want to return
+   `Left HttpException`.
+
 ##### Exercise notes (Tools and prerequisites/rules for working with exceptions and values)
 
 0. [`readFileUtf8`](https://www.stackage.org/haddock/lts-19.8/rio-0.1.22.0/RIO.html#v:readFileUtf8)
