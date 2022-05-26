@@ -31,6 +31,7 @@
       - [`onException :: (MonadUnliftIO m) => m a -> m b -> m a`](#onexception--monadunliftio-m--m-a---m-b---m-a)
       - [`withException :: (MonadUnliftIO m, Exception e) => m a -> (e -> m b) -> m a`](#withexception--monadunliftio-m-exception-e--m-a---e---m-b---m-a)
       - [Exercises (Tools and prerequisites/rules for working with exceptions and values)](#exercises-tools-and-prerequisitesrules-for-working-with-exceptions-and-values)
+        - [Exercise notes (Tools and prerequisites/rules for working with exceptions and values)](#exercise-notes-tools-and-prerequisitesrules-for-working-with-exceptions-and-values)
     - [Reading more](#reading-more)
     - [Additions to be made in the future](#additions-to-be-made-in-the-future)
 
@@ -579,6 +580,10 @@ Like `onException`, but we also have access to the exception in question in our 
 4. Create a function (`getHandleToFile :: FilePath -> IO Handle`). If the file does not exist,
    create it and return the handle. What is the fundamental difference between this function and the
    ones created in the previous exercises?
+
+##### Exercise notes (Tools and prerequisites/rules for working with exceptions and values)
+
+0. [`readFileUtf8`](https://www.stackage.org/haddock/lts-19.8/rio-0.1.22.0/RIO.html#v:readFileUtf8)
 
 ### Reading more
 
