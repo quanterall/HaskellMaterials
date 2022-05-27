@@ -14,6 +14,14 @@
         - [`try :: (MonadUnliftIO m, Exception e) => m a -> m (Either e a)`](#try--monadunliftio-m-exception-e--m-a---m-either-e-a)
         - [`tryAny :: (MonadUnliftIO m) => m a -> m (Either SomeException a)`](#tryany--monadunliftio-m--m-a---m-either-someexception-a)
         - [`tryIO :: (MonadUnliftIO m) => m a -> m (Either IOException a)`](#tryio--monadunliftio-m--m-a---m-either-ioexception-a)
+        - [Exercises (`try`)](#exercises-try)
+          - [Exercise notes (`try`)](#exercise-notes-try)
+      - [`catch`](#catch)
+        - [`catch :: (MonadUnliftIO m, Exception e) => m a -> (e -> m a) -> m a`](#catch--monadunliftio-m-exception-e--m-a---e---m-a---m-a)
+        - [`catchIO` & `catchAny`](#catchio--catchany)
+        - [Exercises (`catch`)](#exercises-catch)
+        - [`handle`, `handleIO` and `handleAny`](#handle-handleio-and-handleany)
+        - [`catches`](#catches)
       - [`mapException`](#mapexception)
         - [`mapException :: (Exception e1, Exception e2) => (e1 -> e2) -> a -> a`](#mapexception--exception-e1-exception-e2--e1---e2---a---a)
         - [`mapExceptionM :: (Exception e1, Exception e2, MonadUnliftIO m) => (e1 -> e2) -> m a -> m a`](#mapexceptionm--exception-e1-exception-e2-monadunliftio-m--e1---e2---m-a---m-a)
@@ -21,17 +29,11 @@
         - [`fromEither :: (Exception e, MonadThrow m) => Either e a -> m a`](#fromeither--exception-e-monadthrow-m--either-e-a---m-a)
         - [`fromEitherM :: (Exception e, MonadThrow m) => m (Either e a) -> m a`](#fromeitherm--exception-e-monadthrow-m--m-either-e-a---m-a)
         - [`fromMaybeM :: (Exception e, MonadThrow m) => e -> m (Maybe a) -> m a`](#frommaybem--exception-e-monadthrow-m--e---m-maybe-a---m-a)
-      - [`catch`](#catch)
-        - [`catch :: (MonadUnliftIO m, Exception e) => m a -> (e -> m a) -> m a`](#catch--monadunliftio-m-exception-e--m-a---e---m-a---m-a)
-        - [`catchIO` & `catchAny`](#catchio--catchany)
-        - [`handle`, `handleIO` and `handleAny`](#handle-handleio-and-handleany)
-        - [`catches`](#catches)
       - [`bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`](#bracket--monadunliftio-m--m-a---a---m-b---a---m-c---m-c)
       - [`finally :: (MonadUnliftIO m) => m a -> m b -> m a`](#finally--monadunliftio-m--m-a---m-b---m-a)
       - [`onException :: (MonadUnliftIO m) => m a -> m b -> m a`](#onexception--monadunliftio-m--m-a---m-b---m-a)
       - [`withException :: (MonadUnliftIO m, Exception e) => m a -> (e -> m b) -> m a`](#withexception--monadunliftio-m-exception-e--m-a---e---m-b---m-a)
-      - [Exercises (Tools and prerequisites/rules for working with exceptions and values)](#exercises-tools-and-prerequisitesrules-for-working-with-exceptions-and-values)
-        - [Exercise notes (Tools and prerequisites/rules for working with exceptions and values)](#exercise-notes-tools-and-prerequisitesrules-for-working-with-exceptions-and-values)
+      - [Exercises (General error handling)](#exercises-general-error-handling)
     - [Reading more](#reading-more)
     - [Additions to be made in the future](#additions-to-be-made-in-the-future)
 
@@ -317,6 +319,109 @@ Returns an `Either IOException a` value. This is the same as `tryAny` but for `I
 `IOException` is a narrower type than `SomeException` and thus can be used to catch more specific
 exceptions.
 
+##### Exercises (`try`)
+
+1. Create a function that takes a `FilePath` and returns `Either IOException Text`. Note that you
+   can use `readFileUtf8`[0] from `RIO` to read the contents of a file.
+
+2. Create a similar function to exercise 1 except have it return a `FileReadError` that can be
+   either `FileDoesNotExist FilePath`, `PermissionDeniedForFile FilePath` or
+   `UnknownIOError IOException`.
+
+3. Make the type you defined for your error an instance of `Exception` and instead of returning it,
+   use `throwM` to throw it.
+
+###### Exercise notes (`try`)
+
+0. [`readFileUtf8`](https://www.stackage.org/haddock/lts-19.8/rio-0.1.22.0/RIO.html#v:readFileUtf8)
+
+#### `catch`
+
+`catch` and its friends are useful when we believe we can completely recover from an error and
+provide a value of the same type as the code that threw the exception. It's important to keep in
+mind the fundamental difference between functions that allow us to capture errors and functions
+designed to handle them, as overzealous handling of errors can often lead to code that never quite
+fails gracefully but also doesn't quite work.
+
+The belief that we can recover from an error needs to be grounded in a reality where moving forward
+in the program is actually desirable and not something we do because we think it's better to have a
+badly behaving program that still runs than one that clearly signals that critical errors have
+happened.
+
+##### `catch :: (MonadUnliftIO m, Exception e) => m a -> (e -> m a) -> m a`
+
+We can see in the type signature here that our code handling the exception will return `m a`, which
+means it's effectively supposed to be a recovery mechanism for code throwing exceptions.
+
+Very commonly you'll see `catch` used in the following way:
+
+```haskell
+configuration <- getConfigurationFromFile path `catch` \(e :: ConfigurationFileReadError) -> do
+  pure defaultConfiguration
+```
+
+We see here that we're using `catch` in the infix position, because it takes the handler as the
+second argument. This makes it a very natural candidate for this "hanging" handler style, where the
+code doing the recovery hangs off of the end. If your recovery code is complex or at least more
+complex than the code you're catching, this is a good way to use it.
+
+Note that we're specifying a specific error type here. If we didn't, the exception catching
+machinery wouldn't know which exceptions are to be caught.
+
+A reasonable way to go about this would also be to have the handler defined elsewhere:
+
+```haskell
+configuration <- getConfigurationFromFile path `catch` handleConfigurationFileReadError
+...
+  where
+    handleConfigurationFileReadError (ConfigurationFileReadError path) = do
+      pure defaultConfiguration
+```
+
+##### `catchIO` & `catchAny`
+
+These are specialized versions of `catch` that catch `IOException`s and `SomeException`s,
+respectively.
+
+##### Exercises (`catch`)
+
+1. Create a function (`getHandleToFile :: FilePath -> IO Handle`). If the file does not exist,
+   create it and return the handle. What is the fundamental difference between what we are doing in
+   this exercise versus what we did for `try`?
+
+##### `handle`, `handleIO` and `handleAny`
+
+These are really just versions of `catch` that takes the handler as the first argument. The use case
+for these is mostly obvious. It's good to know about them if the handling code fits this pattern
+better. The above `catch` example becomes:
+
+```haskell
+configuration <- handle handleConfigurationFileReadError $ getConfigurationFromFile path
+...
+  where
+    handleConfigurationFileReadError (ConfigurationFileReadError path) = do
+      pure defaultConfiguration
+```
+
+##### `catches`
+
+This is a version of `catch` that takes a list of handlers for different exceptions. The handlers
+are all of a `Handler` type:
+
+```haskell
+configuration <-
+  getConfigurationFromFile path
+    `catches` [ Handler $ \(e :: ConfigurationParsingError) -> do
+                  pure defaultConfiguration,
+                Handler $ \(e :: IOException) -> do
+                  pure defaultConfiguration
+              ]
+```
+
+Here we're catching two different exceptions. They happen to have exactly the same handling code in
+this case, but as long as both handlers return the same `m a` as the action we are catching
+exceptions from, we're fine.
+
 #### `mapException`
 
 `mapException` and `mapExceptionM` allow us to just transform caught exceptions to other types,
@@ -438,86 +543,6 @@ chromeBinary <- fromMaybeM ChromeBinaryNotFound $ searchPathForBinary "google-ch
 chromeVersion <- getChromeVersion chromeBinary
 ```
 
-#### `catch`
-
-`catch` and its friends are useful when we believe we can completely recover from an error and
-provide a value of the same type as the code that threw the exception. It's important to keep in
-mind the fundamental difference between functions that allow us to capture errors and functions
-designed to handle them, as overzealous handling of errors can often lead to code that never quite
-fails gracefully but also doesn't quite work.
-
-The belief that we can recover from an error needs to be grounded in a reality where moving forward
-in the program is actually desirable and not something we do because we think it's better to have a
-badly behaving program that still runs than one that clearly signals that critical errors have
-happened.
-
-##### `catch :: (MonadUnliftIO m, Exception e) => m a -> (e -> m a) -> m a`
-
-We can see in the type signature here that our code handling the exception will return `m a`, which
-means it's effectively supposed to be a recovery mechanism for code throwing exceptions.
-
-Very commonly you'll see `catch` used in the following way:
-
-```haskell
-configuration <- getConfigurationFromFile path `catch` \(e :: ConfigurationFileReadError) -> do
-  pure defaultConfiguration
-```
-
-We see here that we're using `catch` in the infix position, because it takes the handler as the
-second argument. This makes it a very natural candidate for this "hanging" handler style, where the
-code doing the recovery hangs off of the end. If your recovery code is complex or at least more
-complex than the code you're catching, this is a good way to use it.
-
-Note that we're specifying a specific error type here. If we didn't, the exception catching
-machinery wouldn't know which exceptions are to be caught.
-
-A reasonable way to go about this would also be to have the handler defined elsewhere:
-
-```haskell
-configuration <- getConfigurationFromFile path `catch` handleConfigurationFileReadError
-...
-  where
-    handleConfigurationFileReadError (ConfigurationFileReadError path) = do
-      pure defaultConfiguration
-```
-
-##### `catchIO` & `catchAny`
-
-These are specialized versions of `catch` that catch `IOException`s and `SomeException`s,
-respectively.
-
-##### `handle`, `handleIO` and `handleAny`
-
-These are really just versions of `catch` that takes the handler as the first argument. The use case
-for these is mostly obvious. It's good to know about them if the handling code fits this pattern
-better. The above `catch` example becomes:
-
-```haskell
-configuration <- handle handleConfigurationFileReadError $ getConfigurationFromFile path
-...
-  where
-    handleConfigurationFileReadError (ConfigurationFileReadError path) = do
-      pure defaultConfiguration
-```
-
-##### `catches`
-
-This is a version of `catch` that takes a list of handlers for different exceptions. The handlers
-are all of a `Handler` type:
-
-```haskell
-configuration <-
-  getConfigurationFromFile path
-    `catches` [ Handler $ \(e :: ConfigurationParsingError) -> do
-                  pure defaultConfiguration,
-                Handler $ \(e :: IOException) -> do
-                  pure defaultConfiguration
-              ]
-```
-
-Here we're catching two different exceptions. They happen to have exactly the same handling code in
-this case, but as long as both handlers return the same `m a` as the action we are catching
-exceptions from, we're fine.
 
 #### `bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`
 
@@ -565,31 +590,13 @@ A version of `finally` that only runs the supplied action if there was an except
 
 Like `onException`, but we also have access to the exception in question in our handler.
 
-#### Exercises (Tools and prerequisites/rules for working with exceptions and values)
+#### Exercises (General error handling)
 
-1. Create a function that takes a `FilePath` and returns `Either IOException Text`. Note that you
-   can use `readFileUtf8`[0] from `RIO` to read the contents of a file.
-
-2. Create a similar function to exercise 1 except have it return a `FileReadError` that can be
-   either `FileDoesNotExist FilePath`, `PermissionDeniedForFile FilePath` or
-   `UnknownIOError IOException`.
-
-3. Make the type you defined for your error an instance of `Exception` and instead of returning it,
-   use `throwM` to throw it.
-
-4. Create a function (`getHandleToFile :: FilePath -> IO Handle`). If the file does not exist,
-   create it and return the handle. What is the fundamental difference between this function and the
-   ones created in the previous exercises?
-
-5. Create a function `getHttpContent :: String -> IO (Either HttpException LByteString)`[1] that
+1. Create a function `getHttpContent :: String -> IO (Either HttpException LByteString)`[1] that
    takes a string representing a URL and returns the result of executing a `GET` request to the
    given endpoint. If the request resulted in a `InternalException`, `ConnectionClosed` or
    `HttpZlibException` we want to rethrow the exception, otherwise we want to return
    `Left HttpException`.
-
-##### Exercise notes (Tools and prerequisites/rules for working with exceptions and values)
-
-0. [`readFileUtf8`](https://www.stackage.org/haddock/lts-19.8/rio-0.1.22.0/RIO.html#v:readFileUtf8)
 
 ### Reading more
 
