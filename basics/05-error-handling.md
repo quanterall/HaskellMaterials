@@ -391,9 +391,10 @@ respectively.
 
 ##### `handle`, `handleIO` and `handleAny`
 
-These are really just versions of `catch` that take the handler as the first argument. The use case
-for these is mostly obvious. It's good to know about them if the handling code fits this pattern
-better. The above `catch` example becomes:
+These are really just versions of `catch{IO,Any}` that take the handler as the first argument. When
+we have a small handler or just a function, we can put the expression that we are catching within
+last, making it nicer to use when we have a big expression hanging off the end. The above `catch`
+example becomes:
 
 ```haskell
 configuration <- handle handleConfigurationFileReadError $ getConfigurationFromFile path
@@ -401,6 +402,28 @@ configuration <- handle handleConfigurationFileReadError $ getConfigurationFromF
   where
     handleConfigurationFileReadError (ConfigurationFileReadError path) = do
       pure defaultConfiguration
+```
+
+If the expression grew, it would still grow gracefully as it's a hanging `do`:
+
+```haskell
+configuration <- handle handleConfigurationFileReadError $ do
+  downloadDefaultConfiguration path
+  -- ...
+  getConfigurationFromFile path
+```
+
+Contrast this with the `catch` version:
+
+```haskell
+configuration <-
+  catch
+    ( do
+        downloadDefaultConfiguration path
+        -- ...
+        getConfigurationFromFile path
+    )
+    handleConfigurationFileReadError
 ```
 
 ##### `catches`
