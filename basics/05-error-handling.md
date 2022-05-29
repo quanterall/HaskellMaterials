@@ -391,7 +391,7 @@ respectively.
 
 ##### `handle`, `handleIO` and `handleAny`
 
-These are really just versions of `catch` that takes the handler as the first argument. The use case
+These are really just versions of `catch` that take the handler as the first argument. The use case
 for these is mostly obvious. It's good to know about them if the handling code fits this pattern
 better. The above `catch` example becomes:
 
