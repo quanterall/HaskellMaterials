@@ -29,6 +29,7 @@
         - [`fromEither :: (Exception e, MonadThrow m) => Either e a -> m a`](#fromeither--exception-e-monadthrow-m--either-e-a---m-a)
         - [`fromEitherM :: (Exception e, MonadThrow m) => m (Either e a) -> m a`](#fromeitherm--exception-e-monadthrow-m--m-either-e-a---m-a)
         - [`fromMaybeM :: (Exception e, MonadThrow m) => e -> m (Maybe a) -> m a`](#frommaybem--exception-e-monadthrow-m--e---m-maybe-a---m-a)
+        - [Exercises (`fromX`)](#exercises-fromx)
       - [`bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`](#bracket--monadunliftio-m--m-a---a---m-b---a---m-c---m-c)
       - [`finally :: (MonadUnliftIO m) => m a -> m b -> m a`](#finally--monadunliftio-m--m-a---m-b---m-a)
       - [`onException :: (MonadUnliftIO m) => m a -> m b -> m a`](#onexception--monadunliftio-m--m-a---m-b---m-a)
@@ -564,6 +565,23 @@ This is the same as `fromEitherM` but we provide our exception type and if the `
 -- will be of type `FilePath`, so it can then be used very easily with `getChromeVersion`.
 chromeBinary <- fromMaybeM ChromeBinaryNotFound $ searchPathForBinary "google-chrome"
 chromeVersion <- getChromeVersion chromeBinary
+```
+
+##### Exercises (`fromX`)
+
+1. If we have a function `eitherDecode :: (FromJSON a) => ByteString -> Either String a` where the
+   `Left` value is a string describing why a value cannot be decoded as `a`, and the `Right` value
+   is a successfully decoded value, how can we best implement `readConfiguration` given the
+   following code:
+
+```haskell
+data JSONDecodingError = JSONDecodingError !FilePath !String
+  deriving (Eq, Show)
+
+instance Exception JSONDecodingError
+
+readConfiguration :: FilePath -> IO Configuration
+readConfiguration = undefined
 ```
 
 
