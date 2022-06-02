@@ -35,6 +35,7 @@
       - [`onException :: (MonadUnliftIO m) => m a -> m b -> m a`](#onexception--monadunliftio-m--m-a---m-b---m-a)
       - [`withException :: (MonadUnliftIO m, Exception e) => m a -> (e -> m b) -> m a`](#withexception--monadunliftio-m-exception-e--m-a---e---m-b---m-a)
       - [Exercises (General error handling)](#exercises-general-error-handling)
+        - [Exercise notes (General error handling)](#exercise-notes-general-error-handling)
     - [Reading more](#reading-more)
     - [Additions to be made in the future](#additions-to-be-made-in-the-future)
 
@@ -633,11 +634,16 @@ Like `onException`, but we also have access to the exception in question in our 
 
 #### Exercises (General error handling)
 
-1. Create a function `getHttpContent :: String -> IO (Either HttpException LByteString)`[1] that
+1. Create a function `getHttpContent :: String -> IO (Either HttpException LByteString)`[0] that
    takes a string representing a URL and returns the result of executing a `GET` request to the
    given endpoint. If the request resulted in a `InternalException`, `ConnectionClosed` or
    `HttpZlibException` we want to rethrow the exception, otherwise we want to return
    `Left HttpException`.
+
+##### Exercise notes (General error handling)
+
+0. You can read more about `HttpException`
+   [here](https://www.stackage.org/haddock/lts-19.9/http-client-0.7.11/Network-HTTP-Client.html#t:HttpException).
 
 ### Reading more
 
