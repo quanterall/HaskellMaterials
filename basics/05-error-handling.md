@@ -22,6 +22,8 @@
         - [Exercises (`catch`)](#exercises-catch)
         - [`handle`, `handleIO` and `handleAny`](#handle-handleio-and-handleany)
         - [`catches`](#catches)
+        - [Exercises (`catches`)](#exercises-catches)
+          - [Exercise notes (`catches`)](#exercise-notes-catches)
       - [`mapException`](#mapexception)
         - [`mapException :: (Exception e1, Exception e2) => (e1 -> e2) -> a -> a`](#mapexception--exception-e1-exception-e2--e1---e2---a---a)
         - [`mapExceptionM :: (Exception e1, Exception e2, MonadUnliftIO m) => (e1 -> e2) -> m a -> m a`](#mapexceptionm--exception-e1-exception-e2-monadunliftio-m--e1---e2---m-a---m-a)
@@ -446,6 +448,32 @@ configuration <-
 Here we're catching two different exceptions. They happen to have exactly the same handling code in
 this case, but as long as both handlers return the same `m a` as the action we are catching
 exceptions from, we're fine.
+
+##### Exercises (`catches`)
+
+1. Suppose we have a function `loadConfigurationFromWeb :: Url -> m Configuration` and that this
+   function can either fail with a `HttpException`[0] or with a `ConfigurationParsingError` that
+   holds the `Url`, the full file content, the location of the error (row & column) and a `String`
+   describing what was expected at the location. Define the `ConfigurationParsingError` type and
+   create a `loadConfiguration :: FilePath -> Url -> m Configuration` function that uses our
+   `loadConfigurationFromWeb` function but catches both a `HttpException` and a
+   `ConfigurationParsingError`.
+
+   If a `HttpException` is thrown, retry your function after letting the thread sleep some amount of
+   time[1]. If a `ConfigurationParsingError` is thrown, call the `loadConfigurationFromFile`
+   function with the `FilePath` passed to your `loadConfiguration` function.
+
+   If the `loadConfigurationFromWeb` function succeeds, write the configuration[2] to the `FilePath`
+   instead and return the configuration.
+
+###### Exercise notes (`catches`)
+
+0. You can read more about `HttpException`
+   [here](https://www.stackage.org/haddock/lts-19.9/http-client-0.7.11/Network-HTTP-Client.html#t:HttpException).
+
+1. [threadDelay](https://www.stackage.org/haddock/lts-19.9/rio-0.1.22.0/RIO.html#v:threadDelay).
+
+2. [writeFileUtf8](https://www.stackage.org/haddock/lts-19.9/rio-0.1.22.0/RIO.html#v:writeFileUtf8).
 
 #### `mapException`
 
