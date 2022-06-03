@@ -460,11 +460,14 @@ exceptions from, we're fine.
    `ConfigurationParsingError`.
 
    If a `HttpException` is thrown, retry your function after letting the thread sleep some amount of
-   time[1]. If a `ConfigurationParsingError` is thrown, call the `loadConfigurationFromFile`
-   function with the `FilePath` passed to your `loadConfiguration` function.
+   time[1]. If 5 retries are reached, do not retry any more and instead fail with a
+   `TooManyRetriesError` that holds the Url in question.
+   
+   If a `ConfigurationParsingError` is thrown, call the `loadConfigurationFromFile` function with
+   the `FilePath` passed to your `loadConfiguration` function.
 
-   If the `loadConfigurationFromWeb` function succeeds, write the configuration[2] to the `FilePath`
-   instead and return the configuration.
+   If the `loadConfigurationFromWeb` function instead succeeds, write the configuration[2] to the
+   `FilePath` and return the configuration.
 
 ###### Exercise notes (`catches`)
 
