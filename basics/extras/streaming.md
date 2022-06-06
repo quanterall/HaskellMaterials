@@ -120,7 +120,9 @@ If we were to use `sinkList` in our example pipeline, for example, we'd be able 
 people in a list:
 
 ```haskell
--- sinkList :: Monad m => ConduitT i o m [i]
+-- `sinkList` in this pipeline has the type `Monad m => ConduitT i o m [i]`. This means that it will
+-- take whatever the input type at the point in the pipeline it's called is and create a list of
+-- that type as a result.
 
 runMain :: IO ()
 runMain = do
