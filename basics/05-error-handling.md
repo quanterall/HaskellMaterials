@@ -462,7 +462,7 @@ exceptions from, we're fine.
    If a `HttpException` is thrown, retry your function after letting the thread sleep some amount of
    time[1]. If 5 retries are reached, do not retry any more and instead fail with a
    `TooManyRetriesError` that holds the Url in question.
-   
+
    If a `ConfigurationParsingError` is thrown, call the `loadConfigurationFromFile` function with
    the `FilePath` passed to your `loadConfiguration` function.
 
@@ -615,7 +615,6 @@ instance Exception JSONDecodingError
 readConfiguration :: FilePath -> IO Configuration
 readConfiguration = undefined
 ```
-
 
 #### `bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`
 
