@@ -8,6 +8,11 @@
     - [output](#output)
     - [monad](#monad)
     - [result](#result)
+  - [Common functions](#common-functions)
+    - [`runConduit`](#runconduit)
+    - [`runConduitRes`](#runconduitres)
+    - [`yieldMany`](#yieldmany)
+    - [`sourceFile{,BS}`](#sourcefile{bs})
 
 Sometimes we want to stream values and are unable to accomplish this with lists or other data
 structures. For these situations we want to use something more explicitly made for streaming.
@@ -140,3 +145,67 @@ that we'll have it at the end of our pipeline.
 
 Most of the components in a pipeline will have a result type of `()`, which means they don't have a
 result type; they're just trying to look at whatever input came in, then produce output based on it.
+
+## Common functions
+
+### `runConduit`
+
+As we've seen above in several examples, `runConduit` takes a pipeline and runs it. It's one of a
+few ways to take a pipeline and actually get an end result from it. The resulting value will be of
+type `r` in `ConduitT i o m r`.
+
+### `runConduitRes`
+
+This is a variant of `runConduit` that allows us to run `ResourceT` based pipelines. This is needed
+when we are allocating some kind of resource in our pipeline, like a file handle or a database
+handle. `ResourceT` can then take that allocated resource and automatically free it correctly when
+we're done with it.
+
+### `yieldMany`
+
+[`yieldMany`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:yieldMany)
+takes a collection of things and yields each member individually into the stream. If we have a
+list or `Vector`, for example, we can `yieldMany` the contents.
+
+```haskell
+scrapeAPIResultForUrls ::
+  (MonadUnliftIO m, MonadReader env m, HasHttpManager env, HasLogFunc env) =>
+  SourceType ->
+  [Url] ->
+  m APIResultCounts
+scrapeAPIResultForUrls source urls = do
+  let emptyCounts =
+        APIResultCounts
+          { _apiResultCountsGood = 0,
+            _apiResultCountsDecodingErrors = 0,
+            _apiResultCountsNullResponses = 0,
+            _apiResultCountsBadResponseType = 0,
+            _apiResultCountsBadResponseStatus = 0
+          }
+  runConduitRes $
+    -- Yield our URLs into the stream
+    yieldMany urls
+      -- Execute an API call for each
+      .| mapMC (getScrapeAPIResult 10)
+      -- Reduce/fold the results into a single result structure; `APIResultCounts`
+      .| foldlC addCount emptyCounts
+  where
+    addCount :: APIResultCounts -> Either APIError ScrapeAPIResult -> APIResultCounts
+    addCount counts (Right payload)
+      | contentType (payload ^. scrapeAPIResultContents) /= expectedResponseType source =
+        counts & apiResultCountsBadResponseType +~ 1
+      | otherwise = counts & apiResultCountsGood +~ 1
+    addCount counts (Left WrongPayload) = counts & apiResultCountsDecodingErrors +~ 1
+    addCount counts (Left NullResponse) = counts & apiResultCountsNullResponses +~ 1
+    addCount counts (Left BadStatus) = counts & apiResultCountsBadResponseStatus +~ 1
+```
+
+### `sourceFile{,BS}`
+
+[`sourceFile`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:sourceFile)
+takes a file path and establishes a stream of `ByteString` values from that file.
+
+```haskell
+-- Reads a file, unpacking it as a gzip archive and reads tarball entries from it
+sourceFileBS tarballPath .| unTarGz .| Tar.withEntries matchFile
+```
