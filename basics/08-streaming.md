@@ -15,7 +15,10 @@
     - [`sourceFile{,BS}`](#sourcefile{bs})
 
 Sometimes we want to stream values and are unable to accomplish this with lists or other data
-structures. For these situations we want to use something more explicitly made for streaming.
+structures. For these situations we want to use something more explicitly made for streaming. In
+general when we want to do something effectful with a collection of values and collect the results,
+we'll want streaming behavior. As long as a problem is appropriate for it they also provide a way
+of solving issues that is reminiscent of the pipelines we saw in chapter 1.
 
 ## `Conduit`
 
