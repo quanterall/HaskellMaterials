@@ -212,3 +212,24 @@ takes a file path and establishes a stream of `ByteString` values from that file
 -- Reads a file, unpacking it as a gzip archive and reads tarball entries from it
 sourceFileBS tarballPath .| unTarGz .| Tar.withEntries matchFile
 ```
+
+### Functions similar to non-streaming equivalents
+
+All the below functions work exactly as you would expect if you know their non-streaming analogues:
+
+[`mapC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:mapC), like its
+non-streaming equivalent, maps a function over the stream, modifying each value before it is passed
+on to the next step.
+
+[`filterC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:filterC)
+passes only values matching a given predicate to the next step in the pipeline.
+
+[`takeC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:takeC) takes a
+given number of elements from the stream.
+
+[`takeWhile`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:takeWhileC)
+takes values from the stream and passes them on until it finds one that does not match the
+predicate.
+
+[`concatC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:concatC)
+takes a stream of foldables and flattens them out into streams of each separate item.
