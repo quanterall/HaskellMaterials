@@ -13,6 +13,7 @@
     - [`runConduitRes`](#runconduitres)
     - [`yieldMany`](#yieldmany)
     - [`sourceFile{,BS}`](#sourcefile{bs})
+    - [`conduitVector`](#conduitvector)
     - [Functions similar to non-streaming equivalents](#functions-similar-to-non-streaming-equivalents)
 
 Sometimes we want to stream values and are unable to accomplish this with lists or other data
@@ -214,13 +215,39 @@ takes a file path and establishes a stream of `ByteString` values from that file
 sourceFileBS tarballPath .| unTarGz .| Tar.withEntries matchFile
 ```
 
+### `conduitVector`
+
+[`conduitVector`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:conduitVector)
+takes a stream of elements and a size and produces a stream of vectors of that element type. This is
+effectively a chunking operation and can be useful for establishing a bigger set of elements that
+could be delegated out for processing in a worker thread, for example:
+
+```haskell
+runConduitRes $
+  -- Read a file
+  sourceFile filePath
+    -- Create a stream of lines where each is a `ByteString`
+    .| linesUnboundedAsciiC
+    -- Create a `Url` out of each of the lines
+    .| mapC (decodeUtf8Lenient >>> Url)
+    -- Create chunks of 50 to work with
+    .| conduitVector 50
+    -- Map an effectful function over each chunk
+    .| mapM_C
+      ( \chunk -> do
+          -- Write the chunk to a worker queue
+          atomically $ writeTBMQueue processingQueue chunk
+          -- Modify an `IORef` that holds our total count of written chunks
+          modifyIORef' entryCountRef ((toInteger $ length chunk) +)
+      )
+```
+
 ### Functions similar to non-streaming equivalents
 
 All the below functions work exactly as you would expect if you know their non-streaming analogues:
 
-[`mapC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:mapC), like its
-non-streaming equivalent, maps a function over the stream, modifying each value before it is passed
-on to the next step.
+[`mapC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:mapC) maps a
+function over the stream, modifying each value before it is passed on to the next step.
 
 [`filterC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:filterC)
 passes only values matching a given predicate to the next step in the pipeline.
