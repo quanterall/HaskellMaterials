@@ -13,6 +13,7 @@
     - [`runConduitRes`](#runconduitres)
     - [`yieldMany`](#yieldmany)
     - [`sourceFile{,BS}`](#sourcefile{bs})
+    - [Functions similar to non-streaming equivalents](#functions-similar-to-non-streaming-equivalents)
 
 Sometimes we want to stream values and are unable to accomplish this with lists or other data
 structures. For these situations we want to use something more explicitly made for streaming. In
