@@ -15,6 +15,8 @@
     - [`sourceFile{,BS}`](#sourcefile{bs})
     - [`sourceDirectory` / `sourceDirectoryDeep`](#sourcedirectory--sourcedirectorydeep)
     - [`conduitVector`](#conduitvector)
+    - [`sinkList` / `sinkVector`](#sinklist--sinkvector)
+    - [`sinkFile`](#sinkfile)
     - [Functions similar to non-streaming equivalents](#functions-similar-to-non-streaming-equivalents)
 
 Sometimes we want to stream values and are unable to accomplish this with lists or other data
@@ -249,6 +251,25 @@ runConduitRes $
           modifyIORef' entryCountRef ((toInteger $ length chunk) +)
       )
 ```
+
+### `sinkList` / `sinkVector`
+
+[`sinkList`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:sinkList) and
+[`sinkVector`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:sinkVector)
+both collect all the incoming items in either a list or a `Vector` and creates a result from them.
+
+The "sink" part of the name is there to signify that this is something you'd put last in a pipeline,
+as a sink for all of the incoming values.
+
+### `sinkFile`
+
+[`sinkFile`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:sinkFile)
+takes the incoming `ByteString`s and writes them to a file, then returns `()` from the stream. There
+is a variant called
+[`sinkTempFile`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:sinkTempFile)
+that you can use if you only need the file temporarily. Note that the result of your pipeline will
+be the filename of the file that was written, as it is randomly generated based on the pattern you
+pass to the function.
 
 ### Functions similar to non-streaming equivalents
 
