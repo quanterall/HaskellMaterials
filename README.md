@@ -38,10 +38,11 @@ are readable from top to bottom in terms of the assumptions they make about know
 - [Error handling](./basics/05-error-handling.md)
 - [JSON in Haskell](./basics/06-json-data.md)
 - [Mutable variables in Haskell](./basics/07-mutable-variables.md)
-- [The Reader Monad](./basics/08-reader.md)
-- [The ReaderT Monad Transformer](./basics/09-readert.md)
-- [`Has` constraints](./basics/10-has-constraints.md)
-- [Capability constraints](./basics/11-capability-constraints.md)
+- [Streaming with `Conduit`](./basics/08-streaming.md)
+- [The Reader Monad](./basics/09-reader.md)
+- [The ReaderT Monad Transformer](./basics/10-readert.md)
+- [`Has` constraints](./basics/11-has-constraints.md)
+- [Capability constraints](./basics/12-capability-constraints.md)
 
 There is a series of extra materials that can be read to gain some familiarity with
 libraries and tools commonly used for solving problems in Haskell:
