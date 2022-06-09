@@ -13,6 +13,7 @@
     - [`runConduitRes`](#runconduitres)
     - [`yieldMany`](#yieldmany)
     - [`sourceFile{,BS}`](#sourcefile{bs})
+    - [`sourceDirectory` / `sourceDirectoryDeep`](#sourcedirectory--sourcedirectorydeep)
     - [`conduitVector`](#conduitvector)
     - [Functions similar to non-streaming equivalents](#functions-similar-to-non-streaming-equivalents)
 
@@ -214,6 +215,13 @@ takes a file path and establishes a stream of `ByteString` values from that file
 -- Reads a file, unpacking it as a gzip archive and reads tarball entries from it
 sourceFileBS tarballPath .| unTarGz .| Tar.withEntries matchFile
 ```
+
+### `sourceDirectory` / `sourceDirectoryDeep`
+
+[`sourceDirectory`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:sourceDirectory)
+and [`sourceDirectoryDeep`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:sourceDirectoryDeep)
+are both producers/sources of filenames in a given directory. As the name of the latter variant
+implies, it will recurse into sub-directories and produce nested contents.
 
 ### `conduitVector`
 
