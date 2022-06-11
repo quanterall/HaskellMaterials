@@ -14,6 +14,7 @@
     - [`yieldMany`](#yieldmany)
     - [`sourceFile{,BS}`](#sourcefile{bs})
     - [`sourceDirectory` / `sourceDirectoryDeep`](#sourcedirectory--sourcedirectorydeep)
+    - [`stdinC`](#stdinc)
     - [`conduitVector`](#conduitvector)
     - [`sinkList` / `sinkVector`](#sinklist--sinkvector)
     - [`sinkFile`](#sinkfile)
@@ -224,6 +225,11 @@ sourceFileBS tarballPath .| unTarGz .| Tar.withEntries matchFile
 and [`sourceDirectoryDeep`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:sourceDirectoryDeep)
 are both producers/sources of filenames in a given directory. As the name of the latter variant
 implies, it will recurse into sub-directories and produce nested contents.
+
+### `stdinC`
+
+[`stdinC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:stdinC) is a
+stream of standard input, i.e. whatever the user types in the terminal.
 
 ### `conduitVector`
 
