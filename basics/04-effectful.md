@@ -220,8 +220,10 @@ For a concrete comparison of these two side by side, see [this file](../misc/typ
 
 ```haskell
 data FileType
-  = File FilePath
-  | Directory FilePath [FileType]
+  = -- | A file inside of a directory.
+    File FilePath
+  | -- | A directory that contains 'FileType's
+    Directory FilePath [FileType]
   deriving (Eq, Show)
 ```
 
