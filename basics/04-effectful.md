@@ -222,7 +222,7 @@ For a concrete comparison of these two side by side, see [this file](../misc/typ
 data FileType
   = -- | A file inside of a directory.
     File FilePath
-  | -- | A directory that contains 'FileType's
+  | -- | A directory, represented by its name and the 'FileType's it contains.
     Directory FilePath [FileType]
   deriving (Eq, Show)
 ```
