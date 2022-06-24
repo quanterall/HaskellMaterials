@@ -6,10 +6,10 @@
     - [Setters](#setters)
     - [Lenses as getters and setters in one](#lenses-as-getters-and-setters-in-one)
       - [Operators](#operators)
-        - [^. for getting values](#-for-getting-values)
+        - [Getting/extracting values](#gettingextracting-values)
         - [& for setting values](#-for-setting-values)
-          - [Setting constant values (`.~`)](#setting-constant-values-~)
-          - [Modifing values (`%~`)](#modifing-values-~)
+          - [Setting constant values](#setting-constant-values)
+          - [Modifying values](#modifying-values)
       - [Other notable uses of lenses](#other-notable-uses-of-lenses)
         - [`view`](#view)
       - [Lenses are not only for records](#lenses-are-not-only-for-records)
@@ -127,7 +127,7 @@ In order to get or set values in a structure, we'll have to employ a few differe
 operators will tell us (and the type system) what it is we want to accomplish with our lenses, since
 they work for many different operations.
 
-##### ^. for getting values
+##### Getting/extracting values
 
 We can see here that we are able to get values as easily via lenses as we would otherwise, if not
 easier:
@@ -150,7 +150,7 @@ When you see a structure followed by a `&` and a lens, you should assume that we
 some value inside of the structure. This can be done with a variety of operators, the two most
 common ones being `.~` and `%~`.
 
-###### Setting constant values (`.~`)
+###### Setting constant values
 
 When we use `.~` to set a value, we are replacing a value with another value:
 
@@ -168,7 +168,7 @@ ThingThatStoresRecord
     }
 ```
 
-###### Modifing values (`%~`)
+###### Modifying values
 
 When we use `%~` to set a value, we are modifying a value via a function:
 
