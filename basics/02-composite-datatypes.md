@@ -1224,9 +1224,9 @@ Nothing
 
 ```haskell
 Q> bindMaybe (\v -> Just $ v + 1) (Just 42)
-Holder 43
+Just 43
 Q> bindMaybe (\v -> Just $ length v) (Just "hello")
-Holder 5
+Just 5
 Q> bindMaybe (\v -> Nothing) (Just 42)
 Nothing
 Q> bindMaybe (\v -> Nothing) (Just "hello")
