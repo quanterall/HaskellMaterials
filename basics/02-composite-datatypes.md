@@ -1309,7 +1309,7 @@ Q> mapEither (+ 1) $ Left "error"
 Left "error"
 ```
 
-4. Define a function `applyEither :: (Either l (r -> a)) -> Either l r -> Either l a`.
+4. Define a function `applyEither :: Either l (r -> a) -> Either l r -> Either l a`.
 
 ```haskell
 Q> applyEither (Right (+ 1)) $ Right 42
