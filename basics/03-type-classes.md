@@ -49,7 +49,7 @@ instance Hashable String where
   -- Here all we need to provide is a `hash` function. We can write it here just
   -- like any other definition, which means we can also say it's equal to one
   -- we've written elsewhere.
-  hash = hashString -- <- Implemented elsewhere, produces `HashData`
+  hash = hashString -- <- Implemented elsewhere, has the type `String -> HashData`
 
 data FileData = FileData
   { fileName :: String,
