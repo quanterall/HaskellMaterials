@@ -458,32 +458,39 @@ exceptions from, we're fine.
 
 ##### Exercises (`catches`)
 
-1. Suppose we have a function `loadConfigurationFromWeb :: Url -> m Configuration` and that this
-   function can either fail with a `HttpException`[0] or with a `ConfigurationParsingError` that
+1. Suppose we have a function `loadConfigurationFromWeb :: Url -> IO Configuration`[0] and that this
+   function can either fail with a `HttpException`[1] or with a `ConfigurationParsingError` that
    holds the `Url`, the full file content, the location of the error (row & column) and a `String`
    describing what was expected at the location. Define the `ConfigurationParsingError` type and
-   create a `loadConfiguration :: FilePath -> Url -> m Configuration` function that uses our
+   create a `loadConfiguration :: FilePath -> Url -> IO Configuration` function that uses our
    `loadConfigurationFromWeb` function but catches both a `HttpException` and a
    `ConfigurationParsingError`.
 
    If a `HttpException` is thrown, retry your function after letting the thread sleep some amount of
-   time[1]. If 5 retries are reached, do not retry any more and instead fail with a
+   time[2]. If 5 retries are reached, do not retry any more and instead fail with a
    `TooManyRetriesError` that holds the Url in question.
 
    If a `ConfigurationParsingError` is thrown, call the `loadConfigurationFromFile` function with
    the `FilePath` passed to your `loadConfiguration` function.
 
-   If the `loadConfigurationFromWeb` function instead succeeds, write the configuration[2] to the
+   If the `loadConfigurationFromWeb` function instead succeeds, write the configuration[3] to the
    `FilePath` and return the configuration.
 
 ###### Exercise notes (`catches`)
 
-0. You can read more about `HttpException`
+0. You can define this as follows:
+
+```haskell
+loadConfigurationFromWeb :: Url -> IO Configuration
+loadConfigurationFromWeb = undefined
+```
+
+1. You can read more about `HttpException`
    [here](https://www.stackage.org/haddock/lts-19.9/http-client-0.7.11/Network-HTTP-Client.html#t:HttpException).
 
-1. [threadDelay](https://www.stackage.org/haddock/lts-19.9/rio-0.1.22.0/RIO.html#v:threadDelay).
+2. [threadDelay](https://www.stackage.org/haddock/lts-19.9/rio-0.1.22.0/RIO.html#v:threadDelay).
 
-2. [writeFileUtf8](https://www.stackage.org/haddock/lts-19.9/rio-0.1.22.0/RIO.html#v:writeFileUtf8).
+3. [writeFileUtf8](https://www.stackage.org/haddock/lts-19.9/rio-0.1.22.0/RIO.html#v:writeFileUtf8).
 
 #### `mapException`
 
