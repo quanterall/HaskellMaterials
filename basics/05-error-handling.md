@@ -325,8 +325,8 @@ exceptions.
 
 ##### Exercises (`try`)
 
-1. Create a function that takes a `FilePath` and returns `Either IOException Text`. Note that you
-   can use `readFileUtf8`[0] from `RIO` to read the contents of a file.
+1. Create a function takes a `FilePath`, reads a file and returns `IO (Either IOException Text)`.
+   Note that you can use `readFileUtf8`[0] from `RIO` to read the contents of a file.
 
 2. Create a similar function to exercise 1 except have it return a `FileReadError` that can be
    either `FileDoesNotExist FilePath`, `PermissionDeniedForFile FilePath` or
