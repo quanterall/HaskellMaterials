@@ -20,6 +20,7 @@
         - [`catch :: (MonadUnliftIO m, Exception e) => m a -> (e -> m a) -> m a`](#catch--monadunliftio-m-exception-e--m-a---e---m-a---m-a)
         - [`catchIO` & `catchAny`](#catchio--catchany)
         - [Exercises (`catch`)](#exercises-catch)
+          - [Exercise notes (`catch`)](#exercise-notes-catch)
         - [`handle`, `handleIO` and `handleAny`](#handle-handleio-and-handleany)
         - [`catches`](#catches)
         - [Exercises (`catches`)](#exercises-catches)
@@ -390,8 +391,14 @@ respectively.
 ##### Exercises (`catch`)
 
 1. Create a function (`getHandleToFile :: FilePath -> IO Handle`). If the file does not exist,
-   create it and return the handle. What is the fundamental difference between what we are doing in
-   this exercise versus what we did for `try`?
+   create it and return the handle. You can get a `Handle` to a file with `openFile`[0] and if you
+   want to create a file you can write nothing to it with `writeFileUtf8`[1].
+
+###### Exercise notes (`catch`)
+
+0. [`openFile`](https://hackage.haskell.org/package/base-4.16.2.0/docs/System-IO.html#v:openFile)
+
+1. [`writeFileUtf8`](https://www.stackage.org/haddock/lts-19.8/rio-0.1.22.0/RIO.html#v:writeFileUtf8)
 
 ##### `handle`, `handleIO` and `handleAny`
 
