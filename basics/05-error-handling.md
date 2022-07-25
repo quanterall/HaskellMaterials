@@ -459,7 +459,8 @@ exceptions from, we're fine.
 
 ##### Exercises (`catches`)
 
-1. Suppose we have a function `loadConfigurationFromWeb :: Url -> IO Configuration`[0] and that this
+1. Suppose we have a function `loadConfigurationFromWeb :: Url -> IO Configuration` and a function
+   `loadConfigurationFromFile :: FilePath -> IO Configuration`[0] and that this
    function can either fail with a `HttpException`[1] or with a `ConfigurationParsingError` that
    holds the `Url`, the full file content, the location of the error (row & column) and a `String`
    describing what was expected at the location. Define the `ConfigurationParsingError` type and
@@ -479,11 +480,15 @@ exceptions from, we're fine.
 
 ###### Exercise notes (`catches`)
 
-0. You can define this as follows:
+0. You can define this as follows, so that the types for these exist but we do not need to define
+   them further:
 
 ```haskell
 loadConfigurationFromWeb :: Url -> IO Configuration
 loadConfigurationFromWeb = undefined
+
+loadConfigurationFromFile :: Url -> IO Configuration
+loadConfigurationFromFile = undefined
 ```
 
 1. You can read more about `HttpException`
