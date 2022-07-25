@@ -33,6 +33,7 @@
         - [`fromEitherM :: (Exception e, MonadThrow m) => m (Either e a) -> m a`](#fromeitherm--exception-e-monadthrow-m--m-either-e-a---m-a)
         - [`fromMaybeM :: (Exception e, MonadThrow m) => e -> m (Maybe a) -> m a`](#frommaybem--exception-e-monadthrow-m--e---m-maybe-a---m-a)
         - [Exercises (`fromX`)](#exercises-fromx)
+          - [Exercise notes (`fromX`)](#exercise-notes-fromx)
       - [`bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`](#bracket--monadunliftio-m--m-a---a---m-b---a---m-c---m-c)
       - [`finally :: (MonadUnliftIO m) => m a -> m b -> m a`](#finally--monadunliftio-m--m-a---m-b---m-a)
       - [`onException :: (MonadUnliftIO m) => m a -> m b -> m a`](#onexception--monadunliftio-m--m-a---m-b---m-a)
@@ -615,10 +616,11 @@ chromeVersion <- getChromeVersion chromeBinary
 
 ##### Exercises (`fromX`)
 
-1. If we have a function `eitherDecode :: (FromJSON a) => ByteString -> Either String a` where the
-   `Left` value is a string describing why a value cannot be decoded as `a`, and the `Right` value
-   is a successfully decoded value, how can we best implement `readConfiguration` given the
-   following code:
+1. If we have a function `eitherDecode :: (FromJSON a) => ByteString -> Either String a`[0][1] where
+   the `Left` value is a string describing why a value cannot be decoded as `a`, and the `Right`
+   value is a successfully decoded value, how can we best implement `readConfiguration` if we are
+   supposed to throw a `JSONDecodingError` when our configuration cannot be decoded, but are not
+   supposed to handle `IOException`s?:
 
 ```haskell
 data JSONDecodingError = JSONDecodingError !FilePath !String
@@ -629,6 +631,15 @@ instance Exception JSONDecodingError
 readConfiguration :: FilePath -> IO Configuration
 readConfiguration = undefined
 ```
+
+###### Exercise notes (`fromX`)
+
+0. [`eitherDecode`](https://hackage.haskell.org/package/aeson-2.1.0.0/docs/Data-Aeson.html#v:eitherDecode)
+   can be imported from `Data.Aeson`.
+
+1. You can use `readFileUtf8` to read a file and return the contents as a `Text` value, then turn
+   that `Text` into a `LByteString` (which is what `eitherDecode` needs) with
+   `encodeUtf8 >>> fromStrictBytes`
 
 #### `bracket :: (MonadUnliftIO m) => m a -> (a -> m b) -> (a -> m c) -> m c`
 
