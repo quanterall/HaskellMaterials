@@ -48,7 +48,6 @@ There is a series of extra materials that can be read to gain some familiarity w
 libraries and tools commonly used for solving problems in Haskell:
 
 - [Testing](./basics/extras/testing.md)
-- [Streaming with Conduit](./basics/extras/streaming.md)
 - [Optics (lenses & prisms)](./basics/extras/optics.md)
 - [Parsing with Megaparsec](./basics/extras/parsing-with-megaparsec.md)
 
