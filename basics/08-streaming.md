@@ -302,18 +302,22 @@ takes a stream of foldables and flattens them out into streams of each separate 
 
 ### Exercises (Common functions)
 
-1. Create a conduit that takes all the lines[0] from a file and yields each line that starts with a
+1. Write a conduit called `takeUnless :: (Monad m) => (a -> Bool) -> ConduitT a a m ()` that takes a
+   predicate and will yield values if they don't match that predicate. Use `await` and `yield` to
+   implement it.
+
+2. Create a conduit that takes all the lines[0] from a file and yields each line that starts with a
    '#' character. See section on "Functions similar to non-streaming equivalents" for inspiration on
    how to accomplish parts of this.
 
-2. Make a function that will tie together the conduit you defined above with a conduit that reads
+3. Make a function that will tie together the conduit you defined above with a conduit that reads
    every file in a given directory, so that you now have a conduit that takes a directory and
    returns all lines beginning with '#' in that directory.
 
-3. Add writing of all lines beginning with '#' to a queue, as well as a final step that sinks all
+4. Add writing of all lines beginning with '#' to a queue, as well as a final step that sinks all
    the lines into a file.
 
-4. Modify the above solution to write data to a temporary file instead. Where would you go to find
+5. Modify the above solution to write data to a temporary file instead. Where would you go to find
    out how to do this?
 
 #### Exercise notes (Common functions)
