@@ -322,5 +322,5 @@ takes a stream of foldables and flattens them out into streams of each separate 
 
 #### Exercise notes (Common functions)
 
-0. [linesUnboundedC](https://hackage.haskell.org/package/conduit-1.3.4.2/docs/Conduit.html#v:linesUnboundedC)
+0. [linesUnboundedAsciiC](https://hackage.haskell.org/package/conduit-1.3.4.2/docs/Conduit.html#v:linesUnboundedAsciiC)
    can turn a stream of character-like items and split them on lines.
