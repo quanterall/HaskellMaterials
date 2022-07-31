@@ -229,7 +229,8 @@ implies, it will recurse into sub-directories and produce nested contents.
 ### `stdinC`
 
 [`stdinC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:stdinC) is a
-stream of standard input, i.e. whatever the user types in the terminal.
+stream of standard input, i.e. whatever the user types in the terminal or what is piped into a
+process.
 
 ### `conduitVector`
 
