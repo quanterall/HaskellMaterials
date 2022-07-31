@@ -19,6 +19,8 @@
     - [`sinkList` / `sinkVector`](#sinklist--sinkvector)
     - [`sinkFile`](#sinkfile)
     - [Functions similar to non-streaming equivalents](#functions-similar-to-non-streaming-equivalents)
+    - [Exercises (Common functions)](#exercises-common-functions)
+      - [Exercise notes (Common functions)](#exercise-notes-common-functions)
 
 Sometimes we want to stream values and are unable to accomplish this with lists or other data
 structures. For these situations we want to use something more explicitly made for streaming. In
@@ -297,3 +299,21 @@ predicate.
 
 [`concatC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:concatC)
 takes a stream of foldables and flattens them out into streams of each separate item.
+
+### Exercises (Common functions)
+
+1. Create a conduit that takes all the lines[0] from a file and yields each line that starts with a
+   '#' character. See section on "Functions similar to non-streaming equivalents" for inspiration on
+   how to accomplish parts of this.
+
+2. Make a function that will tie together the conduit you defined above with a conduit that reads
+   every file in a given directory, so that you now have a conduit that takes a directory and
+   returns all lines beginning with '#' in that directory.
+
+3. Add writing of all lines beginning with '#' to a queue, as well as a final step that sinks all
+   the lines into a file.
+
+#### Exercise notes (Common functions)
+
+0. [linesUnboundedC](https://hackage.haskell.org/package/conduit-1.3.4.2/docs/Conduit.html#v:linesUnboundedC)
+   can turn a stream of character-like items and split them on lines.
