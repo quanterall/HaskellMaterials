@@ -313,6 +313,9 @@ takes a stream of foldables and flattens them out into streams of each separate 
 3. Add writing of all lines beginning with '#' to a queue, as well as a final step that sinks all
    the lines into a file.
 
+4. Modify the above solution to write data to a temporary file instead. Where would you go to find
+   out how to do this?
+
 #### Exercise notes (Common functions)
 
 0. [linesUnboundedC](https://hackage.haskell.org/package/conduit-1.3.4.2/docs/Conduit.html#v:linesUnboundedC)
