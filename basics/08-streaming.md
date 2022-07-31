@@ -303,22 +303,34 @@ takes a stream of foldables and flattens them out into streams of each separate 
 ### Exercises (Common functions)
 
 1. Write a conduit called `takeUnless :: (Monad m) => (a -> Bool) -> ConduitT a a m ()` that takes a
-   predicate and will yield values if they don't match that predicate. Use `await` and `yield` to
-   implement it.
+   predicate and will yield values if they don't match that predicate. Use
+   [`await`](https://hackage.haskell.org/package/conduit-1.3.4.2/docs/Conduit.html#v:await) and
+   [`yield`](https://hackage.haskell.org/package/conduit-1.3.4.2/docs/Conduit.html#v:yield) to
+   implement it, since the purpose of this exercise is to learn how to build your own custom
+   conduits from the smaller primitives in the library.
 
 2. Create a conduit that takes all the lines[0] from a file and yields each line that starts with a
    '#' character. See section on "Functions similar to non-streaming equivalents" for inspiration on
-   how to accomplish parts of this.
+   how to accomplish parts of this. Note that we want this to be a conduit that takes a file path
+   and yields the resulting lines downstream:
+
+```haskell
+linesBeginningWithHash :: (MonadResource m) => ConduitT FilePath ByteString m ()
+```
 
 3. Make a function that will tie together the conduit you defined above with a conduit that reads
    every file in a given directory, so that you now have a conduit that takes a directory and
-   returns all lines beginning with '#' in that directory.
+   returns all lines beginning with '#' in that directory:
+
+```haskell
+linesBeginningWithHashInDirectory :: (MonadResource m) => FilePath -> ConduitT () ByteString m ()
+```
 
 4. Add writing of all lines beginning with '#' to a queue, as well as a final step that sinks all
    the lines into a file.
 
 5. Modify the above solution to write data to a temporary file instead. Where would you go to find
-   out how to do this?
+   out how to do this? Is there anything we have to modify about the `result` type of our conduit?
 
 #### Exercise notes (Common functions)
 
