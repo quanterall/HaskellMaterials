@@ -9,6 +9,7 @@
     - [monad](#monad)
     - [result](#result)
   - [Common functions](#common-functions)
+    - [`await` & `yield`](#await--yield)
     - [`runConduit`](#runconduit)
     - [`runConduitRes`](#runconduitres)
     - [`yieldMany`](#yieldmany)
@@ -158,6 +159,32 @@ Most of the components in a pipeline will have a result type of `()`, which mean
 result type; they're just trying to look at whatever input came in, then produce output based on it.
 
 ## Common functions
+
+### `await` & `yield`
+
+```haskell
+await :: ConduitT i o m (Maybe i)
+
+yield :: o -> ConduitT i o m ()
+```
+
+When we are writing a conduit using basic `Conduit` primitives, we can `await` to ask for values
+from upstream and `yield` to pass values downstream. Whatever logic we surround these functions with
+decides what our conduit does:
+
+```haskell
+-- | A conduit that bounds a value within a lower and an upper bound, modifying values outside of
+-- that range to fit.
+clampC :: (Monad m, Ord a) => a -> a -> ConduitT a a m ()
+clampC lowerBound upperBound = do
+  maybeA <- await
+  case maybeA of
+    Nothing -> pure ()
+    Just a
+      | a < lowerBound -> yield lowerBound
+      | a > upperBound -> yield upperBound
+      | otherwise -> yield a
+```
 
 ### `runConduit`
 
