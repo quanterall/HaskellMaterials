@@ -1,14 +1,101 @@
-# The ReaderT Monad Transformer
+# The Reader Monad and The ReaderT Monad Transformer
 
-- [The ReaderT Monad Transformer](#the-readert-monad-transformer)
+- [The Reader Monad and The ReaderT Monad Transformer](#the-reader-monad-and-the-readert-monad-transformer)
+  - [Reader](#reader)
+    - [`ask` & `asks`](#ask--asks)
+      - [`ask :: Reader r r`](#ask--reader-r-r)
+      - [`asks :: (r -> a) -> Reader r a`](#asks--r---a---reader-r-a)
+  - [The purpose of `Reader`](#the-purpose-of-reader)
   - [Monad transformers](#monad-transformers)
   - [ReaderT](#readert)
     - [The `ReaderT` type](#the-readert-type)
+    - [`ReaderT env IO a`](#readert-env-io-a)
   - [Our `Reader` example, extended](#our-reader-example-extended)
   - [Adding very basic logging to our example](#adding-very-basic-logging-to-our-example)
-  - [Creating a custom type signature](#creating-a-custom-type-signature)
+  - [Creating our own monad type alias](#creating-our-own-monad-type-alias)
     - [Exercises (ReaderT)](#exercises-readert)
       - [Exercise notes (ReaderT)](#exercise-notes-readert)
+
+## Reader
+
+The `Reader` monad allows us to make an environment available to an entire part of our call graph.
+What this means is that we can, at the start of executing a `Reader` context, bake in a value that
+we won't have to pass explicitly to any of the `Reader` functions in that part of the call graph:
+
+```haskell
+import Control.Monad.Reader (Reader, ask, runReader)
+import Prelude
+
+main :: IO ()
+main = do
+  let x = runReader (canReadString 5) "Quanterall" -- This is where we pass the initial environment
+      y = runReader (canReadString 5) "Quanteral" -- And here a different one
+  print x -- 15
+  print y -- 14
+
+canReadString :: Int -> Reader String Int
+canReadString added = do
+  -- We don't need to pass any arguments here; `notPassingArguments` will read the environment
+  result <- notPassingArguments
+  pure $ added + result
+
+notPassingArguments :: Reader String Int
+notPassingArguments = do
+  -- `ask` retrieves the environment, in this case a `String`
+  stringFromEnvironment <- ask
+  pure $ length stringFromEnvironment
+```
+
+As you can see above, `Reader` has two type parameters: `Reader environmentType returnValue`
+
+The return value being in the right-most position is usual and is something we'll see more of.
+
+### `ask` & `asks`
+
+`ask` and `asks` are two ways we can retrieve values from the environment we are suppling.
+
+#### `ask :: Reader r r`
+
+`ask` retrieves the entire environment. With this we could, for example, do the following:
+
+```haskell
+notPassingArguments :: Reader String Int
+notPassingArguments = do
+  stringFromEnvironment <- ask
+  pure $ length stringFromEnvironment
+```
+
+#### `asks :: (r -> a) -> Reader r a`
+
+`asks` takes a function from our environment type to a resulting type, meaning we can pass a
+function that runs on our environment to give us the result we need, leading to uses where we can
+even perform on-the-fly transformations of our values.
+
+With `asks` our previous example might look as something like the following two alternatives:
+
+```haskell
+notPassingArguments' :: Reader String Int
+notPassingArguments' = do
+  stringLength <- asks length
+  pure stringLength
+
+notPassingArguments'' :: Reader String Int
+notPassingArguments'' = asks length
+```
+
+The function is immediately applied to the environment and returned, which means we can be more
+direct about what we are actually getting from our code. This also means that we could immediately
+reach into a value we might provide as part of a bigger structure as our environment, via record
+getter functions.
+
+## The purpose of `Reader`
+
+In the grand scheme of things `Reader` is useful when we have a deep call stack that might need a
+value in arbitrary depths of it, where passing a value down through every function might not be
+useful, even if it could be considered "cleaner".
+
+The most useful form of `Reader`, however, comes in the form of `ReaderT`. But first, let's talk
+briefly about monad transformers.
 
 ## Monad transformers
 
@@ -22,16 +109,7 @@ the `IO` monad.
 ## ReaderT
 
 `ReaderT` is the transformer version of the `Reader` monad and gives us the capability to read an
-environment that is passed around implicitly in an entire call graph. Together with `IO` this means
-that we get access to a whole host of effectful things that we couldn't get with just `Reader`:
-
-- Running `STM` actions
-- Modifying and reading `IORef`s
-- Interacting with database connection handles
-- ...
-
-The list of things we can do with `ReaderT` on top of `IO` is very long and this is why it's such a
-powerful base structure for most of our applications.
+environment that is passed around implicitly in an entire call graph.
 
 ### The `ReaderT` type
 
@@ -48,12 +126,26 @@ newtype ReaderT environment wrappedMonad returnValue =
 ```
 
 The `wrappedMonad` type will decide what we can **additionally** do, on top of having implicit
-values we can read from an environment. It's very common to create applications that execute in the
-`ReaderT appState IO a` context, where `appState` is the application's application state. This
-allows for implicit environment reading as well as `IO` actions, which means we can read from
-`IORef`s, use transactional variables and so on. This makes it so that we get access to a very
-tightly controlled usage of mutable variables with a clear initialization stage, as the application
-state has to be initialized with `runReaderT` at the start of the application.
+values we can read from an environment.
+
+### `ReaderT env IO a`
+
+It's very common to create applications that execute in the `ReaderT env IO a` context, where `env`
+is the application's environment/application state. This allows for implicit environment reading as
+well as `IO` actions. Any resources that we need access to are established in the initialization of
+our application and are then put in the `App` value, which we pass to `runReaderT` in order to run
+our `ReaderT env IO` functions.
+
+Putting `ReaderT` "on top of" `IO` like this means that we get access to a whole host of effectful
+things that we couldn't get as comfortably with just `Reader` or just `IO`:
+
+- Running `STM` actions on values that we don't need to pass around everywhere all the time
+- Modifying and reading `IORef`s that we don't pass around
+- Interacting with database connection handles that we don't pass around
+- ...
+
+The list of things we can do with `ReaderT` on top of `IO` is very long and this is why it's such a
+powerful base structure for most of our applications.
 
 ## Our `Reader` example, extended
 
@@ -117,11 +209,11 @@ main = do
 
 notPassingArguments :: ReaderT ApplicationState IO Int
 notPassingArguments = do
-  ApplicationState {string} <- ask
+  string' <- asks string
   -- We can use `logToFile` here and not be concerned with the file handle because we know it's in
   -- the environment we're executing inside of already.
-  logToFile $ "We got '" <> string <> "' from the environment"
-  pure $ length string
+  logToFile $ "We got '" <> string' <> "' from the environment"
+  pure $ length string'
 
 canReadString :: Int -> ReaderT ApplicationState IO Int
 canReadString added = do
@@ -141,7 +233,7 @@ environment. Despite very clearly writing via a file handle, which would ordinar
 pass a handle and a string, we've been able to abstract this away into what is essentially a custom
 `putStrLn` that writes to a log file we've set up at the beginning of our program.
 
-## Creating a custom type signature
+## Creating our own monad type alias
 
 A lot of programs will be written with a certain transformer stack (collection of monads) in mind
 and will mention this stack in many places. In this case we can very easily use a type alias to name
@@ -204,15 +296,16 @@ context that it provides.
    can find the [API specification here](https://docs.github.com/en/rest/reference/repos#releases).
 
    Initialize the program with a `Manager` from the `http-client-tls` package and make it an
-   implicit argument via `ReaderT`. Feel free to define an abstraction that uses this `Manager` to
-   download files, such that it can be used without even mentioning a `Manager`.
+   implicit argument via `ReaderT`. Create an environment type (oftentimes called just `App`) that
+   stores your application's resources (in this case a `Manager`) and whatever else your application
+   needs in order to do its job.
 
-   Also add logging to this application to a given file based on the time[0] of the execution of the
+3. Also add logging to this application to a given file based on the time[0] of the execution of the
    program. Suggested logging events would be when the program was doing things like fetching the
    list of releases as well as the downloading of files and perhaps even when a file is **not**
    downloaded because it already exists.
 
-3. When the program in exercise 1 starts, start a thread via `async` that handles the logging in the
+4. When the program in exercise 1 starts, start a thread via `async` that handles the logging in the
    program. Make it listen to a `TBMQueue` that takes some kind of logging event that you decide the
    structure of. When another thread wants to log something, it uses a utility function to put a
    message on the queue. Remember that `TBMQueue`s can be shared via your environment.
