@@ -293,7 +293,7 @@ context that it provides.
    REPL; what do you have to do in order to execute it?
 
 2. Create a program that downloads the last three releases from a given repository on GitHub. You
-   can find the [API specification here](https://docs.github.com/en/rest/reference/repos#releases).
+   can find the [API specification here](https://docs.github.com/en/rest/releases/releases).
 
    Initialize the program with a `Manager` from the `http-client-tls` package and make it an
    implicit argument via `ReaderT`. Create an environment type (oftentimes called just `App`) that
