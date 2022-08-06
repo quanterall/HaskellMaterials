@@ -196,7 +196,11 @@ context that it provides.
 
 ### Exercises (ReaderT)
 
-1. Create a program that downloads the last three releases from a given repository on GitHub. You
+1. Create a function that takes a string that it writes to a file handle. The file handle should be
+   retrieved from the environment with `ask` or `asks`. Run your function with `runReaderT` in your
+   REPL; what do you have to do in order to execute it?
+
+2. Create a program that downloads the last three releases from a given repository on GitHub. You
    can find the [API specification here](https://docs.github.com/en/rest/reference/repos#releases).
 
    Initialize the program with a `Manager` from the `http-client-tls` package and make it an
@@ -208,7 +212,7 @@ context that it provides.
    list of releases as well as the downloading of files and perhaps even when a file is **not**
    downloaded because it already exists.
 
-2. When the program in exercise 1 starts, start a thread via `async` that handles the logging in the
+3. When the program in exercise 1 starts, start a thread via `async` that handles the logging in the
    program. Make it listen to a `TBMQueue` that takes some kind of logging event that you decide the
    structure of. When another thread wants to log something, it uses a utility function to put a
    message on the queue. Remember that `TBMQueue`s can be shared via your environment.
