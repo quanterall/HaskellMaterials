@@ -3,6 +3,7 @@
 - [The ReaderT Monad Transformer](#the-readert-monad-transformer)
   - [Monad transformers](#monad-transformers)
   - [ReaderT](#readert)
+    - [The `ReaderT` type](#the-readert-type)
   - [Our `Reader` example, extended](#our-reader-example-extended)
   - [Adding very basic logging to our example](#adding-very-basic-logging-to-our-example)
   - [Creating a custom type signature](#creating-a-custom-type-signature)
@@ -22,8 +23,17 @@ the `IO` monad.
 
 `ReaderT` is the transformer version of the `Reader` monad and gives us the capability to read an
 environment that is passed around implicitly in an entire call graph. Together with `IO` this means
-that we get access to a whole host of effectful things that we couldn't get with just `Reader`;
-transactional variables, `IORef`s, database connection handles, and so on.
+that we get access to a whole host of effectful things that we couldn't get with just `Reader`:
+
+- Running `STM` actions
+- Modifying and reading `IORef`s
+- Interacting with database connection handles
+- ...
+
+The list of things we can do with `ReaderT` on top of `IO` is very long and this is why it's such a
+powerful base structure for most of our applications.
+
+### The `ReaderT` type
 
 ```haskell
 newtype ReaderT r m a = ReaderT {runReaderT :: r -> m a}
