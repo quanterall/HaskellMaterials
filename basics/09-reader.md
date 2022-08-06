@@ -42,4 +42,4 @@ value in arbitrary depths of it, where passing a value down through every functi
 useful, even if it could be considered "cleaner".
 
 The most useful form of `Reader`, however, comes in the form of `ReaderT`, which you can read more
-about in the next chapter: [ReaderT](./08-readert.md).
+about in the next chapter: [ReaderT](./10-readert.md).
