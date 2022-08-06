@@ -189,8 +189,8 @@ clampC lowerBound upperBound = do
 
 #### Exercises (`await` & `yield`)
 
-1. Write a conduit called `readFileUtf8C :: Conduit FilePath Text ()` that verifies that each incoming
-   `FilePath` is a file and then reads it (as `Text`) and passes the `Text` downstream.
+1. Write a conduit called `readFileUtf8C :: ConduitT FilePath Text IO ()` that verifies that each
+   incoming `FilePath` is a file and then reads it (as `Text`) and passes the `Text` downstream.
 
 2. Write a conduit called `takeUnless :: (Monad m) => (a -> Bool) -> ConduitT a a m ()` that takes a
    predicate and will yield values if they don't match that predicate. Use
