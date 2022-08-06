@@ -182,9 +182,15 @@ clampC lowerBound upperBound = do
   case maybeA of
     Nothing -> pure ()
     Just a
-      | a < lowerBound -> yield lowerBound
-      | a > upperBound -> yield upperBound
-      | otherwise -> yield a
+      | a < lowerBound -> do
+        yield lowerBound
+        clampC lowerBound upperBound
+      | a > upperBound -> do
+        yield upperBound
+        clampC lowerBound upperBound
+      | otherwise -> do
+        yield a
+        clampC lowerBound upperBound
 ```
 
 #### Exercises (`await` & `yield`)
@@ -333,7 +339,7 @@ passes only values matching a given predicate to the next step in the pipeline.
 [`takeC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:takeC) takes a
 given number of elements from the stream.
 
-[`takeWhile`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:takeWhileC)
+[`takeWhileC`](https://www.stackage.org/haddock/lts-19.10/conduit-1.3.4.2/Conduit.html#v:takeWhileC)
 takes values from the stream and passes them on until it finds one that does not match the
 predicate.
 
