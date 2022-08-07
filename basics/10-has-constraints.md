@@ -176,6 +176,50 @@ work in many different stacks and with many different environment types, as long
 the stated things. The type signature itself also very reliably signals something about what is
 going on in the function.
 
+## `view`
+
+When we've generalized this concept of requiring values in an environment, it can be helpful to provide
+more tools for interacting with those requirements. One of the tools that is very common in the
+ecosystem is `view`:
+
+```haskell
+view :: MonadReader env m => Getting a env a -> m a
+```
+
+This function will take a lens and automatically use that lens to get the thing that is being sought
+after:
+
+```haskell
+import RIO
+import System.IO (hPutStrLn)
+
+data ApplicationState = ApplicationState
+  { string :: String,
+    loggingState :: LoggingState
+  }
+
+newtype LoggingState = LoggingState
+  { logHandle :: Handle
+  }
+
+class HasLogHandle e where
+  logHandleL :: Lens' e Handle
+
+instance HasLogHandle ApplicationState where
+  logHandleL =
+    lens
+      -- How to get our handle, we zoom in first on `loggingState` and then `loggingState`
+      (logHandle . loggingState)
+      -- How to set the same, given a value of `ApplicationState` and a new value for the log
+      -- handle
+      (\state a -> state {loggingState = (loggingState state) {logHandle = a}})
+
+logToFile :: (MonadReader e m, MonadIO m, HasLogHandle e) => String -> m ()
+logToFile logString = do
+  fileHandle <- view logHandleL
+  liftIO $ hPutStrLn fileHandle logString
+```
+
 ### Exercises (Constraints with `ReaderT`)
 
 1. Go back to the first exercise you did in [ReaderT](./08-readert.md) and add `Has` constraints
