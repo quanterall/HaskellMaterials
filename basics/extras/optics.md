@@ -135,8 +135,7 @@ easier:
 ```haskell
 Q> t = ThingThatStoresRecord {_record = Record {_field = "Hello"}}
 Q> t ^. record
-Record
-    { _field = "Hello" }
+Record { _field = "Hello" }
 Q> t ^. record . field
 "Hello"
 ```
@@ -224,11 +223,6 @@ record = lens _record (\thing newValue -> thing {_record = newValue})
 functionUsingView :: (MonadReader env m, HasRecordField env) => m Int
 functionUsingView = do
   value <- view fieldL
-  pure $ length value
-
-functionUsingPreview :: (MonadReader env m, HasRecord env) => m Int
-functionUsingPreview = do
-  value <- preview $ recordL . field . ix 2
   pure $ length value
 ```
 
@@ -320,7 +314,7 @@ There are also common prisms that have to do with whether or not something has a
 - `_Just`: If the target is a `Just` value, it will return `Just` the value inside of the `Just`
   otherwise `Nothing`
 
-These can be very useful for ensuring that we are only applying function in the case of `Just`,
+These can be very useful for ensuring that we are only applying functions in the case of `Just`,
 `Left` or `Right` values being present.
 
 ### Prisms as a way of narrowing types
@@ -381,6 +375,63 @@ FlashEvent (RemoveFlashMessage 42)
 -- `#` is an operator version of `review`
 Q> _FlashEvent # RemoveFlashMessage 42
 FlashEvent (RemoveFlashMessage 42)
+```
+
+This relationship between a bigger type and its sub-parts can be leveraged in areas that we've seen
+before in the material but haven't been able to necessarily deal with in a concise way:
+
+```haskell
+readJsonFile :: (MonadUnliftIO m, MonadThrow m) => FilePath -> m (Maybe Value)
+readJsonFile path =
+  catchJust
+    (^? errorTypeL . _NoSuchThing)
+    (withJsonFile path (Just >>> pure))
+    (const $ pure Nothing)
+```
+
+In the above code snippet we used
+[catchJust](https://hackage.haskell.org/package/unliftio-0.2.22.0/docs/UnliftIO-Exception.html#v:catchJust)
+to catch an exception for which our first argument (a predicate) returns `Just` a value. The
+returned value will be used as an argument for the exception handling function, which is our last
+argument. The `withJsonFile ...` part here is the action we want to run and potentially catch an
+exception in.
+
+`errorTypeL :: Lens' IOException IOErrorType` is a lens that lets us zoom into the type of our
+exception, and we use `_NoSuchThing :: Prism' IOErrorType ()` to determine whether we have a
+`NoSuchThing` exception.
+
+## Traversals and Folds
+
+Traversals allow us to modify multiple values in a structure at once, given some pattern that
+targets those values. We saw in the previous section that we could use `_tail` to modify the tail of
+a list: This is a traversal. A fold is a traversal that only works as a getter of values.
+
+### ^.. for getting values
+
+We can use `^..` to get a list of values from a structure if we give it a `Fold` or `Traversal`:
+
+```haskell
+Q> [1..9] ^.. _tail
+[2, 3, 4, 5, 6, 7, 8, 9]
+Q> [1..9] ^.. _tail . even'
+[2, 4, 6, 8]
+Q> "{\"a\": 4, \"b\": [{\"value\": 5}, {\"value\": 42}]}" ^.. key "b" . values . key "value"
+[Number 5.0,Number 42.0]
+```
+
+### & for setting values via a traversal
+
+As we saw in the previous section, we can set values in structures via traversals:
+
+```haskell
+Q> [1..9] & _tail . even' .~ 42
+[1, 42, 3, 42, 5, 42, 7, 42, 9]
+Q> [1..9] & _tail . even' %~ (+ 1)
+[1, 3, 3, 5, 5, 7, 7, 9, 9]
+Q> [1..9] & _tail . even' %~ (* 2)
+[1, 4, 3, 8, 5, 12, 7, 16, 9]
+Q> "{\"a\": 4, \"b\": [{\"value\": 5}, {\"value\": 42}]}" & key "b" . values . key "value" %~ (+ 2)
+"{\"a\":4,\"b\":[{\"value\":7},{\"value\":44}]}"
 ```
 
 ## Optics for free
