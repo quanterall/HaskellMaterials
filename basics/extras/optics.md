@@ -197,6 +197,7 @@ ThingThatStoresRecord
 
 ```haskell
 import RIO
+import RIO.Process (ProcessContext)
 
 data App = App
   { _appConfig :: Config,
