@@ -126,6 +126,9 @@ record = lens _record (\thing newValue -> thing {_record = newValue})
 1. Define lenses for a `User` structure that contains a name, an age and a list of hobbies
 (`[String]`).
 
+2. Make `_name` a `Name` type that holds the first name and last name of the user. Define lenses for
+   this new type as well.
+
 #### Operators
 
 In order to get or set values in a structure, we'll have to employ a few different operators. These
