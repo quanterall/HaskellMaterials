@@ -126,24 +126,6 @@ record = lens _record (\thing newValue -> thing {_record = newValue})
 1. Define lenses for a `User` structure that contains a name, an age and a list of hobbies
 (`[String]`).
 
-2. Define lenses for the following structures, then compose them to see how they work together for
-   getting and setting values:
-
-```haskell
-data App = App
-  { _appConfig :: Config,
-    _appLogFunc :: LogFunc,
-    _appProcessContext :: ProcessContext
-  }
-
-data Config = Config
-  { _configUser :: User,
-    _configPort :: Int
-  }
-
-data User
-```
-
 #### Operators
 
 In order to get or set values in a structure, we'll have to employ a few different operators. These
@@ -201,6 +183,26 @@ ThingThatStoresRecord
     { _record = Record
         { _field = "Hello world" }
     }
+```
+
+#### Exercises (Operators)
+
+1. Define lenses for the following structures, then compose them to see how they work together for
+   getting and setting values:
+
+```haskell
+data App = App
+  { _appConfig :: Config,
+    _appLogFunc :: LogFunc,
+    _appProcessContext :: ProcessContext
+  }
+
+data Config = Config
+  { _configUser :: User,
+    _configPort :: Int
+  }
+
+data User
 ```
 
 #### Other notable uses of lenses
