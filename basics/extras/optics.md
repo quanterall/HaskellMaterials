@@ -196,6 +196,8 @@ ThingThatStoresRecord
    getting and setting values:
 
 ```haskell
+import RIO
+
 data App = App
   { _appConfig :: Config,
     _appLogFunc :: LogFunc,
@@ -206,8 +208,6 @@ data Config = Config
   { _configUser :: User,
     _configPort :: Int
   }
-
-data User
 ```
 
 #### Other notable uses of lenses
