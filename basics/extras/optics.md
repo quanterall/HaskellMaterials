@@ -211,7 +211,7 @@ data Config = Config
   }
 ```
 
-2. Define a function `uppercaseFirstLetterOfUsersLastName :: User -> User`. Define it in part using
+2. Define a function `uppercaseFirstLetterOfUsersLastName :: App -> App`. Define it in part using
    lenses.
 
 3. If we wanted to use a lens to get the length of a `User`s full name, what could we do?
