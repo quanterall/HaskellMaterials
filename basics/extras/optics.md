@@ -129,6 +129,8 @@ record = lens _record (\thing newValue -> thing {_record = newValue})
 2. Make `_name` a `Name` type that holds the first name and last name of the user. Define lenses for
    this new type as well.
 
+3. Create a `fullName` lens that gets and sets the full name of the user.
+
 #### Operators
 
 In order to get or set values in a structure, we'll have to employ a few different operators. These
