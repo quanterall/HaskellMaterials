@@ -197,18 +197,17 @@ ThingThatStoresRecord
 
 ```haskell
 import RIO
-import RIO.Process (ProcessContext)
 
-data App = App
-  { _appConfig :: Config,
-    _appLogFunc :: LogFunc,
-    _appProcessContext :: ProcessContext
+newtype App = App
+  { _appConfig :: Config
   }
+  deriving (Eq, Show)
 
 data Config = Config
   { _configUser :: User,
     _configPort :: Int
   }
+  deriving (Eq, Show)
 ```
 
 2. Define a function `uppercaseFirstLetterOfUsersLastName :: App -> App`. Define it in part using
