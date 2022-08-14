@@ -211,8 +211,8 @@ data Config = Config
   }
 ```
 
-2. What is the lens you would have to construct if you wanted to uppercase the first letter of the
-   `User`s last name?
+2. What expression using lenses would you have to construct if you wanted to uppercase the first
+   letter of a `User`s last name?
 
 3. If we wanted to use a lens to get the length of a `User`s full name, what could we do?
 
