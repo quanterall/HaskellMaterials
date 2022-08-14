@@ -216,6 +216,10 @@ data Config = Config
 
 3. If we wanted to use a lens to get the length of a `User`s full name, what could we do?
 
+4. If we wanted to use lenses to concatenate all of the hobbies of a user into a `String`, with
+   commas between each one, what could we do? Note that we are always able to use `^.` to get a
+   value out of a structure and then `&` to call a function on that value.
+
 #### Other notable uses of lenses
 
 ##### `view`
