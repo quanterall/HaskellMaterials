@@ -535,12 +535,13 @@ Q> "{\"a\": 4, \"b\": [{\"v\": 5}, {\"v\": 42}]}" & key "b" . values . key "v" .
 1. Use a traversal to create a function that will traverse the values of a map and uppercase all the
    keys.
 
-2. Use a traversal to create a function that will traverse over a `Value`[0] and if it's an object,
-   will modify any values that are strings to be `Number` if they can be read as numbers.
+2. Use a combination of traversals and the prism you defined for strings parsable as numbers to
+   create a function that will traverse over a `Value`[0] and if it's an object, will modify any
+   values that are strings to be `Number` if they can be read as numbers.
 
 #### Exercise notes (Traversals and Folds)
 
-0. [aeson-lens](https://hackage.haskell.org/package/aeson-lens-0.5.0.0/docs/Data-Aeson-Lens.html)
+0. [lens-aeson](https://hackage.haskell.org/package/lens-aeson-1.2.2/docs/Data-Aeson-Lens.html)
 
 ## Optics for free
 
