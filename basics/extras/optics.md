@@ -22,6 +22,7 @@
     - [^.. for getting values](#-for-getting-values)
     - [& for setting values via a traversal](#-for-setting-values-via-a-traversal)
     - [Exercises (Traversals and Folds)](#exercises-traversals-and-folds)
+      - [Exercise notes (Traversals and Folds)](#exercise-notes-traversals-and-folds)
   - [Optics for free](#optics-for-free)
   - [Should I use optics?](#should-i-use-optics)
   - [Learning much, much more](#learning-much-much-more)
@@ -524,8 +525,12 @@ Q> "{\"a\": 4, \"b\": [{\"v\": 5}, {\"v\": 42}]}" & key "b" . values . key "v" .
 1. Use a traversal to create a function that will traverse the values of a map and uppercase all the
    keys.
 
-2. Use a traversal to create a function that will traverse over a `Value` and if it's an object,
+2. Use a traversal to create a function that will traverse over a `Value`[0] and if it's an object,
    will modify any values that are strings to be numbers if they can be read as numbers.
+
+#### Exercise notes (Traversals and Folds)
+
+0. [aeson-lens](https://hackage.haskell.org/package/aeson-lens-0.5.0.0/docs/Data-Aeson-Lens.html)
 
 ## Optics for free
 
