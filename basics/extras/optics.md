@@ -454,20 +454,25 @@ exception, and we use `_NoSuchThing :: Prism' IOErrorType ()` to determine wheth
 
 2. Implement a version of `_oneOf` that uses `satisfying` instead of `prism'`.
 
-3. Create prisms for the `RelationshipStatus` structure from chapter 1:
+3. Create prisms for the `RelationshipStatus` & `Spouse` types from chapter 1:
 
 ```haskell
 import Data.Time (Day)
 import Prelude
 
 data RelationshipStatus
-  = MarriedTo MarriageInfo -- This could also be `MarriedTo String Day`
+  = MarriedTo MarriageInfo
   | EngagedTo UserProfile
   | ItsComplicated
   | Single
   deriving (Eq, Show)
 
-data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
+data MarriageInfo = MarriageInfo {spouse :: Spouse, date :: Day}
+  deriving (Eq, Show)
+
+data Spouse
+  = SpouseProfile UserProfile
+  | SpouseName String
   deriving (Eq, Show)
 
 data UserProfile = UserProfile
