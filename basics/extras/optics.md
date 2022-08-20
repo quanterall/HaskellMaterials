@@ -5,16 +5,23 @@
     - [Getters](#getters)
     - [Setters](#setters)
     - [Lenses as getters and setters in one](#lenses-as-getters-and-setters-in-one)
+      - [Exercises (Lenses as getters and setters in one)](#exercises-lenses-as-getters-and-setters-in-one)
       - [Operators](#operators)
         - [Getting/extracting values](#gettingextracting-values)
         - [& for setting values](#-for-setting-values)
           - [Setting constant values](#setting-constant-values)
           - [Modifying values](#modifying-values)
+      - [Exercises (Operators)](#exercises-operators)
       - [Other notable uses of lenses](#other-notable-uses-of-lenses)
         - [`view`](#view)
       - [Lenses are not only for records](#lenses-are-not-only-for-records)
   - [Prisms](#prisms)
     - [Prisms as a way of narrowing types](#prisms-as-a-way-of-narrowing-types)
+    - [Exercises (Prisms)](#exercises-prisms)
+  - [Traversals and Folds](#traversals-and-folds)
+    - [^.. for getting values](#-for-getting-values)
+    - [& for setting values via a traversal](#-for-setting-values-via-a-traversal)
+    - [Exercises (Traversals and Folds)](#exercises-traversals-and-folds)
   - [Optics for free](#optics-for-free)
   - [Should I use optics?](#should-i-use-optics)
   - [Learning much, much more](#learning-much-much-more)
@@ -447,6 +454,10 @@ exception, and we use `_NoSuchThing :: Prism' IOErrorType ()` to determine wheth
 2. Implement a version of `_oneOf` that uses `satisfying` instead of `prism'`.
 
 3. Create prisms for the `RelationshipStatus` structure from chapter 1:
+
+4. Create a function using lenses and prisms that takes a `UserProfile` and returns a
+   `Maybe UserProfile` where it effectively answers the question whether a user is married to
+   someone who has a userprofile on our page.
 
 ```haskell
 import Data.Time (Day)
