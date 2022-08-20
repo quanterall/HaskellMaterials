@@ -494,9 +494,11 @@ a list: This is a traversal. A fold is a traversal that only works as a getter o
 We can use `^..` to get a list of values from a structure if we give it a `Fold` or `Traversal`:
 
 ```haskell
-Q> [1..9] ^.. _tail
+Q> [1..9] ^. _tail
 [2, 3, 4, 5, 6, 7, 8, 9]
-Q> [1..9] ^.. _tail . even'
+Q> [1..9] ^.. _tail . traverse
+[2, 3, 4, 5, 6, 7, 8, 9]
+Q> [1..9] ^.. _tail . traverse . even'
 [2, 4, 6, 8]
 Q> "{\"a\": 4, \"b\": [{\"value\": 5}, {\"value\": 42}]}" ^.. key "b" . values . key "value"
 [Number 5.0,Number 42.0]
@@ -507,11 +509,11 @@ Q> "{\"a\": 4, \"b\": [{\"value\": 5}, {\"value\": 42}]}" ^.. key "b" . values .
 As we saw in the previous section, we can set values in structures via traversals:
 
 ```haskell
-Q> [1..9] & _tail . even' .~ 42
+Q> [1..9] & _tail . traverse . even' .~ 42
 [1, 42, 3, 42, 5, 42, 7, 42, 9]
-Q> [1..9] & _tail . even' %~ (+ 1)
+Q> [1..9] & _tail . traverse . even' %~ (+ 1)
 [1, 3, 3, 5, 5, 7, 7, 9, 9]
-Q> [1..9] & _tail . even' %~ (* 2)
+Q> [1..9] & _tail . traverse . even' %~ (* 2)
 [1, 4, 3, 8, 5, 12, 7, 16, 9]
 Q> "{\"a\": 4, \"b\": [{\"v\": 5}, {\"v\": 42}]}" & key "b" . values . key "v" . _Number %~ (+ 2)
 "{\"a\":4,\"b\":[{\"v\":7},{\"v\":44}]}"
