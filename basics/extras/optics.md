@@ -455,10 +455,6 @@ exception, and we use `_NoSuchThing :: Prism' IOErrorType ()` to determine wheth
 
 3. Create prisms for the `RelationshipStatus` structure from chapter 1:
 
-4. Create a function using lenses and prisms that takes a `UserProfile` and returns a
-   `Maybe UserProfile` where it effectively answers the question whether a user is married to
-   someone who has a userprofile on our page.
-
 ```haskell
 import Data.Time (Day)
 import Prelude
@@ -482,6 +478,10 @@ data UserProfile = UserProfile
   }
   deriving (Eq, Show)
 ```
+
+4. Create a function using lenses and prisms that takes a `UserProfile` and returns a
+   `Maybe UserProfile` where it effectively answers the question whether a user is married to
+   someone who has a userprofile on our page.
 
 ## Traversals and Folds
 
