@@ -484,6 +484,11 @@ data UserProfile = UserProfile
    `Maybe UserProfile` where it effectively answers the question whether a user is married to
    someone who has a userprofile on our page.
 
+5. Create a prism `parsableAsNumber :: Prism' Value Value` that will answer the question whether a
+   `String` (the `Aeson` variant) is parsable as a number. If it is, it should return the string
+   value turned into a `Number`. Note that you can use `fromInteger` to turn an `Integer` into a
+   `Scientific` value.
+
 ## Traversals and Folds
 
 Traversals allow us to modify multiple values in a structure at once, given some pattern that
