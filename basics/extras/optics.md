@@ -439,6 +439,39 @@ exception in.
 exception, and we use `_NoSuchThing :: Prism' IOErrorType ()` to determine whether we have a
 `NoSuchThing` exception.
 
+### Exercises (Prisms)
+
+1. Create a prism `_oneOf :: (Eq a) => [a] -> Prism' a a` that answer the question whether an
+   element is one of the candidates passed to `_oneOf`.
+
+2. Implement a version of `_oneOf` that uses `satisfying` instead of `prism'`.
+
+3. Create prisms for the `RelationshipStatus` structure from chapter 1:
+
+```haskell
+import Data.Time (Day)
+import Prelude
+
+data RelationshipStatus
+  = MarriedTo MarriageInfo -- This could also be `MarriedTo String Day`
+  | EngagedTo UserProfile
+  | ItsComplicated
+  | Single
+  deriving (Eq, Show)
+
+data MarriageInfo = MarriageInfo {spouse :: String, date :: Day}
+  deriving (Eq, Show)
+
+data UserProfile = UserProfile
+  { username :: String,
+    age :: Int,
+    active :: Bool,
+    interests :: [String],
+    relationshipStatus :: RelationshipStatus
+  }
+  deriving (Eq, Show)
+```
+
 ## Traversals and Folds
 
 Traversals allow us to modify multiple values in a structure at once, given some pattern that
@@ -469,8 +502,8 @@ Q> [1..9] & _tail . even' %~ (+ 1)
 [1, 3, 3, 5, 5, 7, 7, 9, 9]
 Q> [1..9] & _tail . even' %~ (* 2)
 [1, 4, 3, 8, 5, 12, 7, 16, 9]
-Q> "{\"a\": 4, \"b\": [{\"value\": 5}, {\"value\": 42}]}" & key "b" . values . key "value" %~ (+ 2)
-"{\"a\":4,\"b\":[{\"value\":7},{\"value\":44}]}"
+Q> "{\"a\": 4, \"b\": [{\"v\": 5}, {\"v\": 42}]}" & key "b" . values . key "v" . _Number %~ (+ 2)
+"{\"a\":4,\"b\":[{\"v\":7},{\"v\":44}]}"
 ```
 
 ## Optics for free
