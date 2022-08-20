@@ -519,6 +519,14 @@ Q> "{\"a\": 4, \"b\": [{\"v\": 5}, {\"v\": 42}]}" & key "b" . values . key "v" .
 "{\"a\":4,\"b\":[{\"v\":7},{\"v\":44}]}"
 ```
 
+### Exercises (Traversals and Folds)
+
+1. Use a traversal to create a function that will traverse the values of a map and uppercase all the
+   keys.
+
+2. Use a traversal to create a function that will traverse over a `Value` and if it's an object,
+   will modify any values that are strings to be numbers if they can be read as numbers.
+
 ## Optics for free
 
 If you want to have lenses defined for your data structures without creating them yourself, you can
