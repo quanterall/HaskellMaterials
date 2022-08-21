@@ -645,11 +645,15 @@ Nothing
 
 ### Exercises (Traversals and Folds)
 
-1. Create a function `uppercaseKeys :: Map Text a -> Map Text a` that uppercases all the keys. You
+1. Create a traversal `tl :: Traversal' [a] [a]` that targets the tail of a list.
+
+2. Create a traversal `last :: Traversal' [a] a` that targets the last element of a list.
+
+3. Create a function `uppercaseKeys :: Map Text a -> Map Text a` that uppercases all the keys. You
    can turn the map into a `[(Text, a)]` with `Map.toList` and back into a `Map Text a` with
    `Map.fromList`. Use a traversal and lenses to modify the keys.
 
-2. Use a combination of traversals and the prism you defined for strings parsable as numbers to
+4. Use a combination of traversals and the prism you defined for strings parsable as numbers to
    create a function that will traverse over a `Value`[0] and if it's an object, will modify any
    values that are strings to be `Number` if they can be read as numbers.
 
