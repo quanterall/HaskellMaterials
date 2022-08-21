@@ -532,8 +532,9 @@ Q> "{\"a\": 4, \"b\": [{\"v\": 5}, {\"v\": 42}]}" & key "b" . values . key "v" .
 
 ### Exercises (Traversals and Folds)
 
-1. Use a traversal to create a function that will traverse the values of a map and uppercase all the
-   keys.
+1. Create a function `uppercaseKeys :: Map Text a -> Map Text a` that uppercases all the keys. You
+   can turn the map into a `[(Text, a)]` with `Map.toList` and back into a `Map Text a` with
+   `Map.fromList`. Use a traversal and lenses to modify the keys.
 
 2. Use a combination of traversals and the prism you defined for strings parsable as numbers to
    create a function that will traverse over a `Value`[0] and if it's an object, will modify any
