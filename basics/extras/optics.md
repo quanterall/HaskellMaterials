@@ -21,6 +21,7 @@
   - [Traversals and Folds](#traversals-and-folds)
     - [^.. for getting values](#-for-getting-values)
     - [& for setting values via a traversal](#-for-setting-values-via-a-traversal)
+    - [Creating a traversal](#creating-a-traversal)
     - [Exercises (Traversals and Folds)](#exercises-traversals-and-folds)
       - [Exercise notes (Traversals and Folds)](#exercise-notes-traversals-and-folds)
   - [Optics for free](#optics-for-free)
@@ -528,6 +529,118 @@ Q> [1..9] & _tail . traverse . even' %~ (* 2)
 [1, 4, 3, 8, 5, 12, 7, 16, 9]
 Q> "{\"a\": 4, \"b\": [{\"v\": 5}, {\"v\": 42}]}" & key "b" . values . key "v" . _Number %~ (+ 2)
 "{\"a\":4,\"b\":[{\"v\":7},{\"v\":44}]}"
+```
+
+### Creating a traversal
+
+A traversal is in actuality a type alias:
+
+```haskell
+type Traversal s t a b = forall f. Applicative f => (a -> f b) -> s -> f t 
+```
+
+There is a simpler version of this type, just as with our other optics:
+
+```haskell
+type Traversal' s a = Traversal s s a a
+```
+
+If we use the above type alias we can simplify the original one down to this:
+
+```haskell
+type Traversal' s a = forall f. Applicative f => (a -> f a) -> s -> f s
+```
+
+With this in mind we can create some simple traversals if we explore the space a bit with typed
+holes:
+
+```haskell
+-- | A traversal that targets the first element of a list
+hd :: Traversal' [a] a
+hd = _x
+-- Found hole: _x :: (a -> f a) -> [a] -> f [a]
+```
+
+Let's take a function `f` and a structure s:
+
+```haskell
+-- | A traversal that targets the first element of a list
+hd :: Traversal' [a] a
+hd f s = _x
+-- Found hole: _x :: f [a]
+-- • Relevant bindings include
+--     s :: [a]
+--     f :: a -> f a
+--     hd :: (a -> f a) -> [a] -> f [a]
+```
+
+We can see here that we have access to a function `f`, which represents a function that the caller
+has passed in. We also have `s`, which is the list we are traversing over.
+
+Let's use pattern matching for our different cases:
+
+```haskell
+-- | A traversal that targets the first element of a list
+hd :: Traversal' [a] a
+hd f [] = _x
+hd f (x : xs) = _x
+-- Found hole: _x :: f [a]
+```
+
+We have no `a` to run `f` on in our empty list case, so we can just return an empty list in our
+applicative:
+
+```haskell
+-- | A traversal that targets the first element of a list
+hd :: Traversal' [a] a
+hd _f [] = pure []
+hd f (x : xs) = _x
+-- Found hole: _x :: f [a]
+-- • Relevant bindings include
+--     xs :: [a]
+--     x :: a
+--     f :: a -> f a
+--     hd :: (a -> f a) -> [a] -> f [a]
+```
+
+We can call `f` on our `x` now which gives us an `f a`, but we need to return `f [a]`. We can fmap
+`_x` over our `f a` to see what we can do:
+
+```haskell
+-- | A traversal that targets the first element of a list
+hd :: Traversal' [a] a
+hd _f [] = pure []
+hd f (x : xs) = _x <$> f x
+-- Found hole: _x :: a -> [a]
+-- • Relevant bindings include
+--     xs :: [a]
+--     x :: a
+--     f :: a -> f a
+--     hd :: (a -> f a) -> [a] -> f [a]
+```
+
+We can see above that we need to pass a function that takes an element and returns a list. It's
+tempting here to pass in `pure` or `return`, but if we apply some thinking we can also pass in
+`(: xs)` which will take our element `a` and tack it onto our `xs`:
+
+```haskell
+-- | A traversal that targets the first element of a list
+hd :: Traversal' [a] a
+hd _f [] = pure []
+hd f (x : xs) = (: xs) <$> f x
+```
+
+If we now use this we can see it works well:
+
+```haskell
+Q> [1..9] & hd .~ 42
+[42, 2, 3, 4, 5, 6, 7, 8, 9]
+Q> [1..9] & hd %~ (+ 1)
+[2, 2, 3, 4, 5, 6, 7, 8, 9]
+Q> [1..9] ^? hd
+Just 1
+Q> [] ^? hd
+Nothing
 ```
 
 ### Exercises (Traversals and Folds)
