@@ -3,6 +3,7 @@
 - [Testing](#testing)
   - [`package.yaml`](#packageyaml)
   - [Unit tests](#unit-tests)
+    - [Exercises (Unit tests)](#exercises-unit-tests)
   - [Property testing](#property-testing)
   - [Considerations for testing](#considerations-for-testing)
     - [Find a testable core](#find-a-testable-core)
@@ -88,7 +89,7 @@ So let's look at some parts of the test suite of the `Qtility.Environment` modul
 ## Unit tests
 
 When we want to create a simple unit test, all we need to do is use the `describe`, `it` and
-`shouldEqual` functions:
+`shouldX` functions:
 
 ```haskell
 {-# LANGUAGE TypeApplications #-}
@@ -108,8 +109,8 @@ spec = do
   -- being tested.
   describe "`readEnvironmentVariable`" $ do
     it "Fails with an error if the environment variable is not set" $ do
-      -- Note how we use the `shouldThrow` function in the infix position to get a more naturally
-      -- flowing description of our expectation.
+      -- Note how we can use the `shouldThrow` function in the infix position to get a more
+      -- naturally flowing description of our expectation.
       readEnvironmentVariable @String (EnvironmentKey "NOT_SET")
         `shouldThrow` (== ReadEnvironmentMissingValue (EnvironmentKey "NOT_SET"))
 
@@ -160,6 +161,13 @@ Failures:
        expected: "VALUE"
         but got: "VALUUE"
 ```
+
+### Exercises (Unit tests)
+
+1. Create a new project called `testing-sandbox` any way you want and make sure that it has a
+   `testing-sandbox-test` component for running tests. Make sure that it has a `Spec.hs` file in
+   it that will allow you to create files that end in `Spec.hs` and have them run automatically
+   when you run `stack test --fast` in the project directory.
 
 ## Property testing
 
