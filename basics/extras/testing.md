@@ -7,12 +7,15 @@
   - [Property testing](#property-testing)
   - [Considerations for testing](#considerations-for-testing)
     - [Find a testable core](#find-a-testable-core)
-    - [Encode your effects as type classes](#encode-your-effects-as-type-classes)
+    - [Encoding your effects as type classes](#encoding-your-effects-as-type-classes)
 
 Testing is of course a pivotal part of development and just because we have access to a very
 competent type system does not mean that we don't have to test our code.
 
 ## `package.yaml`
+
+Before talking about setting up tests it can be useful to know how a Haskell project is usually set
+up.
 
 When we generate a Haskell project via `stack new my-project-name quanterall/basic` or any of the
 other Quanterall templates, we get a package file that describes the different components of our
@@ -21,8 +24,9 @@ package.
 Normally this includes:
 
 - One or more executables, meaning the binaries we want to generate to execute our program
-- A library, meaning the code where the functionality we could import into other packages goes
-- A test suite, meaning the executable(s) that tests our library code
+- A library, meaning the code where the functionality we could import into other packages goes, as
+  well as the code that can be used in both your executables and your testing code
+- A test suite, meaning the executable(s) that test our library code
 
 ```yaml
 library:
@@ -282,7 +286,7 @@ and split it out into a pure function. We know intuitively that pure functions, 
 one value another, are easily testable. Try to encode the piece you want to test as a matter of
 input and output without involving any side effects.
 
-### Encode your effects as type classes
+### Encoding your effects as type classes
 
 Let's say we have the following function:
 
