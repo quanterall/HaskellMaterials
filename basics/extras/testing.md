@@ -3,6 +3,12 @@
 - [Testing](#testing)
   - [`package.yaml`](#packageyaml)
   - [Unit tests](#unit-tests)
+    - [`describe :: HasCallStack => String -> SpecWith a -> SpecWith a`](#describe--hascallstack--string---specwith-a---specwith-a)
+    - [`it :: (HasCallStack, Example a) => String -> a -> SpecWith (Arg a)`](#it--hascallstack-example-a--string---a---specwith-arg-a)
+    - [`shouldBe :: (HasCallStack, Show a, Eq a) => a -> a -> Expectation`](#shouldbe--hascallstack-show-a-eq-a--a---a---expectation)
+    - [`shouldReturn :: (HasCallStack, Show a, Eq a) => IO a -> a -> Expectation`](#shouldreturn--hascallstack-show-a-eq-a--io-a---a---expectation)
+    - [`shouldThrow :: (HasCallStack, Exception e) => IO a -> Selector e -> Expectation`](#shouldthrow--hascallstack-exception-e--io-a---selector-e---expectation)
+    - [`shouldSatisfy :: (HasCallStack, Show a) => a -> (a -> Bool) -> Expectation`](#shouldsatisfy--hascallstack-show-a--a---a---bool---expectation)
     - [Exercises (Unit tests)](#exercises-unit-tests)
   - [Property testing](#property-testing)
   - [Considerations for testing](#considerations-for-testing)
@@ -93,7 +99,106 @@ So let's look at some parts of the test suite of the `Qtility.Environment` modul
 ## Unit tests
 
 When we want to create a simple unit test, all we need to do is use the `describe`, `it` and
-`shouldX` functions:
+`shouldX` functions.
+
+`hspec` has a
+[list of expectations](https://hackage.haskell.org/package/hspec-expectations-0.8.2/docs/Test-Hspec-Expectations.html)
+you can use to make assertions in your tests.
+
+### `describe :: HasCallStack => String -> SpecWith a -> SpecWith a`
+
+`describe` is used to create a section of our test suite. It takes a string describing the section
+as well as an action to execute, which means we can pass a `do` block to it:
+
+```haskell
+describe "Environment handling" $ do
+  describe "`readEnvironmentVariable`" $ do
+    ...
+```
+
+### `it :: (HasCallStack, Example a) => String -> a -> SpecWith (Arg a)`
+
+`it` introduces a test case. It first takes a string describing what the test is supposed to be
+testing and then an action to execute, that will contain assertions/`shouldX` functions:
+
+```haskell
+describe "Environment handling" $ do
+  describe "`readEnvironmentVariable`" $ do
+    it "returns the value of the environment variable" $ do
+      ...
+```
+
+### `shouldBe :: (HasCallStack, Show a, Eq a) => a -> a -> Expectation`
+
+`shouldBe` is used to compare two values for equality and show you the values if they don't match:
+
+```haskell
+describe "Environment handling" $ do
+  describe "`readEnvironmentVariable`" $ do
+    it "returns the value of the environment variable" $ do
+      result <- readEnvironmentVariable "QUANTERALL_ENV"
+      result `shouldBe` "development"
+```
+
+A version called `shouldNotBe` is also available:
+
+```haskell
+describe "Environment handling" $ do
+  describe "`readEnvironmentVariable`" $ do
+    it "returns the value of the environment variable" $ do
+      result <- readEnvironmentVariable "QUANTERALL_ENV"
+      result `shouldNotBe` "production"
+```
+
+### `shouldReturn :: (HasCallStack, Show a, Eq a) => IO a -> a -> Expectation`
+
+`shouldReturn` can be used when we want to compare the result in some `m` to a value, so that we
+don't have to create an intermediate variable:
+
+```haskell
+describe "Environment handling" $ do
+  describe "`readEnvironmentVariable`" $ do
+    it "returns the value of the environment variable" $ do
+      readEnvironmentVariable "QUANTERALL_ENV" `shouldReturn` "development"
+```
+
+A version called `shouldNotReturn` is also available:
+
+```haskell
+describe "Environment handling" $ do
+  describe "`readEnvironmentVariable`" $ do
+    it "returns the value of the environment variable" $ do
+      readEnvironmentVariable "QUANTERALL_ENV" `shouldNotReturn` "production"
+```
+
+### `shouldThrow :: (HasCallStack, Exception e) => IO a -> Selector e -> Expectation`
+
+`shouldThrow` can be used to check that an action will throw an exception matching a given
+selector. The `Selector` type is really just a type alias for `e -> Bool`, which means we can pass
+any function that will take our exception type and return `True`/`False`. Typical usage looks as
+follows:
+
+```haskell
+describe "`readEnvironmentVariable`" $ do
+  it "Fails with an error if the environment variable is not set" $ do
+    readEnvironmentVariable @String (EnvironmentKey "NOT_SET")
+      `shouldThrow` (== ReadEnvironmentMissingValue (EnvironmentKey "NOT_SET"))
+```
+
+Above we are of course taking advantage of `Eq` being defined for our exception so that we can just
+compare the exception with `==`.
+
+### `shouldSatisfy :: (HasCallStack, Show a) => a -> (a -> Bool) -> Expectation`
+
+`shouldSatisfy` can be used to check that a value satisfies a given predicate:
+
+```haskell
+describe "Environment handling" $ do
+  describe "`readEnvironmentVariable`" $ do
+    it "returns the value of the environment variable" $ do
+      result <- readEnvironmentVariable "QUANTERALL_ENV"
+      result `shouldSatisfy` (`elem` ["development", "production"])
+```
 
 ```haskell
 {-# LANGUAGE TypeApplications #-}
@@ -172,6 +277,11 @@ Failures:
    `testing-sandbox-test` component for running tests. Make sure that it has a `Spec.hs` file in
    it that will allow you to create files that end in `Spec.hs` and have them run automatically
    when you run `stack test --fast` in the project directory.
+
+2. Create a failing test in a file called `test/LibrarySpec.hs` that will always fail. Run
+   `stack test --fast` and see what happens.
+
+3. Run `stack test --fast --file-watch` and modify your test to pass. What happens?
 
 ## Property testing
 
