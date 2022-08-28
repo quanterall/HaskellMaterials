@@ -347,11 +347,6 @@ newtype TestState = TestState
 
 type TestM = RIO TestState
 
-newtype TestState = TestState
-  { _testStateFiles :: Map FilePath Text
-  }
-  deriving (Generic)
-
 foldMapM makeLenses [''TestState]
 
 instance ReadFiles TestM where
@@ -411,7 +406,7 @@ Completed 2 action(s).
    structure based on the return value:
 
 ```haskell
-getAs :: (FromJSON a) => String -> IO (Either String a)`
+getAs :: (FromJSON a) => String -> IO (Either String a)
 ```
 
    Write a test for this function than ensures that we get a valid response for a web page that
