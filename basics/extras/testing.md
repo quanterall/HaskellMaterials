@@ -100,8 +100,6 @@ run from it has to be named `spec` and return something of type `Spec`:
 spec :: Spec
 ```
 
-So let's look at some parts of the test suite of the `Qtility.Environment` module from `qtility`:
-
 ## Unit tests
 
 When we want to create a simple unit test, all we need to do is use the `describe`, `it` and
