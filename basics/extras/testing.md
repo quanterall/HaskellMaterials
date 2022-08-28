@@ -15,9 +15,11 @@
     - [Mocking effects with type classes](#mocking-effects-with-type-classes)
       - [Exercises (Mocking effects with type classes)](#exercises-mocking-effects-with-type-classes)
   - [Property testing](#property-testing)
-  - [Considerations for testing](#considerations-for-testing)
-    - [Find a testable core](#find-a-testable-core)
-    - [Encoding your effects as type classes](#encoding-your-effects-as-type-classes)
+    - [`prop :: (HasCallStack, Testable prop) => String -> prop -> Spec`](#prop--hascallstack-testable-prop--string---prop---spec)
+    - [`Testable prop`](#testable-prop)
+    - [A more complete example](#a-more-complete-example)
+    - [`Arbitrary`](#arbitrary)
+    - [Exercises (Property testing)](#exercises-property-testing)
 
 Testing is of course a pivotal part of development and just because we have access to a very
 competent type system does not mean that we don't have to test our code.
@@ -433,202 +435,171 @@ data User = User
 
 Sometimes we want to prove an attribute or a property of our code, not just through readymade and
 static examples, but by putting it through a series of randomized tests. We can do so via several
-libraries in Haskell, one of which is called Hedgehog:
+libraries in Haskell, one of which is called QuickCheck:
+
+### `prop :: (HasCallStack, Testable prop) => String -> prop -> Spec`
+
+`prop` is the property testing equivalent of `it`. We pass a description of what we are trying to
+test as well as a `Testable` property that we want to test, and `Hspec` will run the required
+`QuickCheck` invocations to fit it into our normal test suite.
+
+### `Testable prop`
+
+The `Testable` class is a type class that describes different expressions that qualify as being
+property testable. What this means in practice is that we have several ways we can write our
+property tests and that assertions as usual are usable in our property tests:
 
 ```haskell
-{-# LANGUAGE TypeApplications #-}
+describe "Lists" $ do
+  describe "`reverse`" $ do
+    prop "Reversing a list twice is `id`" $ \xs ->
+      reverse @Int (reverse xs) `shouldBe` xs
+```
 
-module Qtility.EnvironmentSpec where
+In the example above you can see that we are passing a function to `prop`. `QuickCheck` will, in a
+sense, look at the types of the arguments declared in this function and generate random values for
+them. In this particular example we specify that the `a` we want in the type signature of `reverse`
+is an `Int`, which means that `QuickCheck` will know to generate a random list of `Int`s.
 
-import qualified Hedgehog.Gen as Gen
-import qualified Hedgehog.Range as Range
+### A more complete example
+
+```haskell
 import Qtility.Environment
 import Qtility.Environment.Types
+import Qtility.EnvironmentSpec.TestState
 import RIO
+import qualified RIO.Map as Map
+import qualified RIO.Text as Text
 import System.Environment (setEnv)
+-- Note how we import both `Hspec` and `QuickCheck` modules here.
 import Test.Hspec
-import Test.Hspec.Hedgehog
+import Test.Hspec.QuickCheck (prop)
+import Test.QuickCheck (PrintableString (..))
+import Test.QuickCheck.PrintableNonEmptyString (PrintableNonEmptyString (..))
+
+spec :: Spec
+spec = do
+  describe "`readEnvironmentVariable`" $ do
+    prop "Can read any `Int` value from the environment" $ \x -> do
+      let key = EnvironmentKey "ANY_INT"
+      setEnv (_unEnvironmentKey key) (show x)
+      readEnvironmentVariable @Int key `shouldReturn` x
+
+    prop "Can read any `Double` value from the environment" $ \d -> do
+      let key = EnvironmentKey "ANY_DOUBLE"
+      setEnv (_unEnvironmentKey key) (show d)
+      readEnvironmentVariable @Double key `shouldReturn` d
+
+    prop "Can read any `Bool` value from the environment" $ \b -> do
+      let key = EnvironmentKey "ANY_BOOL"
+      setEnv (_unEnvironmentKey key) (show b)
+      readEnvironmentVariable @Bool key `shouldReturn` b
 ```
+
+If we try to generate a random text string to test with, we will run into a problem. We do not
+allow empty values to be returned from the environment and our tests will randomly be generated
+with empty strings. On top of that we are really only concerned with printable strings in our
+functions, so we only want those to be generated for testing.
+
+### `Arbitrary`
+
+In order to generate values for our tests `QuickCheck` uses the `Arbitrary` type class:
 
 ```haskell
-    it "Can read any `Int` value from the environment" $ do
-      let key = EnvironmentKey "ANY_INT"
-      -- We execute `hedgehog` here in order to work in this randomized input monad where we can use
-      -- generators and create property tests.
-      hedgehog $ do
-        -- For all the values that an `Int` can be
-        value <- forAll Gen.enumBounded
-        -- Set our environment variable to the value we just generated. Note how the type
-        -- application here of `Int` is what decides for `forAll Gen.enumBounded` that we want to
-        -- generate an `Int` value.
-        liftIO $ setEnv (_unEnvironmentKey key) (show @Int value)
-        -- When we read the environment value back
-        result <- liftIO $ readEnvironmentVariable key
-        -- We should get the same value back
-        result === value
+class Arbitrary a where
+  arbitrary :: Gen a
+  shrink :: a -> [a]
+  shrink _ = []
 ```
 
-When this test is run we will get the same kind of output as before if there are no errors. In the
-case where we have an error, however, we'll see more interesting output:
+The only thing we have to do when we want an `Arbitrary` instance is to figure out how to generate
+our type via `Gen`. `QuickCheck` already has extensive understanding of many of the types that we
+could use to build up our own types, so generally this becomes a matter of building up lists,
+characters, etc. and then using them to construct our type.
+
+Let's create a test for our `Text` and see what happens if we don't already have our custom type:
+
+```haskell
+prop "Can read any `Text` value that is not empty from the environment" $
+  \s -> do
+    let key = EnvironmentKey "ANY_TEXT"
+    setEnv (_unEnvironmentKey key) s
+    readEnvironmentVariable @Text key `shouldReturn` Text.pack s
+```
+
+The output:
 
 ```haskell
 Failures:
 
-  test/Qtility/EnvironmentSpec.hs:82:9: 
-  1) Qtility.Environment.`readEnvironmentVariable` Can read any `Int` value from the environment
-         ✗ <interactive> failed at test/Qtility/EnvironmentSpec.hs:82:9
-           after 1 test and 1 shrink.
-         
-               ┏━━ test/Qtility/EnvironmentSpec.hs ━━━
-            19 ┃ spec :: Spec
-            20 ┃ spec = do
-            21 ┃   describe "`readEnvironmentVariable`" $ do
-            22 ┃     it "Fails with an error if the environment variable is not set" $ do
-            23 ┃       readEnvironmentVariable @String (EnvironmentKey "NOT_SET")
-            24 ┃         `shouldThrow` (== ReadEnvironmentMissingValue (EnvironmentKey "NOT_SET"))
-            25 ┃ 
-            26 ┃     it "Succeeds if we set the variable first" $ do
-            27 ┃       let key = EnvironmentKey "SET"
-            28 ┃       setEnv (_unEnvironmentKey key) "VALUE"
-            29 ┃       readEnvironmentVariable @String key `shouldReturn` "VALUE"
-            30 ┃ 
-            31 ┃     it "Can read `Text` values correctly" $ do
-            32 ┃       let key = EnvironmentKey "TEXT"
-            33 ┃       setEnv (_unEnvironmentKey key) "VALUE"
-            34 ┃       readEnvironmentVariable @Text key `shouldReturn` "VALUE"
-            35 ┃ 
-            76 ┃     it "Can read any `Int` value from the environment" $ do
-            77 ┃       let key = EnvironmentKey "ANY_INT"
-            78 ┃       hedgehog $ do
-            79 ┃         value <- forAll Gen.enumBounded
-               ┃         │ -9223372036854775808
-            80 ┃         liftIO $ setEnv (_unEnvironmentKey key) (show @Int (value + 1))
-            81 ┃         result <- liftIO $ readEnvironmentVariable key
-            82 ┃         result === value
-               ┃         ^^^^^^^^^^^^^^^^
-               ┃         │ ━━━ Failed (- lhs) (+ rhs) ━━━
-               ┃         │ - -9223372036854775807
-               ┃         │ + -9223372036854775808
-            83 ┃ 
-         
-           This failure can be reproduced by running:
-           > recheck (Size 0) (Seed 11703610880303394415 16113510040565526611) <property>
-         
-Randomized with seed 2124290712
+  test/Qtility/EnvironmentSpec.hs:89:5:
+  1) Qtility.Environment.`readEnvironmentVariable` Can read any `Text` value that is not empty from the environment
+       uncaught exception: ReadEnvironmentVariableError
+       ReadEnvironmentMissingValue (EnvironmentKey {_unEnvironmentKey = "ANY_TEXT"})
+       (after 1 test)
+         ""
 ```
 
-We can see from the output that Hedgehog has intelligently generated random values and that after it
-has found an error, it also tries to find other values that cause the error. This is a very useful
-attribute because it will allow you, very often, to find simpler inputs that display the issue you
-are looking at. Despite the input to your functions being random, it will try to humanize the result
-so that you can more easily work with them.
-
-## Considerations for testing
-
-While it's hard to recommend changing code in order to be able to test it, it can be very useful to
-consider which code we can test more easily and to find a balance where we are able to work
-intuitively with things and still be able to test them.
-
-Many people have tried to work with what's colloquially called the
-[*Command Pattern*](https://en.wikipedia.org/wiki/Command_pattern) and this can be hard to justify
-if you're not already using it for other purposes. While it's true that this is a very easily tested
-pattern, basing your entire design around it could be considered missing the point. It's worth
-considering this type of pattern if you can see other upsides to it, however.
-
-### Find a testable core
-
-If you cannot readily test the entire functionality of something, find a more easily testable core
-and split it out into a pure function. We know intuitively that pure functions, calculations from
-one value another, are easily testable. Try to encode the piece you want to test as a matter of
-input and output without involving any side effects.
-
-### Encoding your effects as type classes
-
-Let's say we have the following function:
+We can guarantee that our string is not empty by generating a character plus a string, then
+prepending the character onto the string:
 
 ```haskell
-handleSignup :: (MonadIO m) => User -> m ()
+prop "Can read any `Text` value that is not empty from the environment" $
+  \c s -> do
+    let key = EnvironmentKey "ANY_TEXT"
+        value = c : s
+    setEnv (_unEnvironmentKey key) value
+    readEnvironmentVariable @Text key `shouldReturn` Text.pack value
 ```
 
-The internal logic of this function is not super important, but let's say that we use MailChimp
-behind the scenes to handle adding a user to a mailing list, among other things. If we wanted to
-test this function, it could prove challenging. We could take the mailing list addition action
-(presumably something like `addToMailingList :: Email -> m ()`) as a parameter and swap that action
-out in tests. This can get very tedious if we have several effects and several places.
-
-One model is instead to describe our mailing list effects as a type class:
+Now we run into another issue, however:
 
 ```haskell
-class MailingListModify m where
-  addToMailingList :: Email -> m ()
+Failures:
+
+  test/Qtility/EnvironmentSpec.hs:94:9:
+  1) Qtility.Environment.`readEnvironmentVariable` Can read any `Text` value that is not empty from the environment
+       Falsifiable (after 8 tests and 4 shrinks):
+         'a'
+         "\NUL"
+       expected: "a\NUL"
+        but got: "a"
 ```
 
-The `handleSignup` function uses this `addToMailingList` function internally just as it would any
-other function that accomplishes the same thing, and it specifies that the monad has support for
-modifying mailing lists:
+We can see that we are getting a `NUL` byte in our string, because that is indeed a valid character
+in a string. Our tests are not concerned with these, however, so we would like a way to not
+generate these. We can do this by defining a type to represent the kind of string we want as well
+as an instance of `Arbitrary` for it:
 
 ```haskell
-handleSignup :: (MailingListModify m, MonadIO m) => User -> m ()
+import Test.QuickCheck (Arbitrary (..), PrintableString (..), arbitraryPrintableChar)
+
+newtype PrintableNonEmptyString =
+  PrintableNonEmptyString {unPrintableNonEmptyString :: PrintableString}
+  deriving (Eq, Show)
+
+instance Arbitrary PrintableNonEmptyString where
+  arbitrary = do
+    c <- arbitraryPrintableChar
+    -- `PrintableString` is an already existing type that will guide generation of
+    -- only printable characters.
+    (PrintableString cs) <- arbitrary
+    c & (: cs) & PrintableString & PrintableNonEmptyString & pure
 ```
 
-Our implementation for our normal application monad will look exactly the same as our previous one;
-we call a function that very likely works in `IO`/`MonadIO` and that's it:
+### Exercises (Property testing)
+
+1. Write a function that uppercases the first character in a `Text` as well as property tests that
+   verify that it does the correct thing.
+
+2. Create types called `UpperCaseCharacter` and `LowerCaseCharacter` and instances of `Arbitrary`
+   for them that will only generate characters of the correct casing.
+
+3. Write a property test ensuring that `clamp` never returns values outside of its given range:
 
 ```haskell
-instance MailingListModify AppMonad where
-  addToMailingList = MailChimp.addToMailingList
+clamp :: Ord a => a -> a -> a -> a
+clamp lowerBound upperBound v = undefined
 ```
 
-For testing purposes we will implement a piece of state and a testing monad, that we will use to
-implement a mocked version of the above:
-
-```haskell
-data TestState = TestState
-  { mailingListRef :: IORef (Set Email)
-  }
-
-newtype TestMonad a = TestMonad {runTestMonad :: RIO TestState a}
-  deriving (Functor, Applicative, Monad, MonadReader TestState, MonadIO)
-
-instance MailingListModify TestMonad where
-  addToMailingList email = do
-    list <- asks mailingListRef
-    liftIO $ modifyIORef' list (Set.insert email)
-```
-
-Our test monad implementation simply puts the requested e-mail address into a set that we reference
-via a `IORef`. This allows us to later query the reference to see what is in it.
-
-We want to test that `handleSignup` adds the user to the mailing list, so let's write a test for
-that:
-
-```haskell
-module LibrarySpec where
-
-import Library
-import RIO
-import qualified RIO.Set as Set
-import Test.Hspec
-
-spec :: Spec
-spec = do
-  describe "`handleSignup`" $ do
-    it "should add a user to the mailing list" $ do
-      mailingListRef <- newIORef Set.empty
-      let testState = TestState {mailingListRef}
-          user = User {_userName = "rickard", _userEmail = Email "rickard.andersson@quanterall.com"}
-      runRIO testState $ runTestMonad $ handleSignup user
-      readIORef mailingListRef `shouldReturn` Set.singleton (_userEmail user)
-```
-
-We now have a version of our function where we didn't need to change any of the runtime behavior of
-it and fundamentally the interface has remained essentially the same; we've just added the fact that
-we are modifying mailing lists as an explicit effect via type classes. This has then enabled us to
-implement this functionality for a testing monad that we can use to inspect the results of our
-effects.
-
-It's important to keep in mind that when we test like this, we are not testing whether or not we can
-add users to mailing lists, but rather that `handleSignup` adds users to mailing lists. We've
-mocked the functionality of adding the user, so fundamentally that part is essentially useless to
-test. We are testing the intent of `handleSignup` to add a user to the mailing list, not whether our
-mailing list addition code works.
+4. Create a type called `NonEmptyText` and an instance of `Arbitrary` for it.
