@@ -10,6 +10,10 @@
     - [`shouldThrow :: (HasCallStack, Exception e) => IO a -> Selector e -> Expectation`](#shouldthrow--hascallstack-exception-e--io-a---selector-e---expectation)
     - [`shouldSatisfy :: (HasCallStack, Show a) => a -> (a -> Bool) -> Expectation`](#shouldsatisfy--hascallstack-show-a--a---a---bool---expectation)
     - [Exercises (Unit tests)](#exercises-unit-tests)
+  - [Testing effects](#testing-effects)
+    - [Just test the effects](#just-test-the-effects)
+    - [Mocking effects with type classes](#mocking-effects-with-type-classes)
+      - [Exercises (Mocking effects with type classes)](#exercises-mocking-effects-with-type-classes)
   - [Property testing](#property-testing)
   - [Considerations for testing](#considerations-for-testing)
     - [Find a testable core](#find-a-testable-core)
@@ -200,77 +204,6 @@ describe "Environment handling" $ do
       result `shouldSatisfy` (`elem` ["development", "production"])
 ```
 
-```haskell
-{-# LANGUAGE TypeApplications #-}
-
-module Qtility.EnvironmentSpec where
-
-import Qtility.Environment
-import Qtility.Environment.Types
-import RIO
-import System.Environment (setEnv)
-import Test.Hspec
-
-spec :: Spec
-spec = do
-  -- This is a sub-categorization in your tests. You can create these `describe` sections in
-  -- whatever ways you want. Here we've elected to just name the section/category after the function
-  -- being tested.
-  describe "`readEnvironmentVariable`" $ do
-    it "Fails with an error if the environment variable is not set" $ do
-      -- Note how we can use the `shouldThrow` function in the infix position to get a more
-      -- naturally flowing description of our expectation.
-      readEnvironmentVariable @String (EnvironmentKey "NOT_SET")
-        `shouldThrow` (== ReadEnvironmentMissingValue (EnvironmentKey "NOT_SET"))
-
-    it "Succeeds if we set the variable first" $ do
-      let key = EnvironmentKey "SET"
-      setEnv (_unEnvironmentKey key) "VALUE"
-      result <- readEnvironmentVariable @String key
-      -- `shouldBe` checks for normal equality and is likely what you'll use in most cases.
-      result `shouldBe` "VALUE"
-
-    it "Can read `Text` values correctly" $ do
-      let key = EnvironmentKey "TEXT"
-      setEnv (_unEnvironmentKey key) "VALUE"
-      -- Note how we can also use `shouldReturn` to say that a monadic actual should return a value
-      -- matching the value on the right. This is the same thing as using `<-` and then checking the
-      -- result with `shouldBe`.
-      readEnvironmentVariable @Text key `shouldReturn` "VALUE"
-```
-
-In our terminal we will get the following output for these tests:
-
-```spec
-Qtility.Environment
-  `readEnvironmentVariable`
-    Fails with an error if the environment variable is not set
-    Succeeds if we set the variable first
-    Can read `Text` values correctly
-```
-
-The three test rows will be green if they pass. If we were to have a failure, it would look as
-follows:
-
-```spec
-Qtility.Environment
-  `readEnvironmentVariable`
-    Fails with an error if the environment variable is not set
-    Succeeds if we set the variable first FAILED [1]
-    Can read `Text` values correctly
-```
-
-And below all the test results we can see the following:
-
-```spec
-Failures:
-
-  test/Qtility/EnvironmentSpec.hs:29:7: 
-  1) Qtility.Environment.`readEnvironmentVariable` Succeeds if we set the variable first
-       expected: "VALUE"
-        but got: "VALUUE"
-```
-
 ### Exercises (Unit tests)
 
 1. Create a new project called `testing-sandbox` any way you want and make sure that it has a
@@ -282,6 +215,219 @@ Failures:
    `stack test --fast` and see what happens.
 
 3. Run `stack test --fast --file-watch` and modify your test to pass. What happens?
+
+## Testing effects
+
+When we want to test effectful code have a few possibilities.
+
+### Just test the effects
+
+First of all, we can set up our tests and test data in such a way where we can simply execute the
+effectful code on real things an get real results. One example of this would be to have a testing
+database that is used for tests, and resetting that database to a known state for each one. Another
+would be to have test files in your project that are used for functions that need a filesystem.
+
+While this is not always possible for all of our effects, it's something that needs to be considered
+when we are testing effects. It can oftentimes be simpler to set up the environment around our
+tests than it is to create all the necessary code infrastructure to mock that environment.
+
+### Mocking effects with type classes
+
+When we use [capability constraints](../11-capability-constraints.md) to be specific about our
+effects, we can also take advantage of the fact that our effects now can have multiple
+implementations for different contexts/monads.
+
+Let's say that we want to mock our filesystem, for example, and in our case we really only want to
+mock the `readFile` function. We can do this by first establishing a type class for file I/O and
+then implementing that for both our application and testing contexts.
+
+Let's say we started out with the following:
+
+```haskell
+-- | Loads a @.env@ file if it's available, changing the current environment. Throws
+-- 'EnvironmentFileNotFound' if the environment file cannot be found.
+loadDotEnvFile :: (MonadThrow m, MonadIO m) => EnvironmentFile -> m ()
+loadDotEnvFile ef@(EnvironmentFile path) = do
+  unlessM (Directory.doesFileExist path) $ throwM $ EnvironmentFileNotFound ef
+  fileContents <- readFileUtf8 path
+  let dotEnvValues = parseDotEnvFile fileContents
+  liftIO $
+    forM_ dotEnvValues $ \(key, value) -> do
+      -- If there is an environment variable that has the wrong formatting, we'll get an
+      -- @IOException@ here. We'll just ignore it and move on.
+      setEnv (_unEnvironmentKey key) value `catchIO` const (pure ())
+```
+
+The above code checks for the existence of a file via `Directory.doesFileExist` and if it exists
+we'll read the file, parse its contents and set the keys inside of the file in our shell
+environment.
+
+Let's write some basic tests for what the function needs to ensure in terms of the file system
+access that it has:
+
+```haskell
+describe "Parsing .env files" $ do
+  describe "`loadDotEnvFile`" $ do
+    it "Should throw when we are trying to load a file that does not exist" $ do
+      let testState = TestState {_testStateFiles = Map.fromList []}
+      runRIO testState (loadDotEnvFile "doesNotExist.env")
+        `shouldThrow` (== EnvironmentFileNotFound "doesNotExist.env")
+```
+
+So far, so good, but what happens when we add a test for a file that should exist?
+
+```haskell
+describe "Parsing .env files" $ do
+  describe "`loadDotEnvFile`" $ do
+    it "Should throw when we are trying to load a file that does not exist" $ do
+      let testState = TestState {_testStateFiles = Map.fromList []}
+      runRIO testState (loadDotEnvFile "doesNotExist.env")
+        `shouldThrow` (== EnvironmentFileNotFound "doesNotExist.env")
+
+    it "Should not throw when the file exists" $ do
+      let testState = TestState {_testStateFiles = Map.fromList [("test.env", "")]}
+      runRIO testState (loadDotEnvFile "test.env") `shouldReturn` ()
+```
+
+Our test fails:
+
+```haskell
+Failures:
+
+  test/Qtility/EnvironmentSpec.hs:100:7:
+  1) Qtility.Environment, Parsing .env files, `loadDotEnvFile`, Should not throw when the file exists
+       uncaught exception: EnvironmentFileNotFound
+       EnvironmentFileNotFound {_unEnvironmentFileNotFound = EnvironmentFile {_unEnvironmentFile = "test.env"}}
+
+  To rerun use: --match "/Qtility.Environment/Parsing .env files/`loadDotEnvFile`/Should not throw when the file exists/"
+
+Randomized with seed 750963619
+
+Finished in 0.4742 seconds
+29 examples, 1 failure
+
+qtility> Test suite qtility-test failed
+Completed 2 action(s).
+Test suite failure for package qtility-1.3.0
+    qtility-test:  exited with: ExitFailure 1
+Logs printed to console
+```
+
+We now have a choice between adding the example file or mocking the file system. Let's introduce a
+type class for talking about file read access:
+
+```haskell
+class (Monad m) => ReadFiles m where
+  readFileM :: FilePath -> m Text
+  doesFileExistM :: FilePath -> m Bool
+  doesDirectoryExistM :: FilePath -> m Bool
+  readFileBytesM :: FilePath -> m ByteString
+
+instance ReadFiles IO where
+  readFileM = readFileUtf8
+  doesFileExistM = doesFileExist
+  doesDirectoryExistM = doesDirectoryExist
+  readFileBytesM = ByteString.readFile
+
+-- type AppM = RIO App
+instance ReadFiles AppM where
+  -- `liftIO` is not necessary because `readFileUtf8` is defined for `MonadIO`
+  readFileM = readFileUtf8
+  doesFileExistM = doesFileExist
+  doesDirectoryExistM = doesDirectoryExist
+  readFileBytesM = ByteString.readFile
+
+--
+-- Here is our testing state and its associated monad, for which we implement `ReadFiles`
+--
+newtype TestState = TestState
+  { _testStateFiles :: Map FilePath Text
+  }
+  deriving (Generic)
+
+type TestM = RIO TestState
+
+newtype TestState = TestState
+  { _testStateFiles :: Map FilePath Text
+  }
+  deriving (Generic)
+
+foldMapM makeLenses [''TestState]
+
+instance ReadFiles TestM where
+  readFileM path = do
+    fileMap <- view testStateFiles
+    fileMap
+      & Map.lookup path
+      & maybe
+        (throwM $ mconcat ["No such file: ", path] & userError & errorTypeL .~ NoSuchThing)
+        pure
+  readFileBytesM path = do
+    fileMap <- view testStateFiles
+    fileMap
+      & Map.lookup path
+      & maybe
+        (throwM $ mconcat ["No such file: ", path] & userError & errorTypeL .~ NoSuchThing)
+        pure
+      & fmap encodeUtf8
+  doesFileExistM path = do
+    fileMap <- view testStateFiles
+    pure $ Map.member path fileMap
+  doesDirectoryExistM path = do
+    fileMap <- view testStateFiles
+    pure $ Map.member path fileMap
+```
+
+In our functions we can now use `doesDirectoryExistM` and `readFileM` to read files and this will
+transparently be mocked as using a map for our file system access in tests:
+
+```haskell
+-- | Loads a @.env@ file if it's available, changing the current environment. Throws
+-- 'EnvironmentFileNotFound' if the environment file cannot be found.
+loadDotEnvFile :: (MonadThrow m, MonadIO m, ReadFiles m) => EnvironmentFile -> m ()
+loadDotEnvFile ef@(EnvironmentFile path) = do
+  unlessM (doesFileExistM path) $ throwM $ EnvironmentFileNotFound ef
+  fileContents <- readFileM path
+  let dotEnvValues = parseDotEnvFile fileContents
+  liftIO $
+    forM_ dotEnvValues $ \(key, value) -> do
+      -- If there is an environment variable that has the wrong formatting, we'll get an
+      -- @IOException@ here. We'll just ignore it and move on.
+      setEnv (_unEnvironmentKey key) value `catchIO` const (pure ())
+```
+
+Our test now succeeds:
+
+```haskell
+29 examples, 0 failures
+
+qtility> Test suite qtility-test passed
+Completed 2 action(s).
+```
+
+#### Exercises (Mocking effects with type classes)
+
+1. Write a function that pulls down the contents of a web page and decodes them as a given
+   structure based on the return value:
+
+```haskell
+getAs :: (FromJSON a) => String -> IO (Either String a)`
+```
+
+   Write a test for this function than ensures that we get a valid response for a web page that
+   exists and when the data can be decoded as the following structure:
+
+```haskell
+data User = User
+  { _userUsername :: Text,
+    _userEmail :: Text
+  }
+  deriving (Eq, Show, Generic)
+```
+
+   Write a type class for making HTTP `GET` requests and getting a `ByteString` back. Modify your
+   code to use this new type class and then make the needed test modifications to have your test
+   behave as you need it for your tests to pass.
 
 ## Property testing
 
