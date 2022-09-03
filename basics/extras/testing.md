@@ -402,14 +402,22 @@ Completed 2 action(s).
 
 #### Exercises (Mocking effects with type classes)
 
-1. Write a function that pulls down the contents of a web page and decodes them as a given
+1. Write a function that takes a `FilePath` and returns the file's line count. Make sure this works
+   for real file interaction and then write tests for it where you use a mocked file system.
+
+2. Create a function that calculates the sha256 hash of a file[0] and writes the hash to a file with
+   the same name but with the added extension `.sha256`. Write tests for a mocked file system first
+   and then test it with real file system access. Note that writing to the file system will likely
+   require slightly different code for the mocking of the file system access than reading did.
+
+3. Write a function that pulls down the contents of a web page and decodes them as a given
    structure based on the return value:
 
 ```haskell
 getAs :: (FromJSON a) => String -> IO (Either String a)
 ```
 
-   Write a test for this function than ensures that we get a valid response for a web page that
+   Write a test for this function that ensures that we get a valid response for a web page that
    exists and when the data can be decoded as the following structure:
 
 ```haskell
@@ -423,6 +431,11 @@ data User = User
    Write a type class for making HTTP `GET` requests and getting a `ByteString` back. Modify your
    code to use this new type class and then make the needed test modifications to have your test
    behave as you need it for your tests to pass.
+
+##### Exercise notes (Mocking effects with type classes)
+
+0. Look into the [`cryptonite` package](https://hackage.haskell.org/package/cryptonite) for how to
+   hash data.
 
 ## Property testing
 
