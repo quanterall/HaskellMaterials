@@ -269,8 +269,7 @@ access that it has:
 describe "Parsing .env files" $ do
   describe "`loadDotEnvFile`" $ do
     it "Should throw when we are trying to load a file that does not exist" $ do
-      let testState = TestState {_testStateFiles = Map.fromList []}
-      runRIO testState (loadDotEnvFile "doesNotExist.env")
+      loadDotEnvFile "doesNotExist.env"
         `shouldThrow` (== EnvironmentFileNotFound "doesNotExist.env")
 ```
 
@@ -280,13 +279,11 @@ So far, so good, but what happens when we add a test for a file that should exis
 describe "Parsing .env files" $ do
   describe "`loadDotEnvFile`" $ do
     it "Should throw when we are trying to load a file that does not exist" $ do
-      let testState = TestState {_testStateFiles = Map.fromList []}
-      runRIO testState (loadDotEnvFile "doesNotExist.env")
+      loadDotEnvFile "doesNotExist.env"
         `shouldThrow` (== EnvironmentFileNotFound "doesNotExist.env")
 
     it "Should not throw when the file exists" $ do
-      let testState = TestState {_testStateFiles = Map.fromList [("test.env", "")]}
-      runRIO testState (loadDotEnvFile "test.env") `shouldReturn` ()
+      loadDotEnvFile "test.env" `shouldReturn` ()
 ```
 
 Our test fails:
@@ -389,6 +386,22 @@ loadDotEnvFile ef@(EnvironmentFile path) = do
       -- If there is an environment variable that has the wrong formatting, we'll get an
       -- @IOException@ here. We'll just ignore it and move on.
       setEnv (_unEnvironmentKey key) value `catchIO` const (pure ())
+```
+
+We make sure that our tests now run with our `TestingState`, which means they are actually running
+in `TestM`:
+
+```haskell
+describe "Parsing .env files" $ do
+  describe "`loadDotEnvFile`" $ do
+    it "Should throw when we are trying to load a file that does not exist" $ do
+      let testState = TestState {_testStateFiles = Map.fromList []}
+      runRIO testState (loadDotEnvFile "doesNotExist.env")
+        `shouldThrow` (== EnvironmentFileNotFound "doesNotExist.env")
+
+    it "Should not throw when the file exists" $ do
+      let testState = TestState {_testStateFiles = Map.fromList [("test.env", "")]}
+      runRIO testState (loadDotEnvFile "test.env") `shouldReturn` ()
 ```
 
 Our test now succeeds:
