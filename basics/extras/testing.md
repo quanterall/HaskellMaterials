@@ -14,11 +14,13 @@
     - [Just test the effects](#just-test-the-effects)
     - [Mocking effects with type classes](#mocking-effects-with-type-classes)
       - [Exercises (Mocking effects with type classes)](#exercises-mocking-effects-with-type-classes)
+        - [Exercise notes (Mocking effects with type classes)](#exercise-notes-mocking-effects-with-type-classes)
   - [Property testing](#property-testing)
     - [`prop :: (HasCallStack, Testable prop) => String -> prop -> Spec`](#prop--hascallstack-testable-prop--string---prop---spec)
     - [`Testable prop`](#testable-prop)
     - [A more complete example](#a-more-complete-example)
     - [`Arbitrary`](#arbitrary)
+    - [Shrinking](#shrinking)
     - [Exercises (Property testing)](#exercises-property-testing)
 
 Testing is of course a pivotal part of development and just because we have access to a very
@@ -605,6 +607,12 @@ instance Arbitrary PrintableNonEmptyString where
     (PrintableString cs) <- arbitrary
     c & (: cs) & PrintableString & PrintableNonEmptyString & pure
 ```
+
+### Shrinking
+
+`QuickCheck` also has a concept of "shrinking" where it will take a test case that fails and try to
+reduce it to a simpler value that also fails. This means that we will generally get much nicer
+test cases to look for, like the smallest list that fails a test, etc.
 
 ### Exercises (Property testing)
 
