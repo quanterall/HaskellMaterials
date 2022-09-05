@@ -20,6 +20,7 @@
     - [`Testable prop`](#testable-prop)
     - [A more complete example](#a-more-complete-example)
     - [`Arbitrary`](#arbitrary)
+      - [Tools for working with the `Gen` monad](#tools-for-working-with-the-gen-monad)
     - [Shrinking](#shrinking)
     - [Exercises (Property testing)](#exercises-property-testing)
 
@@ -607,6 +608,12 @@ instance Arbitrary PrintableNonEmptyString where
     (PrintableString cs) <- arbitrary
     c & (: cs) & PrintableString & PrintableNonEmptyString & pure
 ```
+
+#### Tools for working with the `Gen` monad
+
+In
+[the QuickCheck documentation](https://hackage.haskell.org/package/QuickCheck-2.14.2/docs/Test-QuickCheck.html#g:8)
+we can find some tools for working with the `Gen` monad, among other things.
 
 ### Shrinking
 
