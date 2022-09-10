@@ -12,8 +12,9 @@
   - [Some useful helpers for parsing](#some-useful-helpers-for-parsing)
     - [Our simple `Parser` type](#our-simple-parser-type)
     - [What will we be parsing in `/etc/hosts`?](#what-will-we-be-parsing-in-etchosts)
-    - [What does the information look like?](#what-does-the-information-look-like)
+    - [What do the data types look like?](#what-do-the-data-types-look-like)
     - [Starting from the top](#starting-from-the-top)
+      - [Exercises (Basic parsing)](#exercises-basic-parsing)
   - [Parsing a simple scripting language](#parsing-a-simple-scripting-language)
     - [The language](#the-language)
     - [An additional helper](#an-additional-helper)
@@ -341,6 +342,18 @@ Right
         }
     ]
 ```
+
+#### Exercises (Basic parsing)
+
+1. Write a parser for e-mail addresses. For the purposes of this exercise we can assume that an
+   e-mail address contains a part before an `@` sign and a part after it.
+
+2. Write a parser for [`URI`s](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier). Try to
+   start small and work your way towards a more complete implementation if you are able to.
+
+3. Write a parser `jsonObjectP :: Parser Object` that parses a `Object` from the
+   [`Value`](https://hackage.haskell.org/package/aeson-2.1.0.0/docs/Data-Aeson.html#t:Value) type
+   in `Data.Aeson`.
 
 ## Parsing a simple scripting language
 
