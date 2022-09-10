@@ -255,8 +255,8 @@ hostsFileP =
 ```
 
 We've now described that a hosts file is parsed by reading at least one host entry, and if we have
-several they will be separated by newlines. At this point we have to consider how we want to parse a
-`HostEntry`:
+several they will be separated by whitespace. At this point we have to consider how we want to
+parse a `HostEntry`:
 
 ```haskell
 hostEntryP :: Parser HostEntry
