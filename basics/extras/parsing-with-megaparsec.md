@@ -15,6 +15,7 @@
     - [What do the data types look like?](#what-do-the-data-types-look-like)
     - [Starting from the top](#starting-from-the-top)
       - [Exercises (Basic parsing)](#exercises-basic-parsing)
+        - [Exercise notes (Basic parsing)](#exercise-notes-basic-parsing)
   - [Parsing a simple scripting language](#parsing-a-simple-scripting-language)
     - [The language](#the-language)
     - [An additional helper](#an-additional-helper)
@@ -351,9 +352,22 @@ Right
 2. Write a parser for [`URI`s](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier). Try to
    start small and work your way towards a more complete implementation if you are able to.
 
-3. Write a parser `jsonObjectP :: Parser Object` that parses a `Object` from the
-   [`Value`](https://hackage.haskell.org/package/aeson-2.1.0.0/docs/Data-Aeson.html#t:Value) type
-   in `Data.Aeson`.
+3. Write a parser `jsonStringP :: Parser Text` that parses a JSON string.
+
+4. Write a parser `jsonNumberP :: Parser Scientific`[0] that parses a JSON number.
+
+5. Write a parser `jsonBoolP :: Parser Bool` that parses a JSON boolean.
+
+6. Write a parser `jsonNullP :: Parser ()` that parses a JSON null.
+
+7. Write a parser `jsonValueP :: Parser Array`[0] that parses a JSON array. Note that the
+   array can contain all of your other types.
+
+8. Write a parser `jsonObjectP :: Parser Object`[0] that parses a JSON object.
+
+##### Exercise notes (Basic parsing)
+
+0. [`Value`](https://hackage.haskell.org/package/aeson-2.1.0.0/docs/Data-Aeson.html#t:Value)
 
 ## Parsing a simple scripting language
 
