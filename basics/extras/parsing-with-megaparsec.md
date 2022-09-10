@@ -196,13 +196,6 @@ Here is an example of a file:
 192.168.100.5	host.docker.internal
 192.168.100.5	gateway.docker.internal
 127.0.0.1	kubernetes.docker.internal
-
-# The following lines are desirable for IPv6 capable hosts
-::1     ip6-localhost ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
 ```
 
 Note that the `<feff>` character here is output by my editor and that it represents an invisible
