@@ -202,7 +202,7 @@ Note that the `<feff>` character here is output by my editor and that it represe
 space. It's not terribly uncommon that you'll find these types of characters in files, so it's
 important to keep this in mind when writing parsers.
 
-### What does the information look like?
+### What do the data types look like?
 
 ```haskell
 newtype Filename = Filename {unFilename :: Text}
