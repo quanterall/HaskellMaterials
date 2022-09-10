@@ -221,8 +221,8 @@ data IPAddress = IPAddress !Int !Int !Int !Int
 ### Starting from the top
 
 It's not unreasonable to start out with a high-level view of this problem. We want to parse several
-`hosts` entries from this file and they are separated by newlines. Each entry will start with an IP
-address and then a list of hostnames:
+`hosts` entries from this file and they are separated by whitespace. Each entry will start with an
+IP address and then a list of hostnames:
 
 ```haskell
 -- | This is the function we use in order to actually read a file and parse it.
