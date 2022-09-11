@@ -360,8 +360,8 @@ Right
 
 6. Write a parser `jsonNullP :: Parser ()` that parses a JSON null.
 
-7. Write a parser `jsonValueP :: Parser Array`[0] that parses a JSON array. Note that the
-   array can contain all of your other types.
+7. Write a parser `jsonArrayP :: Parser Array`[0] that parses a JSON array. Note that the array can
+   contain all of your other types.
 
 8. Write a parser `jsonObjectP :: Parser Object`[0] that parses a JSON object.
 
