@@ -886,9 +886,9 @@ shellCommandP = do
       -- to access standard out, standard error or the exit code.
       _ <- MChar.char '.'
       Megaparsec.choice
-        [ MChar.string "out" *> pure ShellStandardOut,
-          MChar.string "err" *> pure ShellStandardError,
-          MChar.string "code" *> pure ShellExitCode
+        [ MChar.string "out" $> ShellStandardOut,
+          MChar.string "err" $> ShellStandardError,
+          MChar.string "code" $> ShellExitCode
         ]
 
     shellCommandTextP :: Parser [ShellCommandText]
