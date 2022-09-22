@@ -42,13 +42,9 @@ are readable from top to bottom in terms of the assumptions they make about know
 - [The Reader Monad and ReaderT Monad Transformer](./basics/09-readert.md)
 - [`Has` constraints](./basics/10-has-constraints.md)
 - [Capability constraints](./basics/11-capability-constraints.md)
-
-There is a series of extra materials that can be read to gain some familiarity with
-libraries and tools commonly used for solving problems in Haskell:
-
-- [Testing](./basics/extras/testing.md)
-- [Optics (lenses & prisms)](./basics/extras/optics.md)
-- [Parsing with Megaparsec](./basics/extras/parsing-with-megaparsec.md)
+- [Testing](./basics/12-testing.md)
+- [Optics (lenses & prisms)](./basics/13-optics.md)
+- [Parsing with Megaparsec](./basics/14-parsing-with-megaparsec.md)
 
 ## Real World Haskell
 
